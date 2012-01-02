@@ -1,0 +1,4 @@
+cron:
+- description: import forecasts from weather underground
+  url: /tasks/wunderground/forecasts
+  schedule: every 30 minutes

@@ -1,0 +1,29 @@
+application: motorrijweer
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: true
+
+libraries:                                                                      
+- name: jinja2
+  version: 2.6
+
+builtins:
+- appstats: on
+
+handlers:
+- url: /
+  static_files: index.html
+  upload: index\.html
+
+- url: /(.*\.(gif|png|jpg|ico|js|css|html|txt))
+  static_files: \1
+  upload: (.*\.(gif|png|jpg|ico|js|css|html|txt))
+  expiration: "28d"
+
+- url: /.*
+  script: wsgi.app
+
+- url: /tasks/.*
+  script: wsgi.app
+  login: admin
