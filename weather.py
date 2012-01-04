@@ -58,7 +58,7 @@ class ForecastCollection(object):
 
         for forecast in self.forecasts:
             dt = forecast.datapunt_van
-            if dt.hour >= 7 and dt.hour < 21:
+            if dt.hour >= 6 and dt.hour < 23:
                 gegevens_overdag.forecasts.append(forecast)
 
         return gegevens_overdag
@@ -99,7 +99,7 @@ class ForecastCollection(object):
 
         for forecast in self.forecasts:
             dt = forecast.datapunt_van
-            if dt.hour >= 17 and dt.hour < 21:
+            if dt.hour >= 17 and dt.hour < 23:
                 gegevens_avond.forecasts.append(forecast)
 
         return gegevens_avond
@@ -144,9 +144,7 @@ class ForecastCollection(object):
             else:
                 weertypes[forecast.weertype] =+ 1
         
-        weertypes = sorted(weertypes)
-        weertypes.reverse()
-        return weertypes[0]
+        return sorted(weertypes, key=weertypes.get, reverse=True)[0]
 
     @property
     def omschrijving(self):
@@ -160,9 +158,7 @@ class ForecastCollection(object):
             else:
                 omschrijvingen[forecast.omschrijving] =+ 1
         
-        omschrijvingen = sorted(omschrijvingen)
-        omschrijvingen.reverse()
-        return omschrijvingen[0]
+        return sorted(omschrijvingen, key=omschrijvingen.get, reverse=True)[0]
 
     @property
     def minimumtemperatuur(self):
@@ -292,6 +288,13 @@ class ForecastCollection(object):
 
     @property
     def cijfer(self):
+        #forecast = Forecast()
+        #forecast.temperatuur = self.temperatuur
+        #forecast.windkracht = self.windkracht
+        #forecast.neerslagkans = self.neerslagkans
+        #forecast.neerslag_in_mm = self.neerslag_in_mm
+        #return forecast.generate_cijfer()
+
         if len(self.forecasts) == 0:
             return None
 
@@ -308,7 +311,7 @@ class Weather(object):
     def from_wunderground(cls, region, days=3):
         collection = ForecastCollection()
         u = Underground()
-        json_string = u.get_region(region, days=3)
+        json_string = u.get_region(region, days=days)
         parsed_json = json.loads(json_string)
 
         for hourly_forecast in parsed_json['hourly_forecast']:
@@ -324,7 +327,7 @@ class Weather(object):
     def from_gae(cls, locatie):
         collection = ForecastCollection()
         begin_vandaag = mytime.datetime.today().date()
-        dbForecasts = models.Forecast.gql("WHERE locatie = :locatie AND datapunt_van > :begin_vandaag AND probability_order = 1 \
+        dbForecasts = models.Forecast.gql("WHERE locatie = :locatie AND datapunt_van > :begin_vandaag \
                                           ORDER BY datapunt_van ASC", 
                                           locatie=locatie,
                                           begin_vandaag=begin_vandaag)

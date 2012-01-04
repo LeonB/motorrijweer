@@ -1,4 +1,8 @@
 cron:
-- description: import forecasts from weather underground
-  url: /tasks/wunderground/forecasts
-  schedule: every 30 minutes
+- description: import 3 day forecasts from weather underground
+  url: /tasks/wunderground/forecasts/hourly
+  schedule: every 60 minutes
+
+- description: import 7 day forecasts from weather underground
+  url: /tasks/wunderground/forecasts/daily
+  schedule: every 24 hours

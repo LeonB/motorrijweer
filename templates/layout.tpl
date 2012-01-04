@@ -4,15 +4,18 @@
 	<title>{% block title %}{% endblock %} | Hoe goed is het motorrijweer?</title>
 
 	<!-- CSS spul -->
-	<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
+	<link rel="stylesheet" href="/static/stylesheets/bootstrap/1.4.0/bootstrap.min.css">
 	<link rel="stylesheet" href="/static/stylesheets/template.css">
 	<link rel="stylesheet" href="/static/stylesheets/visualize.css">
 
 	<!-- Javascripts -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" defer="defer"></script>
-	<script src="http://twitter.github.com/bootstrap/1.4.0/bootstrap-twipsy.js" defer="defer"></script>
-	<script src="https://raw.github.com/filamentgroup/jQuery-Visualize/master/js/visualize.jQuery.js" defer="defer"></script>
+	<script src="/static/javascripts/bootstrap/1.4.0/bootstrap-twipsy.js" defer="defer"></script>
+	<script src="/static/javascripts/bootstrap/1.4.0/bootstrap-alerts.js" defer="defer"></script>
+	<!--<script src="https://raw.github.com/filamentgroup/jQuery-Visualize/master/js/visualize.jQuery.js" defer="defer"></script>-->
 
+	<script src="/static/javascripts/highcharts/highcharts.js" type="text/javascript" defer="defer"></script>
+	<script src="/static/javascripts/highcharts/themes/skies.js" type="text/javascript" defer="defer"></script>
 	<script src="/static/javascripts/site.js" type="text/javascript" defer="defer"></script>
 </head>
 
@@ -29,7 +32,7 @@
 		</div>
 	</div>
 
-	<img id="background-image" src="static/images/fast_road.jpg" alt="Background image" />
+	<img id="background-image" src="/static/images/fast_road.jpg" alt="Background image" />
 
 </body>
 </html>

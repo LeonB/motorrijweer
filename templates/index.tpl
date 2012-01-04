@@ -6,12 +6,16 @@
 
 	<div class="row">
 		<div class="span16">
+
+			{% include 'blocks/message_motorrijweer.tpl' %}
+
 			<div class="component component-big">
 				<div class="module">
 					<div class="module-header">
 						<h3>Weergegevens voor {{ weer.now|datetimeformat('EEEE d MMMM yyyy') }}</h3>
 						<h3>&lt;&lt; Gisteren</h3>
 						<h3>&gt;&gt; Morgen</h3>
+						<p>Laatst geupdate: ikweetutnie</p>
 					</div>
 					<div class="module-body">
 						<div class="row row_1">
@@ -25,7 +29,7 @@
 							</div>
 							<div class="span3 weertype">
 								<!--<img src="/static/images/icons/Flat_Black/30.png" alt="Weersoort" title="Wat voor soort icoontje is dit: blalblalba uitleg" />-->
-								<img src="http://icons.wxug.com/i/c/i/{{ today.weertype }}.gif" alt="Weersoort" title="Wat voor soort icoontje is dit: blalblalba uitleg" />
+								<img src="http://icons.wxug.com/i/c/i/{{ today.weertype }}.gif" alt="Weersoort" title="{{ today.omschrijving }}" />
 							</div>
 							<div class="span3 temperatuur">
 								<div class="minimumtemperatuur" title="Hier komt een uitleg over de minimumtemperatuur">
@@ -93,7 +97,7 @@
 									{% if today.windkracht is none %}
 									<span class="waarde">N/B</span>
 									{% else %}
-									<span class="waarde">{{ today.windkracht|round|int }}</span>
+									<span class="waarde">{{ today.windkracht|kmh_to_beaufort }}</span>
 									<span class="beaufort"></span>
 									{% endif %}
 								</div>
@@ -105,148 +109,7 @@
 					<div class="module-body data-per-dagdeel">
 						<div class="row">
 							<div class="span16">
-								<table class="bordered-table zebra-striped">
-									<thead>
-										<tr>
-											<th>Gegevens per uur</th>
-											<th>Ochtend</th>
-											<th>Middag</th>
-											<th>Avond</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<th>Weertype</th>
-											{% for dagdeel in today.dagdelen.values() %}
-												<td class="weertype">
-													<img src="http://icons.wxug.com/i/c/i/{{ today.weertype }}.gif" alt="Weersoort" title="Wat voor soort icoontje is dit: blalblalba uitleg" />
-													<!--<img src="/static/images/icons/Flat_Black/3.png" width="32" height="32" title="En de leste voor deze regel"/>-->
-												</td>
-											{% endfor %}
-										</tr>
-										<tr>
-											<th>Temperatuur</th>
-											{% for dagdeel in today.dagdelen.values() %}
-												<td>
-													{% if dagdeel.minimumtemperatuur is none %}
-													<span class="waarde">N/B</span>
-													{% else %}
-													<span class="waarde">{{ dagdeel.minimumtemperatuur}}</span>
-													<span class="eenheid celcius">&#8451;</span>
-													{% endif %}
-													<span>/</span>
-													{% if dagdeel.maximumtemperatuur is none %}
-													<span class="waarde">N/B</span>
-													{% else %}
-													<span class="waarde">{{ dagdeel.maximumtemperatuur}}</span>
-													<span class="eenheid celcius">&#8451;</span>
-													{% endif %}
-												</td>
-											{% endfor %}
-										</tr>
-										<tr>
-											<th>Kans op neerslag</th>
-											{% for dagdeel in today.dagdelen.values() %}
-												<td>
-													{% if dagdeel.neerslagkans is none %}
-													<span class="waarde">N/B</span>
-													{% else %}
-													<span class="waarde">{{ (dagdeel.neerslagkans*100)|round|int }}</span>
-													<span class="eenheid percentage">%</span>
-													{% endif %}
-												</td>
-											{% endfor %}
-										</tr>
-										<tr>
-											<th>Neerslag in mm</th>
-											{% for dagdeel in today.dagdelen.values() %}
-												<td>
-													{% if dagdeel.neerslag_in_mm is none %}
-													<span class="waarde">N/B</span>
-													{% else %}
-													<span class="waarde">{{ dagdeel.neerslag_in_mm|round(1)}}</span>
-													<span class="eenheid milimeter">mm</span>
-													{% endif %}
-												</td>
-											{% endfor %}
-										</tr>
-										<tr>
-											<th>Bewolking</th>
-											{% for dagdeel in today.dagdelen.values() %}
-												<td>
-													{% if dagdeel.bewolking is none %}
-													<span class="waarde">N/B</span>
-													{% else %}
-													<span class="waarde">{{ (dagdeel.bewolking*100)|round|int }}</span>
-													<span class="eenheid percentage">%</span>
-													{% endif %}
-												</td>
-											{% endfor %}
-										</tr>
-										<tr>
-											<th>Kans op zon</th>
-											{% for dagdeel in today.dagdelen.values() %}
-												<td>
-													{% if dagdeel.zonkans is none %}
-													<span class="waarde">N/B</span>
-													{% else %}
-													<span class="waarde">{{ (dagdeel.zonkans*100)|round|int }}</span>
-													<span class="eenheid percentage">%</span>
-													{% endif %}
-												</td>
-											{% endfor %}
-										</tr>
-										<tr>
-											<th>Windkracht</th>
-											{% for dagdeel in today.dagdelen.values() %}
-												<td>
-													{% if dagdeel.windkracht is none %}
-													<span class="waarde">N/B</span>
-													{% else %}
-													<span class="waarde">{{ (dagdeel.windkracht)|round }}</span>
-													{% endif %}
-												</td>
-											{% endfor %}
-										</tr>
-										<tr>
-											<th>Windrichting</th>
-											{% for dagdeel in today.dagdelen.values() %}
-												<td>
-													{% if dagdeel.windkracht is none %}
-													<span class="waarde">N/B</span>
-													{% else %}
-													<span class="waarde">{{ dagdeel.windrichting }}</span>
-													{% endif %}
-												</td>
-											{% endfor %}
-										</tr>
-										<tr>
-											<th>Gevoelstemperatuur</th>
-											{% for dagdeel in today.dagdelen.values() %}
-												<td>
-													{% if dagdeel.gevoelstemperatuur is none %}
-													<span class="waarde">N/B</span>
-													{% else %}
-													<span class="waarde">{{ dagdeel.gevoelstemperatuur }}</span>
-													<span class="eenheid celcius">&#8451;</span>
-													{% endif %}
-												</td>
-											{% endfor %}
-										</tr>
-										<tr>
-											<th>Cijfer</th>
-											{% for dagdeel in today.dagdelen.values() %}
-												<td>
-													{% if dagdeel.cijfer is none %}
-													<span class="waarden">N/B</span>
-													{% else %}
-													<span class="waarde">{{ dagdeel.cijfer|round|int }}</span>
-													{% endif %}
-												</td>
-											{% endfor %}
-										</tr>
-									</tbody>
-								</table>
+								{% include 'blocks/data_per_dagdeel.tpl' %}
 							</div>
 						</div>
 					</div>
@@ -257,36 +120,10 @@
 								<p>Nog een grafieK!!??!!?/</p>
 								<p>Neerslag(kans), cijfer, weersoort + wind (weeronline): hoe ga ik % met getallen mixxen? Of nie?</p>
 
-								<table class="bordered-table">
-									<thead>
-										<tr>
-											<td></td>
-											<th scope="col">09.00</th>
-											<th scope="col">10.00</th>
-											<th scope="col">11.00</th>
-											<th scope="col">12.00</th>
-											<th scope="col">13.00</th>
-											<th scope="col">14.00</th>
-											<th scope="col">15.00</th>
-											<th scope="col">16.00</th>
-											<th scope="col">17.00</th>
-											<th scope="col">18.00</th>
-											<th scope="col">19.00</th>
-											<th scope="col">20.00</th>
-											<th scope="col">21.00</th>
-											<th scope="col">22.00</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<th scope="row">Neerslag</th>
-											{% for forecast in today.forecasts %}
-											<td>{{ forecast.neerslag_in_mm }}</td>
-											{% endfor %}
-										</tr>
+								<div id="chart"></div>
 
-									</tbody>
-								</table>
+								{% include 'blocks/data_per_uur.tpl' %}
+
 							</div>
 						</div>
 					</div>

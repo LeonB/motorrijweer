@@ -13,7 +13,6 @@ indexes:
 - kind: Forecast
   properties:
   - name: locatie
-  - name: probability_order
   - name: datapunt_van
 
 - kind: Forecast

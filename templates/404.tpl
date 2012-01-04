@@ -3,14 +3,19 @@
 {% block body %}
   <div class="alert-message error">
 	  <a class="close" href="#">×</a>
-	  <p><strong>Holy guacamole!</strong> Best check yo self, you’re not looking too good.</p>
+	  <p><strong>Whoeps!</strong> Hier ging iets niet helemaal goed...</p>
   </div> 
   <div class="row">
 	  <div class="span16">
 		  <div class="component component-big">
 			  <div class="module">
-				  <h1>Page Not Found</h1>
-				  <p><a href="{{ url_for('index') }}">go somewhere nice</a></p>
+				  <div class="module-header">
+					  <h1>404: Pagina niet gevonden</h1>
+				  </div>
+				  <div class="module-body">
+					  <p>Of dit is een niet meer bestaande pagina of u heeft een url fout ingevoerd.</p>
+					  <p><a href="{{ url_for('index') }}">Breng me naar ergens waar het wel leuk is</a></p>
+				  </div>
 			  </div>
 		  </div>
 	  </div>

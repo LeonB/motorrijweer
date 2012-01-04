@@ -19,4 +19,4 @@ class Forecast(db.Model):
     windrichting = db.StringProperty(required=True, indexed=False)
     cijfer = db.FloatProperty(required=True, indexed=False)
     provider = db.StringProperty(required=True)
-    probability_order = db.IntegerProperty(required=True)
+    #probability_order = db.IntegerProperty(required=True)
