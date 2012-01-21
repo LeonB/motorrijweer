@@ -2,7 +2,9 @@
 {% block title %}Index{% endblock %}
 {% block body %}
 
-{% set today = weer.today.overdag %}
+{% set weer = weer.overdag %}
+
+{{ weer.forecasts|count }}
 
 	<div class="row">
 		<div class="span16">
@@ -22,31 +24,31 @@
 							<div class="span2 cijfer">
 								<h6>Cijfer</h6>
 								<span class="waarde" title="Een 5! Dat is niet zooo goed!">
-									{% if today.cijfer is not none %}
-									{{ today.cijfer|round(1) }}
+									{% if weer.cijfer is not none %}
+									{{ weer.cijfer|round(1) }}
 									{% endif %}
 								</span>
 							</div>
 							<div class="span3 weertype">
 								<!--<img src="/static/images/icons/Flat_Black/30.png" alt="Weersoort" title="Wat voor soort icoontje is dit: blalblalba uitleg" />-->
-								<img src="http://icons.wxug.com/i/c/i/{{ today.weertype }}.gif" alt="Weersoort" title="{{ today.omschrijving }}" />
+								<img src="http://icons.wxug.com/i/c/i/{{ weer.weertype }}.gif" alt="Weersoort" title="{{ weer.omschrijving }}" />
 							</div>
 							<div class="span3 temperatuur">
 								<div class="minimumtemperatuur" title="Hier komt een uitleg over de minimumtemperatuur">
 									<h6>Minimumtemperatuur</h6>
-									{% if today.minimumtemperatuur is none %}
+									{% if weer.minimumtemperatuur is none %}
 									<span class="waarde">N/B</span>
 									{% else %}
-									<span class="waarde">{{ today.minimumtemperatuur }}</span>
+									<span class="waarde">{{ weer.minimumtemperatuur }}</span>
 									<span class="eenheid celcius">&#8451;</span>
 									{% endif %}
 								</div>
 								<div class="maximumtemperatuur" title="Hierkomt een uitleg over de maximumtemperatuur">
 									<h6>Maximumtemperatuur</h6>
-									{% if today.maximumtemperatuur is none %}
+									{% if weer.maximumtemperatuur is none %}
 									<span class="waarde">N/B</span>
 									{% else %}
-									<span class="waarde">{{ today.maximumtemperatuur }}</span>
+									<span class="waarde">{{ weer.maximumtemperatuur }}</span>
 									<span class="eenheid celcius">&#8451;</span>
 									{% endif %}
 								</div>
@@ -54,19 +56,19 @@
 							<div class="span2 neerslag">
 								<div class="neerslagkans" title="Blablabla uitleg neerslagkans">
 									<h6>Neerslagkans</h6>
-									{% if today.neerslagkans is none %}
+									{% if weer.neerslagkans is none %}
 									<span class="waarde">N/B</span>
 									{% else %}
-									<span class="waarde">{{ (today.neerslagkans*100)|round|int }}</span>
+									<span class="waarde">{{ (weer.neerslagkans*100)|round|int }}</span>
 									<span class="eenheid percentage">%</span>
 									{% endif %}
 								</div>
 								<div class="neerslag_in_mm" title="Blablablala neerslag in mm">
 									<h6>Neerslag</h6>
-									{% if today.neerslag_in_mm is none %}
+									{% if weer.neerslag_in_mm is none %}
 									<span class="waarde">N/B</span>
 									{% else %}
-									<span class="waarde">{{ today.neerslag_in_mm|round(1) }}</span>
+									<span class="waarde">{{ weer.neerslag_in_mm|round(1) }}</span>
 									<span class="eenheid milimeter">mm</span>
 									{% endif %}
 								</div>
@@ -74,19 +76,19 @@
 							<div class="span2">
 								<div class="zonkans" title="Blablabla uitleg zonkans">
 									<h6>Zonkans</h6>
-									{% if today.zonkans is none %}
+									{% if weer.zonkans is none %}
 									<span class="waarde">N/B</span>
 									{% else %}
-									<span class="waarde">{{ (today.zonkans*100)|round|int }}</span>
+									<span class="waarde">{{ (weer.zonkans*100)|round|int }}</span>
 									<span class="eenheid percentage">%</span>
 									{% endif %}
 								</div>
 								<div class="bewolking" title="Blablabla uitleg bewolking">
 									<h6>Bewolking</h6>
-									{% if today.bewolking is none %}
+									{% if weer.bewolking is none %}
 									<span class="waarde">N/B</span>
 									{% else %}
-									<span class="waarde">{{ (today.bewolking*100)|round|int }}</span>
+									<span class="waarde">{{ (weer.bewolking*100)|round|int }}</span>
 									<span class="eenheid percentage">%</span>
 									{% endif %}
 								</div>
@@ -94,10 +96,10 @@
 							<div class="span3 wind" title="Wat voor soort icoontje is dit: blalblalba uitleg" />
 								<h6>Windkracht</h6>
 								<div class="windkracht">
-									{% if today.windkracht is none %}
+									{% if weer.windkracht is none %}
 									<span class="waarde">N/B</span>
 									{% else %}
-									<span class="waarde">{{ today.windkracht|kmh_to_beaufort }}</span>
+									<span class="waarde">{{ weer.windkracht|kmh_to_beaufort }}</span>
 									<span class="beaufort"></span>
 									{% endif %}
 								</div>
@@ -129,14 +131,14 @@
 					</div>
 
 					<div class="module-footer">
-						<!--{{ today.droog_tot }}-->
-						<!--{{ today.droog_om }}-->
-						{% if not today.droog_tot and not today.droog_om %}
+						<!--{{ weer.droog_tot }}-->
+						<!--{{ weer.droog_om }}-->
+						{% if not weer.droog_tot and not weer.droog_om %}
 							<span>Het blijft de hele dag regenen :(</span>
-						{% elif not today.droog_tot %}
-							<span>Het is weer droog om: {{ today.droog_om.strftime('%H:%M') }}</span>
+						{% elif not weer.droog_tot %}
+							<span>Het is weer droog om: {{ weer.droog_om.strftime('%H:%M') }}</span>
 						{% else %}
-							<span>Het is droog tot: {{ today.droog_tot }}
+							<span>Het is droog tot: {{ weer.droog_tot }}
 						{% endif %}
 					</div>	
 				</div>

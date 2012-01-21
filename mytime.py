@@ -10,6 +10,10 @@ class datetime(object):
         return orig_datetime.datetime(*args, **kwargs)
 
     @classmethod
+    def today(cls):
+        return orig_datetime.datetime.now(app.timezone)
+
+    @classmethod
     def from_utc(cls, dt):
         return dt.replace(tzinfo=pytz.timezone('UTC')).astimezone(app.timezone)
 
@@ -20,18 +24,51 @@ class datetime(object):
         return orig_datetime.datetime.fromtimestamp(timestamp, tz)
 
     @classmethod
-    def today(cls):
-        return orig_datetime.datetime.now(app.timezone)
-
-    @classmethod
     def now(cls, tz=None):
         if not tz:
             tz = app.timezone
 
         return orig_datetime.datetime.now(tz)
 
-class date(orig_datetime.timedelta):
+    @classmethod
+    def strptime(cls, *args, **kwargs):
+        return orig_datetime.datetime.strptime(*args, **kwargs)
+
+    @classmethod
+    def combine(cls, *args, **kwargs):
+        return orig_datetime.datetime.combine(*args, **kwargs)
+
+class date(object):
+    @classmethod
+    def today(cls):
+        return orig_datetime.datetime.now(app.timezone).date()
+
+    @classmethod
+    def tomorrow(cls):
+        return orig_datetime.date.today() + orig_datetime.timedelta(days=1)
+
+    @classmethod
+    def day_after_tomorrow(cls):
+        return orig_datetime.date.today() + orig_datetime.timedelta(days=2)
+
+    @classmethod
+    def yesterday(cls):
+        return orig_datetime.date.today() + orig_datetime.timedelta(days=-1)
+
+    @classmethod
+    def day_before_yesterday(cls):
+        return orig_datetime.date.today() + orig_datetime.timedelta(days=-2)
+
+    #def plus_day(self):
+        #return self + orig_datetime.timedelta(days=+1)
+
+    #def min_day(self):
+        #return self + orig_datetime.timedelta(days=-1)
+
+
+class time(orig_datetime.time):
     pass
+
 
 
 #time.oldtime = time.time

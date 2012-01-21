@@ -5,37 +5,47 @@ import weather
 class forecasts(object):
 
     @classmethod
-    def hourly(cls):
-        now = mytime.datetime.now()
-        #return str(app.config['LOCATIES']['zeeland'])
+    def hourly(cls, regio):
+        regio = weather.Region.by_id(regio)
+        retvals = {}
 
-        # Make sure it is never request more than once every 15 minutes
-        kwartier = now - mytime.timedelta(seconds=60*15)
-        last_forecast = models.Forecast.gql("WHERE locatie = :locatie AND \
-                            tijdstip_datapunt > :kwartier AND provider = 'wunderground'", 
-                            locatie='zeeland', kwartier=kwartier).get()
+        for station in regio.stations:
+            now = mytime.datetime.now()
 
-        if last_forecast:
-            last_forecast = weather.Forecast.from_gae(last_forecast)
-            return str(last_forecast.tijdstip_datapunt)
+            # Make sure it is never request more than once every 15 minutes
+            kwartier = now - mytime.timedelta(seconds=60*15)
+            last_forecast = models.Forecast.gql("WHERE locatie = :locatie AND \
+                                tijdstip_datapunt > :kwartier AND provider = 'wunderground'", 
+                                locatie=station.id, kwartier=kwartier).get()
 
-        return cls._import_forecasts(days=3)
+            if last_forecast:
+                last_forecast = weather.Forecast.from_gae(last_forecast)
+                retvals[station.id] = str(last_forecast.tijdstip_datapunt)
+                continue
+
+            retvals[station.id] = cls._import_forecasts(days=3, locatie=station.id)
+        return retvals
 
     @classmethod
-    def daily(cls):
-        return cls._import_forecasts(days=7)
+    def daily(cls, regio):
+        regio = weather.Region.by_id(regio)
+        retvals = {}
+
+        for station in regio.stations:
+            retvals[station.id] = cls._import_forecasts(locatie=station.id, days=7)
+
+        return retvals
 
     @classmethod
-    def _import_forecasts(cls, days=3, hours_in_the_future_to_skip=None):
+    def _import_forecasts(cls, locatie, days=3, hours_in_the_future_to_skip=None):
         now = mytime.datetime.now()
 
-        #return str(len(weather.Weather.from_wunderground('zeeland', days=7).forecasts))
-        for forecast in weather.Weather.from_wunderground('zeeland', days=days).forecasts:
+        for forecast in weather.Weather.from_wunderground(locatie, days=days).forecasts:
 
             # evt: if van > 3 uur (ofzo): skippen
 
             old_result = models.Forecast.gql("WHERE locatie = :locatie AND provider = 'wunderground' AND datapunt_van = :datapunt_van AND datapunt_tot = :datapunt_tot",
-                                              locatie='zeeland',
+                                              locatie=locatie,
                                               datapunt_van=forecast.datapunt_van,
                                               datapunt_tot=forecast.datapunt_tot).get()
 
@@ -50,8 +60,11 @@ class forecasts(object):
                 old_result.zonkans == forecast.zonkans and \
                 old_result.windkracht == forecast.windkracht and \
                 old_result.cijfer == forecast.cijfer:
+                    # alles is hetzelfde gebleven
+                    # Moet ik de timestamp updaten?!?
                     continue
 
+                # Stond al in de db, maar geupdate resultaten
                 old_result.tijdstip_datapunt = now
                 old_result.weertype = forecast.weertype
                 old_result.omschrijving = forecast.omschrijving
@@ -64,12 +77,13 @@ class forecasts(object):
                 old_result.windkracht = forecast.windkracht
                 old_result.cijfer = forecast.cijfer
                 old_result.put()
+                continue
             else:
                 dp = models.Forecast(
                     datapunt_van = forecast.datapunt_van,
                     datapunt_tot = forecast.datapunt_tot,
                     tijdstip_datapunt = now,
-                    locatie = 'zeeland',
+                    locatie = locatie,
                     weertype = forecast.weertype,
                     omschrijving = forecast.omschrijving,
                     temperatuur = forecast.temperatuur,
@@ -85,6 +99,7 @@ class forecasts(object):
                     probability_order = 0,
                 )
                 dp.put()
+                continue
 
         return 'OK'
 

@@ -24,31 +24,86 @@ def before_request():
 def page_not_found(e):
     return flask.render_template('404.tpl'), 404
 
-@app.route('/')
-def index():
-    return flask.render_template('index.tpl')
+#@app.route('/regio/<regio>')
+##@app.cache.memoize()
+#def regio(regio):
+    #regio = weather.Region.by_id(regio.lower())
+    #if not regio:
+        #return flask.abort(404)
 
-@app.route('/<regio>')
-#@app.cache.memoize()
-def regio(regio):
-    if regio not in app.config['LOCATIES'].keys():
+    #weer = weather.Weather().from_gae(regio.id)
+    #today = mytime.datetime.today().date()
+    #return flask.render_template('index.tpl', weer=weer)
+
+@app.route('/locatie/<locatie>')
+def locatie_redirect(locatie):
+    if (mytime.datetime.today().hour < 20):
+        return flask.redirect('/locatie/%(locatie)s/vandaag' % {'locatie': locatie}, 302)
+    else:
+        return flask.redirect('/locatie/%(locatie)s/morgen' % {'locatie': locatie}, 302)
+
+#@app.cache.memoize(timeout=60*5)
+@app.route('/locatie/<locatie>/<datum_str>')
+def locatie(locatie, datum_str = 'vandaag'):
+    # Does the location exist?
+    if locatie.upper() not in weather.Station.all_ids():
         return flask.abort(404)
 
-    weer = weather.Weather().from_gae(regio)
-    today = mytime.datetime.today().date()
-    #return str(len(weer.today.forecasts))
-    #return str(weer.forecasts[-1].tijdstip_datapunt)
-    #return str(len(weer.forecasts))
-    #return str(weer.gevoelstemperatuur)
-    return flask.render_template('index.tpl', weer=weer)
+    # Change input to real date object
+    if datum_str == 'vandaag':
+        datum = mytime.date.today()
+    elif datum_str == 'morgen':
+        datum = mytime.date.tomorrow()
+    elif datum_str == 'overmorgen':
+        datum = mytime.date.day_after_tomorrow()
+    elif datum_str == 'gisteren':
+        datum = mytime.date.yesterday()
+    elif datum_str == 'eergisteren':
+        datum = mytime.date.day_before_yesterday()
+    else:
+        datum = mytime.datetime.strptime(datum_str, '%d%m%Y').date()
+
+    weer = weather.Weather().from_gae(locatie=locatie.upper(), datum=datum)
+    return flask.render_template('locatie.tpl', weer=weer, datum_str=datum_str)
+
+@app.route('/regio/<regio>')
+def regio_redirect(regio):
+    if (mytime.datetime.today().hour < 20):
+        return flask.redirect('/regio/%(regio)s/vandaag' % {'regio': regio}, 302)
+    else:
+        return flask.redirect('/regio/%(regio)s/morgen' % {'regio': regio}, 302)
+
+@app.route('/regio/<regio>/<datum_str>')
+def regio(regio, datum_str = 'vandaag'):
+    # Does the regio exist?
+    regio = weather.Region.by_id(regio.lower())
+    if not regio:
+        return flask.abort(404)
+
+    # Change input to real date object
+    if datum_str == 'vandaag':
+        datum = mytime.date.today()
+    elif datum_str == 'morgen':
+        datum = mytime.date.tomorrow()
+    elif datum_str == 'overmorgen':
+        datum = mytime.date.day_after_tomorrow()
+    elif datum_str == 'gisteren':
+        datum = mytime.date.yesterday()
+    elif datum_str == 'eergisteren':
+        datum = mytime.date.day_before_yesterday()
+    else:
+        datum = mytime.datetime.strptime(datum_str, '%d%m%Y').date()
+
+    weer = weather.Weather().from_gae(regio=regio, datum=datum)
+    return flask.render_template('regio.tpl', weer=weer, regio=regio, datum_str=datum_str)
 
 @app.route('/tasks/wunderground/forecasts/hourly')
 def tasks_wunderground_forecasts_hourly():
-    return controllers.tasks.wunderground.forecasts.hourly()
+    return str(controllers.tasks.wunderground.forecasts.hourly('zeeland'))
 
 @app.route('/tasks/wunderground/forecasts/daily')
 def tasks_wunderground_forecasts_daily():
-    return controllers.tasks.wunderground.forecasts.daily()
+    return str(controllers.tasks.wunderground.forecasts.daily('zeeland'))
 
 @app.route('/tasks/regeneratecijfers')
 def tasks_regeneratecijfers():
@@ -64,6 +119,15 @@ def tasks_removeprobability():
     dbForecasts = models.Forecast.gql("WHERE probability_order > 1") 
     for dbForecast in dbForecasts:
         dbForecast.delete()
+
+    return 'OK'
+
+@app.route('/tasks/set_zeeland_to_station')
+def set_zeeland_to_station():
+    dbForecasts = models.Forecast.gql("WHERE locatie = 'zeeland'") 
+    for dbForecast in dbForecasts:
+        dbForecast.locatie = 'IZEELAND16'
+        dbForecast.put()
 
     return 'OK'
 
@@ -92,3 +156,6 @@ def test_cijfers():
 
     return flask.render_template('test_cijfers.tpl', gegevens=gegevens)
 
+@app.route('/stations')
+def stations():
+    return str(weather.Region.by_id('zeeland'))

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<regions>
+	<region>
+		<id>zeeland</id>
+		<name>Zeeland</name>
+		<stations>
+			<station>
+				<id>IZEELAND16</id>
+				<name>Sint Laurens</name>
+			</station>
+			<station>
+				<id>MD7661</id>
+				<name>Kloosterzande</name>
+			</station>
+		</stations>
+	</region>
+	<region>
+		<id>noord-brabant</id>
+		<name>Noord-Brabant</name>
+		<stations />
+	</region>
+</regions>

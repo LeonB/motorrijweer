@@ -10,7 +10,7 @@
 		<tbody>
 				<tr>
 						<th>Weertype</th>
-						{% for dagdeel in today.dagdelen.values() %}
+						{% for dagdeel in weer.dagdelen.values() %}
 						<td class="weertype">
 								<img src="http://icons.wxug.com/i/c/i/{{ dagdeel.weertype }}.gif" alt="Weersoort" title="{{ dagdeel.omschrijving }}" />
 								<!--<img src="/static/images/icons/Flat_Black/3.png" width="32" height="32" title="En de leste voor deze regel"/>-->
@@ -19,7 +19,7 @@
 				</tr>
 				<tr>
 						<th>Temperatuur</th>
-						{% for dagdeel in today.dagdelen.values() %}
+						{% for dagdeel in weer.dagdelen.values() %}
 						<td>
 								{% if dagdeel.minimumtemperatuur is none %}
 								<span class="waarde">N/B</span>
@@ -39,7 +39,7 @@
 				</tr>
 				<tr>
 						<th>Kans op neerslag</th>
-						{% for dagdeel in today.dagdelen.values() %}
+						{% for dagdeel in weer.dagdelen.values() %}
 						<td>
 								{% if dagdeel.neerslagkans is none %}
 								<span class="waarde">N/B</span>
@@ -52,7 +52,7 @@
 				</tr>
 				<tr>
 						<th>Neerslag in mm</th>
-						{% for dagdeel in today.dagdelen.values() %}
+						{% for dagdeel in weer.dagdelen.values() %}
 						<td>
 								{% if dagdeel.neerslag_in_mm is none %}
 								<span class="waarde">N/B</span>
@@ -65,7 +65,7 @@
 				</tr>
 				<tr>
 						<th>Bewolking</th>
-						{% for dagdeel in today.dagdelen.values() %}
+						{% for dagdeel in weer.dagdelen.values() %}
 						<td>
 								{% if dagdeel.bewolking is none %}
 								<span class="waarde">N/B</span>
@@ -78,7 +78,7 @@
 				</tr>
 				<tr>
 						<th>Kans op zon</th>
-						{% for dagdeel in today.dagdelen.values() %}
+						{% for dagdeel in weer.dagdelen.values() %}
 						<td>
 								{% if dagdeel.zonkans is none %}
 								<span class="waarde">N/B</span>
@@ -91,7 +91,7 @@
 				</tr>
 				<tr>
 						<th>Windkracht</th>
-						{% for dagdeel in today.dagdelen.values() %}
+						{% for dagdeel in weer.dagdelen.values() %}
 						<td>
 								{% if dagdeel.windkracht is none %}
 								<span class="waarde">N/B</span>
@@ -103,7 +103,7 @@
 				</tr>
 				<tr>
 						<th>Windrichting</th>
-						{% for dagdeel in today.dagdelen.values() %}
+						{% for dagdeel in weer.dagdelen.values() %}
 						<td>
 								{% if dagdeel.windrichting is none %}
 								<span class="waarde">N/B</span>
@@ -115,7 +115,7 @@
 				</tr>
 				<tr>
 						<th>Gevoelstemperatuur</th>
-						{% for dagdeel in today.dagdelen.values() %}
+						{% for dagdeel in weer.dagdelen.values() %}
 						<td>
 								{% if dagdeel.gevoelstemperatuur is none %}
 								<span class="waarde">N/B</span>
@@ -128,7 +128,7 @@
 				</tr>
 				<tr>
 						<th>Cijfer</th>
-						{% for dagdeel in today.dagdelen.values() %}
+						{% for dagdeel in weer.dagdelen.values() %}
 						<td>
 								{% if dagdeel.cijfer is none %}
 								<span class="waarden">N/B</span>

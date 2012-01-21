@@ -5,18 +5,24 @@ import mytime
 from motorrijweer import app
 from collections import OrderedDict
 import models
+import xml.etree.ElementTree
 
 class Underground(object):
-    #@app.cache.cached()
-    def get_region(self, region, days=3):
+    def get_locatie(self, locatie, days=3):
         sf = None
+        url = None
+        feature = None
+
+        if days == 3 :
+            feature = 'hourly'
+        elif days == 7:
+            feature = 'hourly7day'
+        else:
+            raise Exception("I don't know how many days!")
+
+        url = 'http://api.wunderground.com/api/172be46581dbc68e/%(feature)s/lang:NL/q/pws:%(locatie)s.json?c=NL'
         try:
-            if days == 3 :
-                sf = urllib2.urlopen('http://api.wunderground.com/api/172be46581dbc68e/hourly/lang:NL/q/pws:IZEELAND16.json?c=NL')
-            elif days == 7:
-                sf = urllib2.urlopen('http://api.wunderground.com/api/172be46581dbc68e/hourly7day/lang:NL/q/pws:IZEELAND16.json?c=NL')
-            else:
-                raise Exception("I don't know how many days!")
+            sf = urllib2.urlopen(url % {'feature': feature, 'locatie': locatie})
             #sf = open('hourly_vlissingen.json')
             json = sf.read()
         finally:
@@ -144,6 +150,7 @@ class ForecastCollection(object):
             else:
                 weertypes[forecast.weertype] =+ 1
         
+        #Counter.most_common zou ook werken?
         return sorted(weertypes, key=weertypes.get, reverse=True)[0]
 
     @property
@@ -308,10 +315,10 @@ class ForecastCollection(object):
 class Weather(object):
 
     @classmethod
-    def from_wunderground(cls, region, days=3):
+    def from_wunderground(cls, locatie, days=3):
         collection = ForecastCollection()
         u = Underground()
-        json_string = u.get_region(region, days=days)
+        json_string = u.get_locatie(locatie, days=days)
         parsed_json = json.loads(json_string)
 
         for hourly_forecast in parsed_json['hourly_forecast']:
@@ -324,13 +331,19 @@ class Weather(object):
         return collection
 
     @classmethod
-    def from_gae(cls, locatie):
+    def from_gae(cls, locatie = None, regio = None, datum = None):
+        if locatie:
+            locaties = [locatie]
+        elif regio:
+            locaties = map(lambda x: x.id, regio.stations)
+
         collection = ForecastCollection()
-        begin_vandaag = mytime.datetime.today().date()
-        dbForecasts = models.Forecast.gql("WHERE locatie = :locatie AND datapunt_van > :begin_vandaag \
+        dbForecasts = models.Forecast.gql("WHERE locatie IN :locaties AND datapunt_van > :min_dag \
+                                          AND datapunt_van < :plus_dag \
                                           ORDER BY datapunt_van ASC", 
-                                          locatie=locatie,
-                                          begin_vandaag=begin_vandaag)
+                                          locaties=locaties,
+                                          plus_dag=datum + mytime.timedelta(days=1),
+                                          min_dag=datum - mytime.timedelta(days=1))
 
         #dbForecasts = sorted(dbForecasts, key=lambda x: x.tijdstip_datapunt, reverse=True)
         for dbForecast in dbForecasts:
@@ -572,3 +585,49 @@ class Beaufort(object):
                 kmh_1 = cls.data[beaufort]
                 kmh_2 = cls.data[beaufort+1]-1
                 return (kmh_1, kmh_2)
+
+class Region(object):
+
+    def __init__(self):
+        self.stations = []
+
+    @classmethod
+    def all(cls):
+        et = xml.etree.ElementTree.parse('stations.xml')
+        regions = []
+
+        for xmlRegion in et.findall('region'):
+            region = Region()
+            region.id = xmlRegion.find('id').text
+            region.name = xmlRegion.find('name').text
+            regions.append(region)
+
+            for xmlStation in xmlRegion.find('stations').findall('station'):
+                station = Station()
+                station.id = xmlStation.find('id').text
+                station.name = xmlStation.find('name').text
+                region.stations.append(station)
+
+        return regions
+
+    @classmethod
+    def by_id(cls, region_id):
+        regions = Region.all()
+        regions = filter(lambda x: x.id == region_id, regions)
+
+        if len(regions) == 0:
+            return None
+
+        return regions[0]
+
+
+class Station(object):
+    
+    @classmethod
+    def all_ids(cls):
+        ids = []
+        for region in Region.all():
+            for station in region.stations:
+                ids.append(station.id)
+        
+        return ids

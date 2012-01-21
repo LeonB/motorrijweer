@@ -32,7 +32,5 @@
 		</div>
 	</div>
 
-	<img id="background-image" src="/static/images/fast_road.jpg" alt="Background image" />
-
 </body>
 </html>

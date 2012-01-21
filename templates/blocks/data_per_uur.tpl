@@ -25,7 +25,7 @@
 
 				<tr class="weertype">
 						<th scope="row">Weertype</th>
-						{% for forecast in today.forecasts %}
+						{% for forecast in weer.forecasts %}
 						<td>
 								{% if forecast.weertype is none %}
 								<span class="waarde">N/B</span>
@@ -38,7 +38,7 @@
 
 				<tr class="omschrijving">
 						<th scope="row">Omschrijving</th>
-						{% for forecast in today.forecasts %}
+						{% for forecast in weer.forecasts %}
 						<td>
 								{% if forecast.omschrijving is none %}
 								<span class="waarde">N/B</span>
@@ -51,7 +51,7 @@
 
 				<tr class="temperatuur">
 						<th scope="row">Temperatuur</th>
-						{% for forecast in today.forecasts %}
+						{% for forecast in weer.forecasts %}
 						<td>
 								{% if forecast.temperatuur is none %}
 								<span class="waarde">N/B</span>
@@ -65,7 +65,7 @@
 
 				<tr class="neerslag">
 						<th scope="row">Neerslag</th>
-						{% for forecast in today.forecasts %}
+						{% for forecast in weer.forecasts %}
 						<td>
 								{% if forecast.neerslag_in_mm is none %}
 								<span class="waarde">N/B</span>
@@ -79,7 +79,7 @@
 
 				<tr class="bewolking">
 						<th scope="row">Bewolking</th>
-						{% for forecast in today.forecasts %}
+						{% for forecast in weer.forecasts %}
 						<td>
 								{% if forecast.bewolking is none %}
 								<span class="waarde">N/B</span>
@@ -93,7 +93,7 @@
 
 				<tr class="windkracht">
 						<th scope="row">Windkracht</th>
-						{% for forecast in today.forecasts %}
+						{% for forecast in weer.forecasts %}
 						<td>
 								{% if forecast.windkracht is none %}
 								<span class="waarde">N/B</span>
@@ -107,7 +107,7 @@
 
 				<tr>
 						<th scope="row">Cijfer</th>
-						{% for forecast in today.forecasts %}
+						{% for forecast in weer.forecasts %}
 						<td>
 								{% if forecast.cijfer is none %}
 								<span class="waarde">N/B</span>
