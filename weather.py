@@ -20,10 +20,9 @@ class Underground(object):
         else:
             raise Exception("I don't know how many days!")
 
-        url = 'http://api.wunderground.com/api/172be46581dbc68e/%(feature)s/lang:NL/q/pws:%(locatie)s.json?c=NL'
+        url = 'http://api.wunderground.com/api/%(api_key)s/%(feature)s/lang:NL/q/pws:%(locatie)s.json?c=NL'
         try:
-            sf = urllib2.urlopen(url % {'feature': feature, 'locatie': locatie})
-            #sf = open('hourly_vlissingen.json')
+            sf = urllib2.urlopen(url % {'api_key': app.config['API_KEY'], 'feature': feature, 'locatie': locatie})
             json = sf.read()
         finally:
             if sf: sf.close()
