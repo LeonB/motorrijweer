@@ -10,11 +10,13 @@ app.debug = True
 app.cache = Cache(app)
 app.babel = Babel(app)
 
+import decorators
 import mytime
 import weather
 import models
 import controllers
-import filters
+import jinja_filters
+import jinja_tests
 
 @app.before_request
 def before_request():
@@ -50,21 +52,13 @@ def locatie(locatie, datum_str = 'vandaag'):
         return flask.abort(404)
 
     # Change input to real date object
-    if datum_str == 'vandaag':
-        datum = mytime.date.today()
-    elif datum_str == 'morgen':
-        datum = mytime.date.tomorrow()
-    elif datum_str == 'overmorgen':
-        datum = mytime.date.day_after_tomorrow()
-    elif datum_str == 'gisteren':
-        datum = mytime.date.yesterday()
-    elif datum_str == 'eergisteren':
-        datum = mytime.date.day_before_yesterday()
-    else:
-        datum = mytime.datetime.strptime(datum_str, '%d%m%Y').date()
+    datum, link_back, link_forward = _datums(datum_str)
+    #link_back = flask.url_for('locatie', locatie=locatie, datum_str=link_back)
+    #link_forward = flask.url_for('locatie', locatie=locatie, datum_str=link_forward)
 
+    links = { 'link_back': link_back, 'link_forward': link_forward }
     weer = weather.Weather().from_gae(locatie=locatie.upper(), datum=datum)
-    return flask.render_template('locatie.tpl', weer=weer, datum_str=datum_str)
+    return flask.render_template('locatie.tpl', weer=weer, datum_str=datum_str, links=links)
 
 @app.route('/regio/<regio>')
 def regio_redirect(regio):
@@ -81,21 +75,45 @@ def regio(regio, datum_str = 'vandaag'):
         return flask.abort(404)
 
     # Change input to real date object
+    datum, link_back, link_forward = _datums(datum_str)
+    link_back = flask.url_for('regio', regio=regio.id, datum_str=link_back)
+    link_forward = flask.url_for('regio', regio=regio.id, datum_str=link_forward)
+
+    links = { 'link_back': link_back, 'link_forward': link_forward }
+    weer = weather.Weather().from_gae(regio=regio, datum=datum)
+    return flask.render_template('regio.tpl', weer=weer, regio=regio, datum_str=datum_str, links=links)
+
+def _datums(datum_str):
+    link_back = None
+    link_forward = None
+
+    # Change input to real date object
     if datum_str == 'vandaag':
         datum = mytime.date.today()
+        link_back = 'gisteren'
+        link_forward = 'morgen'
     elif datum_str == 'morgen':
         datum = mytime.date.tomorrow()
+        link_back = 'vandaag'
+        link_forward = 'overmorgen'
     elif datum_str == 'overmorgen':
         datum = mytime.date.day_after_tomorrow()
+        link_back = 'morgen'
+        link_forward = datum + mytime.timedelta(days=1)
     elif datum_str == 'gisteren':
         datum = mytime.date.yesterday()
+        link_back = 'eergisteren'
+        link_forward = 'vandaag'
     elif datum_str == 'eergisteren':
         datum = mytime.date.day_before_yesterday()
+        link_back = datum - mytime.timedelta(days=1)
+        link_forward = 'gisteren'
     else:
         datum = mytime.datetime.strptime(datum_str, '%d%m%Y').date()
+        link_back = datum - mytime.timedelta(days=1)
+        link_forward = datum + mytime.timedelta(days=1)
 
-    weer = weather.Weather().from_gae(regio=regio, datum=datum)
-    return flask.render_template('regio.tpl', weer=weer, regio=regio, datum_str=datum_str)
+    return (datum, link_back, link_forward)
 
 @app.route('/tasks/wunderground/forecasts/hourly')
 def tasks_wunderground_forecasts_hourly():

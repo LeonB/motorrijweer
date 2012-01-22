@@ -109,6 +109,16 @@ class ForecastCollection(object):
 
         return gegevens_avond
 
+    @property
+    def last_update(self):
+        last_update = None
+
+        for forecast in self.forecasts:
+            if not last_update or forecast.tijdstip_datapunt > last_update:
+                last_update = forecast.tijdstip_datapunt
+        
+        return last_update
+
     ####### WEERGEGEVENS #######
 
     @property
@@ -337,10 +347,11 @@ class Weather(object):
             locaties = map(lambda x: x.id, regio.stations)
 
         collection = ForecastCollection()
-        dbForecasts = models.Forecast.gql("WHERE locatie IN :locaties AND datapunt_van > :min_dag \
+        dbForecasts = models.Forecast.gql("WHERE locatie IN :locaties AND datapunt_van >= :datum \
                                           AND datapunt_van < :plus_dag \
                                           ORDER BY datapunt_van ASC", 
                                           locaties=locaties,
+                                          datum=datum,
                                           plus_dag=datum + mytime.timedelta(days=1),
                                           min_dag=datum - mytime.timedelta(days=1))
 
@@ -412,7 +423,10 @@ class Forecast(object):
         self.gevoelstemperatuur = float(gegevens['feelslike']['metric'])
         self.neerslagkans = float(gegevens['pop'])/100
         self.neerslag_in_mm = float(gegevens['qpf']['metric'])
-        self.bewolking = float(gegevens['sky'])/100
+        try:
+            self.bewolking = float(gegevens['sky'])/100
+        except ValueError:
+            self.bewolking = 0.0
         self.zonkans = 1 - self.bewolking
         self.windkracht = float(gegevens['wspd']['metric'])
         self.windrichting = gegevens['wdir']['dir']
