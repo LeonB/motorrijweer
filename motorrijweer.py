@@ -10,17 +10,18 @@ app.debug = True
 app.cache = Cache(app)
 app.babel = Babel(app)
 
-import decorators
 import mytime
 import weather
 import models
 import controllers
+import decorators
 import jinja_filters
 import jinja_tests
 
 @app.before_request
 def before_request():
     app.timezone = flaskext.babel.get_timezone()
+    app.jinja_env.globals['now'] = mytime.datetime.now()
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -52,13 +53,11 @@ def locatie(locatie, datum_str = 'vandaag'):
         return flask.abort(404)
 
     # Change input to real date object
-    datum, link_back, link_forward = _datums(datum_str)
-    #link_back = flask.url_for('locatie', locatie=locatie, datum_str=link_back)
-    #link_forward = flask.url_for('locatie', locatie=locatie, datum_str=link_forward)
+    datum = _datums(datum_str)
+    links = {'link_back': _link_back(datum), 'link_forward': _link_forward(datum)}
 
-    links = { 'link_back': link_back, 'link_forward': link_forward }
     weer = weather.Weather().from_gae(locatie=locatie.upper(), datum=datum)
-    return flask.render_template('locatie.tpl', weer=weer, datum_str=datum_str, links=links)
+    return flask.render_template('locatie.tpl', weer=weer, datum=datum, links=links)
 
 @app.route('/regio/<regio>')
 def regio_redirect(regio):
@@ -75,45 +74,37 @@ def regio(regio, datum_str = 'vandaag'):
         return flask.abort(404)
 
     # Change input to real date object
-    datum, link_back, link_forward = _datums(datum_str)
-    link_back = flask.url_for('regio', regio=regio.id, datum_str=link_back)
-    link_forward = flask.url_for('regio', regio=regio.id, datum_str=link_forward)
+    datum = _datums(datum_str)
 
-    links = { 'link_back': link_back, 'link_forward': link_forward }
     weer = weather.Weather().from_gae(regio=regio, datum=datum)
-    return flask.render_template('regio.tpl', weer=weer, regio=regio, datum_str=datum_str, links=links)
+    return flask.render_template('regio.tpl', weer=weer, regio=regio, datum=datum, links=links)
 
 def _datums(datum_str):
-    link_back = None
-    link_forward = None
-
     # Change input to real date object
     if datum_str == 'vandaag':
         datum = mytime.date.today()
-        link_back = 'gisteren'
-        link_forward = 'morgen'
     elif datum_str == 'morgen':
         datum = mytime.date.tomorrow()
-        link_back = 'vandaag'
-        link_forward = 'overmorgen'
     elif datum_str == 'overmorgen':
         datum = mytime.date.day_after_tomorrow()
-        link_back = 'morgen'
-        link_forward = datum + mytime.timedelta(days=1)
     elif datum_str == 'gisteren':
         datum = mytime.date.yesterday()
-        link_back = 'eergisteren'
-        link_forward = 'vandaag'
     elif datum_str == 'eergisteren':
         datum = mytime.date.day_before_yesterday()
-        link_back = datum - mytime.timedelta(days=1)
-        link_forward = 'gisteren'
     else:
         datum = mytime.datetime.strptime(datum_str, '%d%m%Y').date()
-        link_back = datum - mytime.timedelta(days=1)
-        link_forward = datum + mytime.timedelta(days=1)
 
-    return (datum, link_back, link_forward)
+    return datum
+
+def _link_back(datum):
+    datum = datum - mytime.timedelta(days=1)
+    datum_str = jinja_filters.datestr(datum)
+    return (datum_str if datum_str else datum)
+
+def _link_forward(datum):
+    datum = datum + mytime.timedelta(days=1)
+    datum_str = jinja_filters.datestr(datum)
+    return (datum_str if datum_str else datum)
 
 @app.route('/tasks/wunderground/forecasts/hourly')
 def tasks_wunderground_forecasts_hourly():

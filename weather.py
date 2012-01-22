@@ -244,7 +244,8 @@ class ForecastCollection(object):
 
         neerslag_in_mm = 0.0
         for forecast in self.forecasts:
-            neerslag_in_mm += (forecast.neerslag_in_mm*forecast.neerslagkans)
+            #neerslag_in_mm += (forecast.neerslag_in_mm*forecast.neerslagkans)
+            neerslag_in_mm += forecast.neerslag_in_mm
         return neerslag_in_mm
 
     @property
