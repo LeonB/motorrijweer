@@ -45,7 +45,7 @@ def locatie_redirect(locatie):
     else:
         return flask.redirect('/locatie/%(locatie)s/morgen' % {'locatie': locatie}, 302)
 
-#@app.cache.memoize(timeout=60*5)
+@app.cache.memoize(timeout=60*5)
 @app.route('/locatie/<locatie>/<datum_str>')
 def locatie(locatie, datum_str = 'vandaag'):
     # Does the location exist?
@@ -59,6 +59,7 @@ def locatie(locatie, datum_str = 'vandaag'):
     weer = weather.Weather().from_gae(locatie=locatie.upper(), datum=datum)
     return flask.render_template('locatie.tpl', weer=weer, datum=datum, links=links)
 
+@app.cache.memoize(timeout=60*5)
 @app.route('/regio/<regio>')
 def regio_redirect(regio):
     if (mytime.datetime.today().hour < 20):
@@ -154,7 +155,7 @@ def test_cijfers():
                     gegevens[temp][neerslag_in_mm] = {}
                 if not gegevens[temp][neerslag_in_mm].has_key(windkracht):
                     gegevens[temp][neerslag_in_mm][windkracht] = []
-                
+
                 obj = weather.Forecast()
                 obj.temperatuur = temp
                 obj.neerslagkans = 1.0

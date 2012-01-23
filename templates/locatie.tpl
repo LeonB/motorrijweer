@@ -12,7 +12,7 @@
 			<div class="component component-big">
 				<div class="module">
 					<div class="module-header">
-						<h3>Weergegevens voor {{ weer.now|dateformat('EEEE d MMMM yyyy') }}</h3>
+						<h3>Weergegevens voor {{ datum|dateformat('EEEE d MMMM yyyy') }}</h3>
 						<p>Laatst geupdate: {{ weer.last_update|datetimeformat('d MMMM yyyy') }} om {{ weer.last_update|datetimeformat('HH:mm') }}</p>
 					</div>
 
