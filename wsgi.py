@@ -13,7 +13,6 @@ sys.path.insert(0, package_dir_path)
 for filename in os.listdir(package_dir_path):
     if filename.endswith((".zip", ".egg")):
         sys.path.insert(0, "%s/%s" % (package_dir_path, filename))
-        sys.path.insert(0, "%s/%s" % (package_dir_path, filename))
 
 from motorrijweer import app
 app = recording.appstats_wsgi_middleware(app)
