@@ -41,19 +41,19 @@ class datetime(object):
 class date(object):
     @classmethod
     def today(cls):
-        return orig_datetime.datetime.now(app.timezone).date()
+        return datetime.now(app.timezone).date()
 
     @classmethod
     def tomorrow(cls):
-        return orig_datetime.date.today() + orig_datetime.timedelta(days=1)
+        return cls.today() + orig_datetime.timedelta(days=1)
 
     @classmethod
     def day_after_tomorrow(cls):
-        return orig_datetime.date.today() + orig_datetime.timedelta(days=2)
+        return cls.today() + orig_datetime.timedelta(days=2)
 
     @classmethod
     def yesterday(cls):
-        return orig_datetime.date.today() + orig_datetime.timedelta(days=-1)
+        return cls.today() + orig_datetime.timedelta(days=-1)
 
     @classmethod
     def day_before_yesterday(cls):
