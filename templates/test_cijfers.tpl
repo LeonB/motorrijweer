@@ -12,9 +12,9 @@
 							<h2>{{temp_i}} graden &#8451;</h2>
 							<table>
 							{% for neerslagkans_i, neerslagkans in temp|dictsort %}
-									
+
 								{% if loop.index == 1 %}
-									<th>windkracht&rarr;<br />neerslag&darr;</th>
+									<th>windkracht&rarr;<br />neerslag per uur&darr;</th>
 									{% for windkracht_i, windkracht in neerslagkans|dictsort %}
 										<th>{{ loop.index0 }} <sub>({{windkracht_i }})</sub></th>
 									{% endfor %}
