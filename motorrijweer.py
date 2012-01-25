@@ -1,3 +1,6 @@
+# TODOS
+# - remove pytz (600 files!! and I only need one)
+
 import flask
 import flaskext
 from flaskext.cache import Cache
@@ -27,17 +30,6 @@ def before_request():
 def page_not_found(e):
     return flask.render_template('404.tpl'), 404
 
-#@app.route('/regio/<regio>')
-##@app.cache.memoize()
-#def regio(regio):
-    #regio = weather.Region.by_id(regio.lower())
-    #if not regio:
-        #return flask.abort(404)
-
-    #weer = weather.Weather().from_gae(regio.id)
-    #today = mytime.datetime.today().date()
-    #return flask.render_template('index.tpl', weer=weer)
-
 @app.route('/locatie/<locatie>')
 def locatie_redirect(locatie):
     if (mytime.datetime.today().hour < 20):
@@ -59,7 +51,6 @@ def locatie(locatie, datum_str = 'vandaag'):
     weer = weather.Weather().from_gae(locatie=locatie.upper(), datum=datum)
     return flask.render_template('locatie.tpl', weer=weer, datum=datum, links=links)
 
-@app.cache.memoize(timeout=60*5)
 @app.route('/regio/<regio>')
 def regio_redirect(regio):
     if (mytime.datetime.today().hour < 20):
@@ -67,6 +58,7 @@ def regio_redirect(regio):
     else:
         return flask.redirect('/regio/%(regio)s/morgen' % {'regio': regio}, 302)
 
+@app.cache.memoize(timeout=60*5)
 @app.route('/regio/<regio>/<datum_str>')
 def regio(regio, datum_str = 'vandaag'):
     # Does the regio exist?
@@ -146,6 +138,7 @@ def test_cijfers():
     gegevens = {}
     for temp in range(0, 36, 3):
         for neerslag_in_mm in range(0, 11, 1):
+            neerslag_in_mm = neerslag_in_mm/4.0
             for windkracht in (0, 3, 8.5, 15.5, 24, 33.5, 44, 55.5, 68, 81.5,
                                95.5, 110, 120):
                 #windkracht = weather.Beaufort.from_kmh(windkracht)
