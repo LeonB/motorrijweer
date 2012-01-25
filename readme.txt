@@ -2,6 +2,7 @@ http://www.google.com/jsapi
 http://agiliq.com/blog/2010/11/i-am-so-starving-same-web-app-in-various-python-we/
 http://d3pr5r64n04s3o.cloudfront.net/tuts/195_bootstrap/demo/main.html
 http://www.filamentgroup.com/lab/update_to_jquery_visualize_accessible_charts_with_html5_from_designing_with/
+HAAANDIG: http://www.meteo.be/meteo/view/nl/360361-Parameters.html
 
 == VOORBEELD APPS ==
 https://github.com/blossom/flask-gae-skeleton
