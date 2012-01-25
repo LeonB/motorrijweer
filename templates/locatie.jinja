@@ -1,4 +1,4 @@
-{% extends "layout.tpl" %}
+{% extends "layout.jinja" %}
 {% block title %}Index{% endblock %}
 {% block body %}
 
@@ -7,7 +7,7 @@
 	<div class="row">
 		<div class="span16">
 
-			{% include 'blocks/message_motorrijweer.tpl' %}
+			{% include 'blocks/message_motorrijweer.jinja' %}
 
 			<div class="component component-big">
 				<div class="module">
@@ -17,23 +17,23 @@
 					</div>
 
 					<div class="module-body">
-						{% include 'blocks/summary.tpl' %}
+						{% include 'blocks/summary.jinja' %}
 					</div>
 
 					<div class="module-footer">
-						{% include 'blocks/pijltjes.tpl' %}
+						{% include 'blocks/pijltjes.jinja' %}
 					</div>
 				</div>
 			</div>
 
-			{% include 'blocks/weerkaart.tpl' %}
+			{% include 'blocks/weerkaart.jinja' %}
 
 			<div class="component component-big">
 				<div class="module">
 					<div class="module-body data-per-dagdeel">
 						<div class="row">
 							<div class="span16">
-								{% include 'blocks/data_per_dagdeel.tpl' %}
+								{% include 'blocks/data_per_dagdeel.jinja' %}
 							</div>
 						</div>
 					</div>
@@ -50,7 +50,7 @@
 
 								<div id="chart"></div>
 
-								{% include 'blocks/data_per_uur.tpl' %}
+								{% include 'blocks/data_per_uur.jinja' %}
 
 							</div>
 						</div>
@@ -66,7 +66,7 @@
 						{% else %}
 							<span>Het is droog tot: {{ weer.droog_tot }}
 						{% endif %}
-					</div>	
+					</div>
 				</div>
 			</div>
 		</div>
@@ -82,8 +82,8 @@
 					<div class="module-body">
 						<p>IETS VEEL SIMPELERS?!?</p>
 						<p>Iets met een kaartje!?</p>
-					</div>	
-					<div class="module-footer"></div>	
+					</div>
+					<div class="module-footer"></div>
 				</div>
 			</div>
 		</div>
@@ -97,13 +97,13 @@
 					</div>
 					<div class="module-body">
 						<p>IETS VEEL SIMPELERS!?!?</p>
-					</div>	
-					<div class="module-footer"></div>	
+					</div>
+					<div class="module-footer"></div>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	{% include 'blocks/footer.tpl' %}
+	{% include 'blocks/footer.jinja' %}
 
 {% endblock %}

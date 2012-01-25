@@ -28,7 +28,7 @@ def before_request():
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return flask.render_template('404.tpl'), 404
+    return flask.render_template('404.jinja'), 404
 
 @app.route('/locatie/<locatie>')
 def locatie_redirect(locatie):
@@ -49,7 +49,7 @@ def locatie(locatie, datum_str = 'vandaag'):
     links = {'link_back': _link_back(datum), 'link_forward': _link_forward(datum)}
 
     weer = weather.Weather().from_gae(locatie=locatie.upper(), datum=datum)
-    return flask.render_template('locatie.tpl', weer=weer, datum=datum, links=links)
+    return flask.render_template('locatie.jinja', weer=weer, datum=datum, links=links)
 
 @app.route('/regio/<regio>')
 def regio_redirect(regio):
@@ -70,7 +70,9 @@ def regio(regio, datum_str = 'vandaag'):
     datum = _datums(datum_str)
 
     weer = weather.Weather().from_gae(regio=regio, datum=datum)
-    return flask.render_template('regio.tpl', weer=weer, regio=regio, datum=datum, links=links)
+    return flask.render_template('regio.jinja', weer=weer, regio=regio, datum=datum, links=links)
+
+
 
 def _datums(datum_str):
     # Change input to real date object
@@ -118,7 +120,7 @@ def tasks_regeneratecijfers():
 
 @app.route('/tasks/removeprobability')
 def tasks_removeprobability():
-    dbForecasts = models.Forecast.gql("WHERE probability_order > 1") 
+    dbForecasts = models.Forecast.gql("WHERE probability_order > 1")
     for dbForecast in dbForecasts:
         dbForecast.delete()
 
@@ -126,7 +128,7 @@ def tasks_removeprobability():
 
 @app.route('/tasks/set_zeeland_to_station')
 def set_zeeland_to_station():
-    dbForecasts = models.Forecast.gql("WHERE locatie = 'zeeland'") 
+    dbForecasts = models.Forecast.gql("WHERE locatie = 'zeeland'")
     for dbForecast in dbForecasts:
         dbForecast.locatie = 'IZEELAND16'
         dbForecast.put()
@@ -157,7 +159,7 @@ def test_cijfers():
                 obj.cijfer = obj.generate_cijfer()
                 gegevens[temp][neerslag_in_mm][windkracht].append(obj)
 
-    return flask.render_template('test_cijfers.tpl', gegevens=gegevens)
+    return flask.render_template('test_cijfers.jinja', gegevens=gegevens)
 
 @app.route('/stations')
 def stations():
