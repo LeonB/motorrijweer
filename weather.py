@@ -116,7 +116,7 @@ class ForecastCollection(object):
         for forecast in self.forecasts:
             if not last_update or forecast.tijdstip_datapunt > last_update:
                 last_update = forecast.tijdstip_datapunt
-        
+
         return last_update
 
     ####### WEERGEGEVENS #######
@@ -298,7 +298,7 @@ class ForecastCollection(object):
 
         if len(windrichtingen) == 0:
             return None
-        
+
         windrichtingen = sorted(windrichtingen)
         windrichtingen.reverse()
         return windrichtingen[0]
@@ -409,6 +409,7 @@ class Forecast(object):
         forecast.windkracht = gae_obj.windkracht
         forecast.windrichting = gae_obj.windrichting
         forecast.cijfer = gae_obj.cijfer
+        #forecast.cijfer = forecast.generate_cijfer() #niet uit de db halen
 
         return forecast
 
@@ -423,7 +424,10 @@ class Forecast(object):
         # maximumtemperatuur (idem)
         self.gevoelstemperatuur = float(gegevens['feelslike']['metric'])
         self.neerslagkans = float(gegevens['pop'])/100
-        self.neerslag_in_mm = float(gegevens['qpf']['metric'])
+        try:
+            self.neerslag_in_mm = float(gegevens['qpf']['metric'])
+        except ValueError:
+            self.neerslag_in_mm = 0.0
         try:
             self.bewolking = float(gegevens['sky'])/100
         except ValueError:
@@ -440,7 +444,7 @@ class Forecast(object):
         u = (x-mu)/abs(sigma)
         y = (1/(math.sqrt(2*math.pi)*abs(sigma)))*math.exp(-u*u/2)
         return y
-    
+
     #@property
     #def cijfer(self):
         #return self.generate_cijfer()
@@ -482,14 +486,14 @@ class Forecast(object):
 
     def cijfer_neerslag_in_mm(self, i):
         best = 0
-        afwijking = 3
+        afwijking = 0.5 #neerslag in 1 uur
         baseline = self.normpdf(best, best, afwijking)
         max_punten = 4
         mod = max_punten/baseline
         return self.normpdf(i, best, afwijking)*mod
 
     #def cijfer_windkracht(self, i):
-        #"""boven de 20 graden gaat wind positief meetellen. Daaronder negatief. 
+        #"""boven de 20 graden gaat wind positief meetellen. Daaronder negatief.
         #>= windkracht 7 zijn minpunten (altijd). """
         #i = int(i)
         #if i < 7:
