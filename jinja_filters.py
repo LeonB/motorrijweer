@@ -7,8 +7,8 @@ def kmh_to_beaufort(s):
     return Beaufort.from_kmh(s)
 
 @app.template_filter()
-def datestr(s):
-    delta = s - mytime.date.today()
+def datestr(date):
+    delta = date - mytime.date.today()
     if delta.days == 0:
         return 'vandaag'
     elif delta.days == 1:
