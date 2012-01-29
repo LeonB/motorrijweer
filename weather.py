@@ -474,7 +474,16 @@ class Forecast(object):
         baseline = self.normpdf(best, best, afwijking)
         max_punten = 3
         mod = max_punten/baseline
-        return self.normpdf(i, best, afwijking)*mod
+        i1 = self.normpdf(i, best, afwijking)*mod
+
+        worst = -10
+        afwijking = 5
+        baseline = self.normpdf(worst, worst, afwijking)
+        max_punten = -3
+        mod = max_punten/baseline
+        i2 = self.normpdf(i, worst, afwijking)*mod
+
+        return i1+i2
 
     def cijfer_neerslagkans(self, i):
         best = 0
