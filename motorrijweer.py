@@ -118,27 +118,20 @@ def tasks_regeneratecijfers():
 
     return 'OK'
 
-@app.route('/tasks/removeprobability')
-def tasks_removeprobability():
-    dbForecasts = models.Forecast.gql("WHERE probability_order > 1")
-    for dbForecast in dbForecasts:
-        dbForecast.delete()
-
-    return 'OK'
-
-@app.route('/tasks/set_zeeland_to_station')
-def set_zeeland_to_station():
-    dbForecasts = models.Forecast.gql("WHERE locatie = 'zeeland'")
-    for dbForecast in dbForecasts:
-        dbForecast.locatie = 'IZEELAND16'
-        dbForecast.put()
-
-    return 'OK'
-
 @app.route('/test_cijfers')
 def test_cijfers():
+    obj = weather.Forecast()
+    obj.temperatuur = 0
+    obj.neerslagkans = 1.0
+    obj.windkracht = 1 #in km/h
+    obj.neerslag_in_mm = 0.0
+    #return str(obj.cijfer_windkracht(weather.Beaufort.from_kmh(obj.windkracht)))
+    obj.cijfer = obj.generate_cijfer()
+
+    #return str(obj.cijfer)
+
     gegevens = {}
-    for temp in range(0, 36, 3):
+    for temp in range(-6, 36, 3):
         for neerslag_in_mm in range(0, 11, 1):
             neerslag_in_mm = neerslag_in_mm/4.0
             for windkracht in (0, 3, 8.5, 15.5, 24, 33.5, 44, 55.5, 68, 81.5,
