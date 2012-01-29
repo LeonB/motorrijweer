@@ -158,7 +158,7 @@ class ForecastCollection(object):
                 weertypes[forecast.weertype] = 1
             else:
                 weertypes[forecast.weertype] =+ 1
-        
+
         #Counter.most_common zou ook werken?
         return sorted(weertypes, key=weertypes.get, reverse=True)[0]
 
@@ -173,7 +173,7 @@ class ForecastCollection(object):
                 omschrijvingen[forecast.omschrijving] = 1
             else:
                 omschrijvingen[forecast.omschrijving] =+ 1
-        
+
         return sorted(omschrijvingen, key=omschrijvingen.get, reverse=True)[0]
 
     @property
@@ -268,7 +268,7 @@ class ForecastCollection(object):
         zonkans = 0.0
         for forecast in self.forecasts:
             zonkans += forecast.zonkans
-            
+
         zonkans = zonkans/len(self.forecasts)
         return zonkans
 
@@ -335,10 +335,24 @@ class Weather(object):
             #hour = hourly_forecast['FCTTIME']['hour'] + ':' + hourly_forecast['FCTTIME']['min']
             dt = mytime.datetime.fromtimestamp(int(hourly_forecast['FCTTIME']['epoch']))
             forecast = Forecast()
-            forecast.bind(hourly_forecast) 
+            forecast.bind(hourly_forecast)
             collection.forecasts.append(forecast)
 
         return collection
+
+    @classmethod
+    def has_datapunten(cls, locatie = None, regio = None, datum = None):
+        if locatie:
+            locaties = [locatie]
+        elif regio:
+            locaties = map(lambda x: x.id, regio.stations)
+
+        query = models.Forecast.all()
+        query.filter('locatie IN', locaties)
+        query.filter('datapunt_van >=', datum)
+        query.filter('datapunt_van <', datum + mytime.timedelta(days=1))
+        #query.order('datapunt_van')
+        return query.count(limit=17)
 
     @classmethod
     def from_gae(cls, locatie = None, regio = None, datum = None):
@@ -350,7 +364,7 @@ class Weather(object):
         collection = ForecastCollection()
         dbForecasts = models.Forecast.gql("WHERE locatie IN :locaties AND datapunt_van >= :datum \
                                           AND datapunt_van < :plus_dag \
-                                          ORDER BY datapunt_van ASC", 
+                                          ORDER BY datapunt_van ASC",
                                           locaties=locaties,
                                           datum=datum,
                                           plus_dag=datum + mytime.timedelta(days=1),
@@ -529,7 +543,7 @@ class Forecast(object):
             #return self.normpdf(i, worst, afwijking)*mod
 
     def cijfer_windkracht(self, i):
-        """boven de 20 graden gaat wind positief meetellen. Daaronder negatief. 
+        """boven de 20 graden gaat wind positief meetellen. Daaronder negatief.
         >= windkracht 7 zijn minpunten (altijd). """
         if self.temperatuur < 23:
             best = 0
@@ -649,12 +663,12 @@ class Region(object):
 
 
 class Station(object):
-    
+
     @classmethod
     def all_ids(cls):
         ids = []
         for region in Region.all():
             for station in region.stations:
                 ids.append(station.id)
-        
+
         return ids

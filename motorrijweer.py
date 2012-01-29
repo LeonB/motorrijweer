@@ -46,10 +46,10 @@ def locatie(locatie, datum_str = 'vandaag'):
 
     # Change input to real date object
     datum = _datums(datum_str)
-    links = {'link_back': _link_back(datum), 'link_forward': _link_forward(datum)}
 
     weer = weather.Weather().from_gae(locatie=locatie.upper(), datum=datum)
-    return flask.render_template('locatie.jinja', weer=weer, datum=datum, links=links)
+    return flask.render_template('locatie.jinja', weer=weer, datum=datum,
+                                 locatie=locatie.upper())
 
 @app.route('/regio/<regio>')
 def regio_redirect(regio):
@@ -70,7 +70,7 @@ def regio(regio, datum_str = 'vandaag'):
     datum = _datums(datum_str)
 
     weer = weather.Weather().from_gae(regio=regio, datum=datum)
-    return flask.render_template('regio.jinja', weer=weer, regio=regio, datum=datum, links=links)
+    return flask.render_template('regio.jinja', weer=weer, regio=regio, datum=datum)
 
 
 

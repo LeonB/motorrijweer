@@ -1,8 +1,9 @@
 jQuery(document).ready(function() {
-	
+
 	jQuery('.cijfer .waarde').twipsy({
 		placement: 'below',
-		delayIn: 1000
+		delayIn: 1000,
+	  html: true
 	});
 
 	jQuery('.weertype img').twipsy({
@@ -19,7 +20,7 @@ jQuery(document).ready(function() {
 		placement: 'below',
 		delayIn: 1000
 	});
-	
+
 	jQuery('.wind').twipsy({
 		placement: 'below',
 		delayIn: 1000
@@ -51,6 +52,16 @@ jQuery(document).ready(function() {
 		jQuery(".alert-message").alert();
 });
 
+jQuery(document).ready(function() {
+		//
+		// Disable certain links in docs
+		// =============================
+		// Please do not carry these styles over to your projects, it's merely here to prevent button clicks form taking you away from your spot on page
+
+		jQuery('a.disabled').click(function (e) {
+				e.preventDefault()
+		});
+});
 
 jQuery(document).ready(function() {
 	//jQuery('.grafiek table').visualize({
@@ -162,8 +173,8 @@ var test = jQuery('.grafiek table thead th').map(function(i, el){
          //data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
       //}]
    //});
-   
-   
+
+
 //});
 
 var chart;

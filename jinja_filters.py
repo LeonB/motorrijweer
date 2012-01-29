@@ -7,6 +7,10 @@ def kmh_to_beaufort(s):
     return Beaufort.from_kmh(s)
 
 @app.template_filter()
+def timedelta(date, *args, **kwargs):
+    return date + mytime.timedelta(*args, **kwargs)
+
+@app.template_filter()
 def datestr(date):
     delta = date - mytime.date.today()
     if delta.days == 0:

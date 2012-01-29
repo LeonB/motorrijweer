@@ -1,4 +1,5 @@
 from motorrijweer import app
+import weather
 import mytime
 
 @app.template_test('instance')
@@ -12,3 +13,8 @@ def in_past(obj):
 @app.template_test()
 def in_future(obj):
     return obj > mytime.date.today()
+
+@app.template_test()
+def in_database(date, *args, **kwargs):
+    #raise Exception(weather.Weather.has_datapunten(datum=date, *args, **kwargs))
+    return weather.Weather.has_datapunten(datum=date, *args, **kwargs)
