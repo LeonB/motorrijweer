@@ -154,6 +154,11 @@ def test_cijfers():
 
     return flask.render_template('test_cijfers.jinja', gegevens=gegevens)
 
+@app.route('/tasks/update_datastore')
+def update_datastore():
+    for forecast in models.Forecast.gql('ORDER BY datapunt_van DESC'):
+        forecast.put()
+
 @app.route('/stations')
 def stations():
     return str(weather.Region.by_id('zeeland'))
