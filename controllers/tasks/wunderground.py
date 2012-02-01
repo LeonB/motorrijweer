@@ -56,6 +56,7 @@ class forecasts(object):
                 old_result.gevoelstemperatuur == forecast.gevoelstemperatuur and \
                 old_result.neerslagkans == forecast.neerslagkans and \
                 old_result.neerslag_in_mm == forecast.neerslag_in_mm and \
+                old_result.winterse_neerslag_in_mm == forecast.winterse_neerslag_in_mm and \
                 old_result.bewolking == forecast.bewolking and \
                 old_result.zonkans == forecast.zonkans and \
                 old_result.windkracht == forecast.windkracht and \
@@ -72,6 +73,7 @@ class forecasts(object):
                 old_result.gevoelstemperatuur = forecast.gevoelstemperatuur
                 old_result.neerslagkans = forecast.neerslagkans
                 old_result.neerslag_in_mm = forecast.neerslag_in_mm
+                old_result.winterse_neerslag_in_mm = forecast.winterse_neerslag_in_mm
                 old_result.bewolking = forecast.bewolking
                 old_result.zonkans = forecast.zonkans
                 old_result.windkracht = forecast.windkracht
@@ -90,6 +92,7 @@ class forecasts(object):
                     gevoelstemperatuur = forecast.gevoelstemperatuur,
                     neerslagkans = forecast.neerslagkans,
                     neerslag_in_mm = forecast.neerslag_in_mm,
+                    winterse_neerslag_in_mm = forecast.winterse_neerslag_in_mm,
                     bewolking = forecast.bewolking,
                     zonkans = forecast.zonkans,
                     windkracht = forecast.windkracht,

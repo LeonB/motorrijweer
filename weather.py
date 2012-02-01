@@ -398,6 +398,7 @@ class Forecast(object):
         gevoelstemperatuur = None
         neerslagkans = None
         neerslag_in_mm = None
+        winterse_neerslag_in_mm = None
         bewolking = None
         zonkans = None
         windkracht = None
@@ -418,6 +419,7 @@ class Forecast(object):
         forecast.gevoelstemperatuur = gae_obj.gevoelstemperatuur
         forecast.neerslagkans = gae_obj.neerslagkans
         forecast.neerslag_in_mm = gae_obj.neerslag_in_mm
+        forecast.winterse_neerslag_in_mm = gae_obj.winterse_neerslag_in_mm
         forecast.bewolking = gae_obj.bewolking
         forecast.zonkans = gae_obj.zonkans
         forecast.windkracht = gae_obj.windkracht
@@ -438,6 +440,10 @@ class Forecast(object):
         # maximumtemperatuur (idem)
         self.gevoelstemperatuur = float(gegevens['feelslike']['metric'])
         self.neerslagkans = float(gegevens['pop'])/100
+        try:
+            self.winterse_neerslag_in_mm = float(gegevens['snow']['metric'])
+        except ValueError:
+            self.winterse_neerslag_in_mm = 0.0
         try:
             self.neerslag_in_mm = float(gegevens['qpf']['metric'])
         except ValueError:
@@ -473,6 +479,7 @@ class Forecast(object):
         cijfer += self.cijfer_neerslagkans(self.neerslagkans)
         cijfer += self.cijfer_neerslag_in_mm(self.neerslag_in_mm)
         cijfer += self.cijfer_windkracht(Beaufort.from_kmh(self.windkracht))
+        cijfer += self.cijfer_winterse_neerslag_in_mm(self.winterse_neerslag_in_mm)
 
         if cijfer < 0:
             return 0.0
@@ -577,6 +584,12 @@ class Forecast(object):
             i2 = self.normpdf(i, worst, afwijking)*mod
 
             return i1+i2
+
+    def cijfer_winterse_neerslag_in_mm(self, i):
+        if i > 0:
+            return -2
+
+        return 0
 
 class Beaufort(object):
     omschrijvingen = {
