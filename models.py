@@ -13,7 +13,7 @@ class Forecast(db.Model):
     gevoelstemperatuur = db.FloatProperty(required=True, indexed=False)
     neerslagkans = db.FloatProperty(required=True, indexed=False)
     neerslag_in_mm = db.FloatProperty(required=True, indexed=False)
-    winterse_neerslag_in_mm = db.FloatProperty(required=True, indexed=False)
+    winterse_neerslag_in_mm = db.FloatProperty(default=0.0, required=False, indexed=False)
     bewolking = db.FloatProperty(required=True, indexed=False)
     zonkans = db.FloatProperty(required=True, indexed=False)
     windkracht = db.FloatProperty(required=True, indexed=False)
