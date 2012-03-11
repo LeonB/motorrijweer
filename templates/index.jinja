@@ -1,0 +1,52 @@
+{% extends "layout.jinja" %}
+{% block title %}Index{% endblock %}
+{% block body %}
+
+<div class="row">
+	<div class="span16">
+
+		<div class="component component-big">
+			<div class="module">
+				<div class="module-header">
+					<h1>Is het goed motorrijweer?</h1>
+				</div>
+				<div class="module-body">
+					<p>Bekijk hier per provincie, regio of locatie of het een beetje weer is om te motorrijden.</p>
+					<p>Op dit moment zijn de datapunten beperkt. Mocht je een extra station, regio of provincie willen toevoegen of heb je een ander goed idee:<br />
+					stuur mij dan een <a href="mailto:leon@motorrijweer.nl">mailtje</a>.</p>
+				</div>
+			</div>
+
+			<div class="module">
+				<div class="module-body">
+					{% for provincie in provincies %}
+					{% if provincie.regios|count > 0 %}
+					<h2><a href="{{ url_for('provincie_redirect', provincie=provincie.id) }}" title="Provincie {{provincie.name}}">{{provincie.name}}</a></h2>
+					<ul>
+						{% for regio in provincie.regios %}
+						{% if regio.stations|count > 0 %}
+
+						{% if regio.stations|count == 1 %}
+							{% set aantal_stations = '1 weerstation' %}
+						{% else %}
+							{% set aantal_stations = regio.stations|count|string + 'weerstations' %}
+						{% endif %}
+
+						<li>
+							<a href="{{ url_for('regio_redirect', regio=regio.id) }} " title="Provincie {{provincie.name}} regio {{regio.name}}">{{regio.name}}</a>
+							<em>({{aantal_stations}})</em>
+						</li>
+						{% endif %}
+						{% endfor %}
+					</ul>
+					{% endif %}
+					{% endfor %}
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+</div>
+
+{% endblock %}

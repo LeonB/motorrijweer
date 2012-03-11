@@ -3,7 +3,7 @@
 
 
 {# day_before #}
-{% if day_before is in_database(locatie=locatie) > 15 %}
+{% if day_before is in_database(provincie=provincie) > 15 %}
 		{% set class = 'active button' %}
 {% else %}
 		{% set class = 'disabled button' %}
@@ -20,7 +20,7 @@
 </div>
 
 {# day_after #}
-{% if day_after is in_database(locatie=locatie) > 15 %}
+{% if day_after is in_database(provincie=provincie) > 15 %}
 		{% set class = 'active' %}
 {% else %}
 		{% set class = 'disabled' %}

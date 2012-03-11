@@ -1,17 +1,19 @@
+<!-- @TODO: voeg een "slipgevaar" bord toe als er winterse neerslag is -->
 <div class="row row_1">
 	<div class="span2 cijfer">
 		<h6>Cijfer</h6>
-		<span class="waarde" title="Een 5! Dat is niet zooo goed!">
+		<span class="waarde"
+			title="Cijferopbouw<br />Neerslag: 1.21<br/>Temperatuur: 12">
 			{% if weer.cijfer is not none %}
 			{{ weer.cijfer|round(1) }}
 			{% endif %}
 		</span>
 	</div>
-	<div class="span3 weertype">
+	<div class="span1 weertype">
 		<!--<img src="/static/images/icons/Flat_Black/30.png" alt="Weersoort" title="Wat voor soort icoontje is dit: blalblalba uitleg" />-->
 		<img src="http://icons.wxug.com/i/c/i/{{ weer.weertype }}.gif" alt="Weersoort" title="{{ weer.omschrijving }}" />
 	</div>
-	<div class="span3 temperatuur">
+	<div class="span2 temperatuur">
 		<div class="minimumtemperatuur" title="Hier komt een uitleg over de minimumtemperatuur">
 			<h6>Minimumtemperatuur</h6>
 			{% if weer.minimumtemperatuur is none %}
@@ -71,7 +73,7 @@
 			{% endif %}
 		</div>
 	</div>
-	<div class="span3 wind" title="Wat voor soort icoontje is dit: blalblalba uitleg" />
+	<div class="span2 wind" title="Wat voor soort icoontje is dit: blalblalba uitleg" />
 		<h6>Windkracht</h6>
 		<div class="windkracht">
 			{% if weer.windkracht is none %}

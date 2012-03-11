@@ -17,22 +17,22 @@
 {% endif %}
 
 {% if weer.cijfer < 5 %}
-<div class="alert-message error">
-		<a class="close" href="#">×</a>
-		<p>Het {{ werkwoord }} {{ datum_str }} <strong>slecht</strong> motorrijweer :(</p>
+<div class="alert alert-error">
+	<a class="close" data-dismiss="alert" href="#">×</a>
+	Het {{ werkwoord }} {{ datum_str }} <strong>slecht</strong> motorrijweer :(
 </div> 
 
 {% elif weer.cijfer > 5 and weer.cijfer < 7 %}
 
-<div class="alert-message warning">
-		<a class="close" href="#">×</a>
-		<p>Het {{ werkwoord }} {{ datum_str }} <strong>redelijk</strong> motorrijweer!</p>
+<div class="alert alert-warning">
+	<a class="close" data-dismiss="alert" href="#">×</a>
+	Het {{ werkwoord }} {{ datum_str }} <strong>redelijk</strong> motorrijweer!
 </div> 
 
 {% elif weer.cijfer > 6 %}
 
-<div class="alert-message success">
-		<a class="close" href="#">×</a>
-		<p>Het {{ werkwoord }} {{ datum_str }} <strong>goed</goed> motorrijweer!</p>
-		</div> 
+<div class="alert alert-success">
+	<a class="close" data-dismiss="alert" href="#">×</a>
+	Het {{ werkwoord }} {{ datum_str }} <strong>goed</strong> motorrijweer!
+</div> 
 {% endif %}

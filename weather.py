@@ -8,7 +8,7 @@ import models
 import xml.etree.ElementTree
 
 class Underground(object):
-    def get_locatie(self, locatie, days=3):
+    def get_station(self, station, days=3):
         sf = None
         url = None
         feature = None
@@ -20,13 +20,13 @@ class Underground(object):
         else:
             raise Exception("I don't know how many days!")
 
-        url = 'http://api.wunderground.com/api/%(api_key)s/%(feature)s/lang:NL/q/pws:%(locatie)s.json?c=NL'
+        url = 'http://api.wunderground.com/api/%(api_key)s/%(feature)s/lang:NL/q/%(station)s.json?c=NL'
         try:
-            sf = urllib2.urlopen(url % {'api_key': app.config['API_KEY'], 'feature': feature, 'locatie': locatie})
-            json = sf.read()
+            sf = urllib2.urlopen(url % {'api_key': app.config['API_KEY'], 'feature': feature, 'station': station.code})
+            json_string = sf.read()
         finally:
             if sf: sf.close()
-        return json
+        return json_string
 
 class ForecastCollection(object):
     def __init__(self):
@@ -75,6 +75,50 @@ class ForecastCollection(object):
         dagdelen['middag'] = self.middag
         dagdelen['avond'] = self.avond
         return dagdelen
+
+    @property
+    def per_uur(self):
+        uren = {}
+
+        for forecast in self.forecasts:
+            dt = forecast.datapunt_van
+            if not dt.hour in uren:
+                uren[dt.hour] = ForecastCollection()
+            uren[dt.hour].forecasts.append(forecast)
+
+        fc = ForecastCollection()
+        for uur in uren:
+            collection = uren[uur]
+            # droog_tot
+            # droog_om
+            # weertype
+            # omschrijving
+            # minimumtemperatuur
+            # maximumtemperatuur
+            # temperatuur
+            # gevoelstemperatuur
+            # neerslag_in_mm
+            # bewolking
+            # zonkans
+            # windkracht
+            # windrichting
+            # cijfer
+            forecast = Forecast()
+            forecast.weertype = collection.weertype
+            forecast.omschrijving = collection.omschrijving
+            forecast.minimumtemperatuur = collection.minimumtemperatuur
+            forecast.maximumtemperatuur = collection.maximumtemperatuur
+            forecast.temperatuur = collection.temperatuur
+            forecast.gevoelstemperatuur = collection.gevoelstemperatuur
+            forecast.neerslag_in_mm = collection.neerslag_in_mm
+            forecast.bewolking = collection.bewolking
+            forecast.zonkans = collection.zonkans
+            forecast.windkracht = collection.windkracht
+            forecast.windrichting = collection.windrichting
+            forecast.cijfer = collection.cijfer
+            fc.forecasts.append(forecast)
+
+        return fc
 
     @property
     def ochtend(self):
@@ -325,15 +369,14 @@ class ForecastCollection(object):
 class Weather(object):
 
     @classmethod
-    def from_wunderground(cls, locatie, days=3):
+    def from_wunderground(cls, station, days=3):
         collection = ForecastCollection()
         u = Underground()
-        json_string = u.get_locatie(locatie, days=days)
+        json_string = u.get_station(station, days=days)
         parsed_json = json.loads(json_string)
 
         for hourly_forecast in parsed_json['hourly_forecast']:
             #hour = hourly_forecast['FCTTIME']['hour'] + ':' + hourly_forecast['FCTTIME']['min']
-            dt = mytime.datetime.fromtimestamp(int(hourly_forecast['FCTTIME']['epoch']))
             forecast = Forecast()
             forecast.bind(hourly_forecast)
             collection.forecasts.append(forecast)
@@ -341,31 +384,39 @@ class Weather(object):
         return collection
 
     @classmethod
-    def has_datapunten(cls, locatie = None, regio = None, datum = None):
-        if locatie:
-            locaties = [locatie]
+    def has_datapunten(cls, station = None, regio = None, provincie = None, datum = None):
+        stations = []
+        if station:
+            stationss = [station]
         elif regio:
-            locaties = map(lambda x: x.id, regio.stations)
+            stations = map(lambda x: x.id, regio.stations)
+        elif provincie:
+            for regio in provincie.regios:
+                stations = stations + map(lambda x: x.id, regio.stations)
 
         query = models.Forecast.all()
-        query.filter('locatie IN', locaties)
+        query.filter('station_id IN', stations)
         query.filter('datapunt_van >=', datum)
         query.filter('datapunt_van <', datum + mytime.timedelta(days=1))
         #query.order('datapunt_van')
         return query.count(limit=17)
 
     @classmethod
-    def from_gae(cls, locatie = None, regio = None, datum = None):
-        if locatie:
-            locaties = [locatie]
+    def from_gae(cls, station = None, regio = None, provincie = None, datum = None):
+        stations = []
+        if station:
+            stations = [station]
         elif regio:
-            locaties = map(lambda x: x.id, regio.stations)
+            stations = map(lambda x: x.id, regio.stations)
+        elif provincie:
+            for regio in provincie.regios:
+                stations = stations + map(lambda x: x.id, regio.stations)
 
         collection = ForecastCollection()
-        dbForecasts = models.Forecast.gql("WHERE locatie IN :locaties AND datapunt_van >= :datum \
+        dbForecasts = models.Forecast.gql("WHERE station_id IN :stations AND datapunt_van >= :datum \
                                           AND datapunt_van < :plus_dag \
                                           ORDER BY datapunt_van ASC",
-                                          locaties=locaties,
+                                          stations=stations,
                                           datum=datum,
                                           plus_dag=datum + mytime.timedelta(days=1),
                                           min_dag=datum - mytime.timedelta(days=1))
@@ -386,24 +437,24 @@ class Weather(object):
 class Forecast(object):
 
     def __init__(self):
-        datapunt_van = None
-        datapunt_tot = None
-        tijdstip_datapunt = None
-        locatie = None
-        weertype = None
-        omschrijving = None
-        temperatuur = None
-        minimumtemperatuur = None
-        maximumtemperatuur = None
-        gevoelstemperatuur = None
-        neerslagkans = None
-        neerslag_in_mm = None
-        winterse_neerslag_in_mm = None
-        bewolking = None
-        zonkans = None
-        windkracht = None
-        windrichting = None
-        cijfer = None
+        self.datapunt_van = None
+        self.datapunt_tot = None
+        self.tijdstip_datapunt = None
+        self.station_id = None
+        self.weertype = None
+        self.omschrijving = None
+        self.temperatuur = None
+        self.minimumtemperatuur = None
+        self.maximumtemperatuur = None
+        self.gevoelstemperatuur = None
+        self.neerslagkans = None
+        self.neerslag_in_mm = None
+        self.winterse_neerslag_in_mm = None
+        self.bewolking = None
+        self.zonkans = None
+        self.windkracht = None
+        self.windrichting = None
+        self.cijfer = None
 
     @classmethod
     def from_gae(cls, gae_obj):
@@ -412,7 +463,7 @@ class Forecast(object):
         forecast.datapunt_van = mytime.datetime.from_utc(gae_obj.datapunt_van)
         forecast.datapunt_tot = mytime.datetime.from_utc(gae_obj.datapunt_tot)
         forecast.tijdstip_datapunt = mytime.datetime.from_utc(gae_obj.tijdstip_datapunt)
-        forecast.locatie = gae_obj.locatie
+        forecast.station_id = gae_obj.station_id
         forecast.weertype = gae_obj.weertype
         forecast.omschrijving = gae_obj.omschrijving
         forecast.temperatuur = gae_obj.temperatuur
@@ -455,7 +506,6 @@ class Forecast(object):
         self.zonkans = 1 - self.bewolking
         self.windkracht = float(gegevens['wspd']['metric'])
         self.windrichting = gegevens['wdir']['dir']
-        self.cijfer = self.generate_cijfer()
 
     def normpdf(self, x, mu, sigma):
         x = float(x)
@@ -640,48 +690,105 @@ class Beaufort(object):
                 kmh_2 = cls.data[beaufort+1]-1
                 return (kmh_1, kmh_2)
 
-class Region(object):
+class Provincie(object):
 
     def __init__(self):
-        self.stations = []
+        self.regios = []
 
     @classmethod
     def all(cls):
         et = xml.etree.ElementTree.parse('stations.xml')
-        regions = []
+        provincies = []
 
-        for xmlRegion in et.findall('region'):
-            region = Region()
-            region.id = xmlRegion.find('id').text
-            region.name = xmlRegion.find('name').text
-            regions.append(region)
+        for xmlProvincie in et.findall('provincie'):
+            provincie = Provincie()
+            provincie.id = xmlProvincie.find('id').text
+            provincie.name = xmlProvincie.find('name').text
+            provincies.append(provincie)
 
-            for xmlStation in xmlRegion.find('stations').findall('station'):
-                station = Station()
-                station.id = xmlStation.find('id').text
-                station.name = xmlStation.find('name').text
-                region.stations.append(station)
+            for xmlRegio in xmlProvincie.find('regios').findall('regio'):
+                regio = Regio()
+                regio.id = xmlRegio.find('id').text
+                regio.name = xmlRegio.find('name').text
+                regio.provincie = provincie
+                provincie.regios.append(regio)
 
-        return regions
+                for xmlStation in xmlRegio.find('stations').findall('station'):
+                    station = Station()
+                    station.id = xmlStation.find('id').text
+                    station.code = xmlStation.find('code').text
+                    station.name = xmlStation.find('name').text
+                    station.provincie = provincie
+                    station.regio = regio
+                    regio.stations.append(station)
+
+        return provincies
 
     @classmethod
-    def by_id(cls, region_id):
-        regions = Region.all()
-        regions = filter(lambda x: x.id == region_id, regions)
+    def by_id(cls, provincie_id):
+        provincies = Provincie.all()
+        provincies = filter(lambda x: x.id == provincie_id, provincies)
 
-        if len(regions) == 0:
+        if len(provincies) == 0:
             return None
 
-        return regions[0]
+        return provincies[0]
+
+class Regio(object):
+
+    def __init__(self):
+        self.stations = []
+        self.provincie = None
+
+    @classmethod
+    def all(cls):
+        regios = []
+        for provincie in Provincie.all():
+            for regio in provincie.regios:
+                regios.append(regio)
+
+        return regios
+
+    @classmethod
+    def by_id(cls, regio_id):
+        regios = Regio.all()
+        regios = filter(lambda x: x.id == regio_id, regios)
+
+        if len(regios) == 0:
+            return None
+
+        return regios[0]
 
 
 class Station(object):
 
+    def __init__(self):
+        self.provincie = None
+        self.regio = None
+
+    @classmethod
+    def all(cls):
+        stations = []
+        for regio in Regio.all():
+            for station in regio.stations:
+                stations.append(station)
+
+        return stations
+
     @classmethod
     def all_ids(cls):
         ids = []
-        for region in Region.all():
-            for station in region.stations:
-                ids.append(station.id)
+        for station in cls.all():
+            ids.append(station.id)
 
         return ids
+
+    @classmethod
+    def by_id(cls, station_id):
+        stations = cls.all()
+        stations = filter(lambda x: x.id == station_id, stations)
+
+        if len(stations) == 0:
+            return None
+
+        return stations[0]

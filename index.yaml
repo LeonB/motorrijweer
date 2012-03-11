@@ -12,11 +12,11 @@ indexes:
 
 - kind: Forecast
   properties:
-  - name: locatie
-  - name: datapunt_van
+  - name: provider
+  - name: station_id
+  - name: tijdstip_datapunt
 
 - kind: Forecast
   properties:
-  - name: locatie
-  - name: provider
-  - name: tijdstip_datapunt
+  - name: station_id
+  - name: datapunt_van

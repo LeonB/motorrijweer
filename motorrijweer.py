@@ -30,27 +30,12 @@ def before_request():
 def page_not_found(e):
     return flask.render_template('404.jinja'), 404
 
-@app.route('/locatie/<locatie>')
-def locatie_redirect(locatie):
-    if (mytime.datetime.today().hour < 20):
-        return flask.redirect('/locatie/%(locatie)s/vandaag' % {'locatie': locatie}, 302)
-    else:
-        return flask.redirect('/locatie/%(locatie)s/morgen' % {'locatie': locatie}, 302)
+@app.route('/')
+def index():
+    provincies = weather.Provincie.all()
+    return flask.render_template('index.jinja', provincies=provincies)
 
-@app.cache.memoize(timeout=60*5)
-@app.route('/locatie/<locatie>/<datum_str>')
-def locatie(locatie, datum_str = 'vandaag'):
-    # Does the location exist?
-    if locatie.upper() not in weather.Station.all_ids():
-        return flask.abort(404)
-
-    # Change input to real date object
-    datum = _datums(datum_str)
-
-    weer = weather.Weather().from_gae(locatie=locatie.upper(), datum=datum)
-    return flask.render_template('locatie.jinja', weer=weer, datum=datum,
-                                 locatie=locatie.upper())
-
+## REGIO ##
 @app.route('/regio/<regio>')
 def regio_redirect(regio):
     if (mytime.datetime.today().hour < 20):
@@ -58,11 +43,11 @@ def regio_redirect(regio):
     else:
         return flask.redirect('/regio/%(regio)s/morgen' % {'regio': regio}, 302)
 
-@app.cache.memoize(timeout=60*5)
+@app.cache.memoize(timeout=60*5) # 5 minutes
 @app.route('/regio/<regio>/<datum_str>')
 def regio(regio, datum_str = 'vandaag'):
     # Does the regio exist?
-    regio = weather.Region.by_id(regio.lower())
+    regio = weather.Regio.by_id(regio.lower())
     if not regio:
         return flask.abort(404)
 
@@ -72,7 +57,27 @@ def regio(regio, datum_str = 'vandaag'):
     weer = weather.Weather().from_gae(regio=regio, datum=datum)
     return flask.render_template('regio.jinja', weer=weer, regio=regio, datum=datum)
 
+## PROVINCIE ##
+@app.route('/provincie/<provincie>')
+def provincie_redirect(provincie):
+    if (mytime.datetime.today().hour < 20):
+        return flask.redirect('/provincie/%(provincie)s/vandaag' % {'provincie': provincie}, 302)
+    else:
+        return flask.redirect('/provincie/%(provincie)s/morgen' % {'provincie': provincie}, 302)
 
+@app.cache.memoize(timeout=60*5) # 5 minutes
+@app.route('/provincie/<provincie>/<datum_str>')
+def provincie(provincie, datum_str = 'vandaag'):
+    # Does the provincie exist?
+    provincie = weather.Provincie.by_id(provincie.lower())
+    if not provincie:
+        return flask.abort(404)
+
+    # Change input to real date object
+    datum = _datums(datum_str)
+
+    weer = weather.Weather().from_gae(provincie=provincie, datum=datum)
+    return flask.render_template('provincie.jinja', weer=weer, provincie=provincie, datum=datum)
 
 def _datums(datum_str):
     # Change input to real date object
@@ -103,11 +108,11 @@ def _link_forward(datum):
 
 @app.route('/tasks/wunderground/forecasts/hourly')
 def tasks_wunderground_forecasts_hourly():
-    return str(controllers.tasks.wunderground.forecasts.hourly('zeeland'))
+    return str(controllers.tasks.wunderground.forecasts.hourly())
 
 @app.route('/tasks/wunderground/forecasts/daily')
 def tasks_wunderground_forecasts_daily():
-    return str(controllers.tasks.wunderground.forecasts.daily('zeeland'))
+    return str(controllers.tasks.wunderground.forecasts.daily())
 
 @app.route('/tasks/regeneratecijfers')
 def tasks_regeneratecijfers():
@@ -154,10 +159,10 @@ def test_cijfers():
 
     return flask.render_template('test_cijfers.jinja', gegevens=gegevens)
 
-@app.route('/tasks/update_datastore')
-def update_datastore():
-    for forecast in models.Forecast.gql('ORDER BY datapunt_van DESC'):
-        forecast.put()
+# @app.route('/tasks/update_datastore')
+# def update_datastore():
+#     for forecast in models.Forecast.gql('ORDER BY datapunt_van DESC'):
+#         forecast.put()
 
 @app.route('/stations')
 def stations():

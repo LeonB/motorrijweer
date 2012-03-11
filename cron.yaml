@@ -1,8 +1,10 @@
 cron:
 - description: import 3 day forecasts from weather underground
   url: /tasks/wunderground/forecasts/hourly
-  schedule: every 60 minutes
+  schedule: every 60 minutes from 05:00 to 00:00
+  timezone: Europe/Amsterdam
 
 - description: import 7 day forecasts from weather underground
   url: /tasks/wunderground/forecasts/daily
   schedule: every 24 hours
+  timezone: Europe/Amsterdam

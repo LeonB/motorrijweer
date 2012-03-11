@@ -1,22 +1,115 @@
 <?xml version="1.0"?>
-<regions>
-	<region>
+<provincies>
+	<provincie>
+		<id>drenthe</id>
+		<name>Drenthe</name>
+		<regios />
+	</provincie>
+	<provincie>
+		<id>flevoland</id>
+		<name>Flevoland</name>
+		<regios />
+	</provincie>
+	<provincie>
+		<id>Friesland</id>
+		<name>Fryslân</name>
+		<regios />
+	</provincie>
+	<provincie>
+		<id>gelderland</id>
+		<name>Gelderland</name>
+		<regios />
+	</provincie>
+	<provincie>
+		<id>groningen</id>
+		<name>Groningen</name>
+		<regios />
+	</provincie>
+	<provincie>
+		<id>limburg</id>
+		<name>limburg</name>
+		<regios />
+	</provincie>
+	<provincie>
+		<id>noordbrabant</id>
+		<name>Noord-Brabant</name>
+		<regios>
+			<regio>
+				<id>westbrabant</id>
+				<name>West-Brabant</name>
+				<stations>
+					<station>
+						<id>EHGR</id>
+						<code>EHGR</code>
+						<name>Gilze-Rijen</name>
+					</station>
+				</stations>
+			</regio>
+			<!--
+			<regio>
+				<id>middenbrabant</id>
+				<name>Midden-Brabant</name>
+				<stations />
+			</regio>
+			<regio>
+				<id>oostbrabant</id>
+				<name>Oost-Brabant</name>
+				<stations />
+			</regio>
+			-->
+		</regios>
+	</provincie>
+	<provincie>
+		<id>noordholland</id>
+		<name>Noord-Holland</name>
+		<regios />
+	</provincie>
+	<provincie>
+		<id>overijssel</id>
+		<name>Overijssel</name>
+		<regios />
+	</provincie>
+	<provincie>
+		<id>utrecht</id>
+		<name>Utrecht</name>
+		<regios />
+	</provincie>
+	<provincie>
 		<id>zeeland</id>
 		<name>Zeeland</name>
-		<stations>
-			<station>
-				<id>IZEELAND16</id>
-				<name>Sint Laurens</name>
-			</station>
-			<station>
-				<id>MD7661</id>
-				<name>Kloosterzande</name>
-			</station>
-		</stations>
-	</region>
-	<region>
-		<id>noord-brabant</id>
-		<name>Noord-Brabant</name>
-		<stations />
-	</region>
-</regions>
+		<regios>
+			<regio>
+				<id>zeeuwsvlaanderen</id>
+				<name>Zeeuws-Vlaanderen</name>
+				<stations>
+					<station>
+						<id>MD7661</id>
+						<code>pws:MD7661</code>
+						<name>Kloosterzande</name>
+					</station>
+				</stations>
+			</regio>
+			<regio>
+				<id>middenzeeland</id>
+				<name>Midden-Zeeland</name>
+				<stations>
+					<station>
+						<id>IZEELAND16</id>
+						<code>pws:IZEELAND16</code>
+						<name>Sint Laurens</name>
+					</station>
+				</stations>
+			</regio>
+			<regio>
+				<id>zeelandnoord</id>
+				<name>Zeeland-Noord</name>
+				<stations />
+			</regio>
+		</regios>
+	</provincie>
+	<provincie>
+		<id>zuidholland</id>
+		<name>Zuid-Holland</name>
+		<regios />
+	</provincie>
+</provincies>

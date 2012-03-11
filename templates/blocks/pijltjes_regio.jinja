@@ -1,0 +1,38 @@
+{% set day_before = datum|timedelta(days=-1) %}
+{% set day_after = datum|timedelta(days=+1) %}
+
+
+{# day_before #}
+{% if day_before is in_database(regio=regio) > 15 %}
+		{% set class = 'active button' %}
+{% else %}
+		{% set class = 'disabled button' %}
+{% endif %}
+
+{% set day_before_str = day_before|datestr %}
+
+<div class="back">&lt;&lt;
+		{% if day_before_str %}
+				<a class="{{ class }}" href="{{ day_before_str }}" title="{{ day_before_str }}">{{ day_before_str }}</a>
+		{% else %}
+				<a class="{{ class }}" href="{{ day_before|dateformat('ddMMyyyy') }}" title="{{ day_before }}">{{ day_before }}</a>
+		{% endif %}
+</div>
+
+{# day_after #}
+{% if day_after is in_database(regio=regio) > 15 %}
+		{% set class = 'active' %}
+{% else %}
+		{% set class = 'disabled' %}
+{% endif %}
+
+{% set day_after_str = day_after|datestr %}
+
+<div class="forward">
+		{% if day_after_str %}
+				<a class="{{ class }}" href="{{ day_after_str }}" title="{{ day_after_str }}">{{ day_after_str }}</a>
+		{% else %}
+				<a class="{{ class }}" href="{{ day_after|dateformat('ddMMyyyy') }}" title="{{ day_after }}">{{ day_after }}</a>
+		{% endif %}
+		&gt;&gt;
+</div>

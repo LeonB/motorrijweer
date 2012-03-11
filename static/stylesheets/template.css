@@ -4,6 +4,7 @@ html, body {
 
 body {
 	background-image:url('/static/images/fast_road.jpg');
+	/*background-image:url('http://www.freedomrides.biz/wp-content/themes/freedomrides/images/background.jpg');*/
 	background-position:top center;
 	background-attachment:fixed;
 	background-repeat:no-repeat;
@@ -13,6 +14,10 @@ body {
     background-size: cover;
     filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/static/images/fast_road.jpg', sizingMethod='scale');
 	-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/static/images/fast_road.jpg', sizingMethod='scale')";
+}
+
+h3, h4, h5, h6 {
+	line-height: 36px;
 }
 
 #page-outer {
@@ -27,13 +32,13 @@ body {
 	height: 100%;
 }
 
-.alert-message {
-	margin-top: 30px;
+.alert {
+	margin-top: 25px;
 	margin-bottom: 0px;
 }
 
 .component-big {
-	margin-top: 30px;
+	margin-top: 25px;
 }
 
 .component-small {

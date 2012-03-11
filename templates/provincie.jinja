@@ -1,11 +1,11 @@
 {% extends "layout.jinja" %}
-{% block title %}Index{% endblock %}
+{% block title %}Provincie {{ provincie.name }}{% endblock %}
 {% block body %}
 
 {% set weer = weer.overdag %}
 
 	<div class="row">
-		<div class="span16">
+		<div class="span12">
 
 			{% include 'blocks/message_motorrijweer.jinja' %}
 
@@ -21,18 +21,18 @@
 					</div>
 
 					<div class="module-footer">
-						{% include 'blocks/pijltjes.jinja' %}
+						{% include 'blocks/pijltjes_provincie.jinja' %}
 					</div>
 				</div>
 			</div>
 
-			{% include 'blocks/weerkaart.jinja' %}
+			{# {% include 'blocks/weerkaart.jinja' %} #}
 
 			<div class="component component-big">
 				<div class="module">
 					<div class="module-body data-per-dagdeel">
 						<div class="row">
-							<div class="span16">
+							<div class="span12">
 								{% include 'blocks/data_per_dagdeel.jinja' %}
 							</div>
 						</div>
@@ -44,10 +44,7 @@
 				<div class="module">
 					<div class="module-body grafiek">
 						<div class="row">
-							<div class="span16">
-								<p>Nog een grafieK!!??!!?/</p>
-								<p>Neerslag(kans), cijfer, weersoort + wind (weeronline): hoe ga ik % met getallen mixxen? Of nie?</p>
-
+							<div class="span12">
 								<div id="chart"></div>
 
 								{% include 'blocks/data_per_uur.jinja' %}
@@ -72,6 +69,7 @@
 		</div>
 	</div>
 
+	{#}
 	<div class="row">
 		<div class="span8">
 			<div class="component-small component-small-1">
@@ -103,6 +101,7 @@
 			</div>
 		</div>
 	</div>
+	#}
 
 	{% include 'blocks/footer.jinja' %}
 

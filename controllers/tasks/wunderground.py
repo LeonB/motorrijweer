@@ -5,49 +5,58 @@ import weather
 class forecasts(object):
 
     @classmethod
-    def hourly(cls, regio):
-        regio = weather.Region.by_id(regio)
+    def hourly(cls):
         retvals = {}
 
-        for station in regio.stations:
+        for station in weather.Station.all():
             now = mytime.datetime.now()
 
             # Make sure it is never request more than once every 15 minutes
             kwartier = now - mytime.timedelta(seconds=60*15)
-            last_forecast = models.Forecast.gql("WHERE locatie = :locatie AND \
-                                tijdstip_datapunt > :kwartier AND provider = 'wunderground'", 
-                                locatie=station.id, kwartier=kwartier).get()
+            last_forecast = models.Forecast.gql("WHERE station_id = :station_id AND \
+                                tijdstip_datapunt > :kwartier AND provider = 'wunderground'",
+                                station_id=station.id, kwartier=kwartier).get()
 
             if last_forecast:
                 last_forecast = weather.Forecast.from_gae(last_forecast)
                 retvals[station.id] = str(last_forecast.tijdstip_datapunt)
                 continue
 
-            retvals[station.id] = cls._import_forecasts(days=3, locatie=station.id)
+            retvals[station.id] = cls._import_forecasts(days=3, station=station)
         return retvals
 
     @classmethod
-    def daily(cls, regio):
-        regio = weather.Region.by_id(regio)
+    def daily(cls):
         retvals = {}
 
-        for station in regio.stations:
-            retvals[station.id] = cls._import_forecasts(locatie=station.id, days=7)
+        for station in weather.Station.all():
+            retvals[station.id] = cls._import_forecasts(station=station, days=7)
 
         return retvals
 
     @classmethod
-    def _import_forecasts(cls, locatie, days=3, hours_in_the_future_to_skip=None):
+    def _import_forecasts(cls, station, days=3, hours_in_the_future_to_skip=None):
         now = mytime.datetime.now()
 
-        for forecast in weather.Weather.from_wunderground(locatie, days=days).forecasts:
+        winterse_neerslag = 0
+        for forecast in weather.Weather.from_wunderground(station, days=days).forecasts:
 
             # evt: if van > 3 uur (ofzo): skippen
 
-            old_result = models.Forecast.gql("WHERE locatie = :locatie AND provider = 'wunderground' AND datapunt_van = :datapunt_van AND datapunt_tot = :datapunt_tot",
-                                              locatie=locatie,
+            if forecast.winterse_neerslag_in_mm:
+                winterse_neerslag = 24
+            elif forecast.winterse_neerslag_in_mm and winterse_neerslag:
+                winterse_neerslag = winterse_neerslag - 1
+
+            old_result = models.Forecast.gql("WHERE station_id = :station_id AND provider = 'wunderground' AND datapunt_van = :datapunt_van AND datapunt_tot = :datapunt_tot",
+                                              station_id=station.id,
                                               datapunt_van=forecast.datapunt_van,
                                               datapunt_tot=forecast.datapunt_tot).get()
+
+            if winterse_neerslag:
+                minpunten = 2.0
+            else:
+                minpunten = 0
 
             if old_result:
                 if old_result.weertype == forecast.weertype and \
@@ -60,7 +69,7 @@ class forecasts(object):
                 old_result.bewolking == forecast.bewolking and \
                 old_result.zonkans == forecast.zonkans and \
                 old_result.windkracht == forecast.windkracht and \
-                old_result.cijfer == forecast.cijfer:
+                old_result.cijfer == (forecast.generate_cijfer() - minpunten):
                     # alles is hetzelfde gebleven
                     # Moet ik de timestamp updaten?!?
                     continue
@@ -77,7 +86,7 @@ class forecasts(object):
                 old_result.bewolking = forecast.bewolking
                 old_result.zonkans = forecast.zonkans
                 old_result.windkracht = forecast.windkracht
-                old_result.cijfer = forecast.cijfer
+                old_result.cijfer = (forecast.generate_cijfer() - minpunten)
                 old_result.put()
                 continue
             else:
@@ -85,7 +94,7 @@ class forecasts(object):
                     datapunt_van = forecast.datapunt_van,
                     datapunt_tot = forecast.datapunt_tot,
                     tijdstip_datapunt = now,
-                    locatie = locatie,
+                    station_id = station.id,
                     weertype = forecast.weertype,
                     omschrijving = forecast.omschrijving,
                     temperatuur = forecast.temperatuur,
@@ -97,7 +106,7 @@ class forecasts(object):
                     zonkans = forecast.zonkans,
                     windkracht = forecast.windkracht,
                     windrichting = forecast.windrichting,
-                    cijfer = forecast.cijfer,
+                    cijfer = (forecast.generate_cijfer() - minpunten),
                     provider = 'wunderground',
                     probability_order = 0,
                 )

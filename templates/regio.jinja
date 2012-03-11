@@ -1,10 +1,108 @@
 {% extends "layout.jinja" %}
-{% block title %}Index{% endblock %}
+{% block title %}Provincie {{ regio.provincie.name }} regio {{ regio.name }}{% endblock %}
 {% block body %}
 
 {% set weer = weer.overdag %}
 
-{{ weer.forecasts|count }}
-{{ weer.cijfer }}
+	<div class="row">
+		<div class="span12">
+
+			{% include 'blocks/message_motorrijweer.jinja' %}
+
+			<div class="component component-big">
+				<div class="module">
+					<div class="module-header">
+						<h3>Weergegevens voor {{ datum|dateformat('EEEE d MMMM yyyy') }}</h3>
+						<p>Laatst geupdate: {{ weer.last_update|datetimeformat('d MMMM yyyy') }} om {{ weer.last_update|datetimeformat('HH:mm') }}</p>
+					</div>
+
+					<div class="module-body">
+						{% include 'blocks/summary.jinja' %}
+					</div>
+
+					<div class="module-footer">
+						{% include 'blocks/pijltjes_regio.jinja' %}
+					</div>
+				</div>
+			</div>
+
+			{# {% include 'blocks/weerkaart.jinja' %} #}
+
+			<div class="component component-big">
+				<div class="module">
+					<div class="module-body data-per-dagdeel">
+						<div class="row">
+							<div class="span12">
+								{% include 'blocks/data_per_dagdeel.jinja' %}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="component component-big">
+				<div class="module">
+					<div class="module-body grafiek">
+						<div class="row">
+							<div class="span12">
+								<div id="chart"></div>
+
+								{% include 'blocks/data_per_uur.jinja' %}
+
+							</div>
+						</div>
+					</div>
+
+					<div class="module-footer">
+						<!--{{ weer.droog_tot }}-->
+						<!--{{ weer.droog_om }}-->
+						{% if not weer.droog_tot and not weer.droog_om %}
+							<span>Het blijft de hele dag regenen :(</span>
+						{% elif not weer.droog_tot %}
+							<span>Het is weer droog om: {{ weer.droog_om.strftime('%H:%M') }}</span>
+						{% else %}
+							<span>Het is droog tot: {{ weer.droog_tot }}
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	{#}
+	<div class="row">
+		<div class="span8">
+			<div class="component-small component-small-1">
+				<div class="module">
+					<div class="module-header">
+						<h3>Woensdag 13 april 2011</h3>
+					</div>
+					<div class="module-body">
+						<p>IETS VEEL SIMPELERS?!?</p>
+						<p>Iets met een kaartje!?</p>
+					</div>
+					<div class="module-footer"></div>
+				</div>
+			</div>
+		</div>
+
+		<div class="span8">
+			<div class="component-small">
+				<div class="module">
+					<div class="module-header">
+						<h3>Donderdag 14 april 2011</h3>
+						<h3>Op dit moment!!</h3>
+					</div>
+					<div class="module-body">
+						<p>IETS VEEL SIMPELERS!?!?</p>
+					</div>
+					<div class="module-footer"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	#}
+
+	{% include 'blocks/footer.jinja' %}
 
 {% endblock %}
