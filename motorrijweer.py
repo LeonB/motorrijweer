@@ -30,6 +30,7 @@ def before_request():
 def page_not_found(e):
     return flask.render_template('404.jinja'), 404
 
+@app.cache.memoize(timeout=60*5) # 5 minutes
 @app.route('/')
 def index():
     provincies = weather.Provincie.all()
@@ -113,6 +114,15 @@ def tasks_wunderground_forecasts_hourly():
 @app.route('/tasks/wunderground/forecasts/daily')
 def tasks_wunderground_forecasts_daily():
     return str(controllers.tasks.wunderground.forecasts.daily())
+
+@app.route('/tasks/delete_old_forecasts')
+def tasks_delete_old_forecasts():
+    dagen = 21
+    datum = (mytime.datetime.today() + mytime.timedelta(days=-21)).date()
+    for forecast in models.Forecast.gql('WHERE datapunt_van < :datum', datum=datum):
+        return str(forecast)
+
+    return 'OK'
 
 @app.route('/tasks/regeneratecijfers')
 def tasks_regeneratecijfers():

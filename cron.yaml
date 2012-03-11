@@ -8,3 +8,8 @@ cron:
   url: /tasks/wunderground/forecasts/daily
   schedule: every 24 hours
   timezone: Europe/Amsterdam
+
+- description: delete old forecasts
+  url: /tasks/delete_old_forecasts
+  schedule: every day
+  timezone: Europe/Amsterdam
