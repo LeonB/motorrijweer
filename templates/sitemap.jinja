@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+        <url>
+          <loc>{{ url_for('index') }}</loc>
+          <changefreq>monthly</changefreq>
+        </url>
+
+    {% for provincie in provincies %}
+        <url>
+			<loc>{{ url_root }}{{ url_for('provincie_redirect', provincie=provincie.id) }}</loc>
+			<changefreq>hourly</changefreq>
+        </url>
+
+        {% for regio in provincie.regios %}
+     	   <url>
+				<loc>{{ url_root }}{{ url_for('regio_redirect', regio=regio.id) }}</loc>
+				<changefreq>hourly</changefreq>
+			</url>
+        {% endfor %}
+    {% endfor %}
+</urlset>

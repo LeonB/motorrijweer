@@ -1,6 +1,3 @@
-# TODOS
-# - remove pytz (600 files!! and I only need one)
-
 import flask
 import flaskext
 from flaskext.cache import Cache
@@ -177,3 +174,13 @@ def test_cijfers():
 @app.route('/stations')
 def stations():
     return str(weather.Region.by_id('zeeland'))
+
+@app.route('/sitemap.xml')
+def sitemap():
+    url_root = flask.request.url_root[:-1]
+    provincies = weather.Provincie.all()
+    xml = flask.render_template('sitemap.jinja', url_root=url_root, provincies=provincies)
+
+    response = flask.make_response(xml)
+    response.headers['Content-Type'] = 'text/xml'
+    return response
