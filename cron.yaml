@@ -11,5 +11,5 @@ cron:
 
 - description: delete old forecasts
   url: /tasks/delete_old_forecasts
-  schedule: every day
+  schedule: every 24 hours
   timezone: Europe/Amsterdam
