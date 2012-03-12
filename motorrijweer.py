@@ -175,6 +175,7 @@ def test_cijfers():
 def stations():
     return str(weather.Region.by_id('zeeland'))
 
+@app.cache.memoize(timeout=60*30) # 30 minutes
 @app.route('/sitemap.xml')
 def sitemap():
     url_root = flask.request.url_root[:-1]
