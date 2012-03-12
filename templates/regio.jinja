@@ -1,5 +1,6 @@
 {% extends "layout.jinja" %}
-{% block title %}Provincie {{ regio.provincie.name }} regio {{ regio.name }}{% endblock %}
+{% block title %}Provincie {{ regio.provincie.name }}, regio {{ regio.name }}{% endblock %}
+{% block description %}Hoe goed is het motorrijweer in de regio {{ regio.name }} (provincie {{ regio.provincie.name }}){% endblock %}
 {% block body %}
 
 {% set weer = weer.overdag %}
