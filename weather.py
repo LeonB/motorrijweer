@@ -734,6 +734,14 @@ class Provincie(object):
 
         return provincies[0]
 
+    def stations(self):
+        stations = []
+        for regio in self.regios:
+            for station in regio.stations:
+                stations.append(station)
+
+        return stations
+
 class Regio(object):
 
     def __init__(self):

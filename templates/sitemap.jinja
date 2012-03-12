@@ -1,22 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
-        <url>
-          <loc>{{ url_root }}{{ url_for('index') }}</loc>
-          <changefreq>monthly</changefreq>
-        </url>
+  <url>
+    <loc>{{ url_root }}{{ url_for('index') }}</loc>
+    <changefreq>monthly</changefreq>
+  </url>
 
-    {% for provincie in provincies %}
-        <url>
-			<loc>{{ url_root }}{{ url_for('provincie_redirect', provincie=provincie.id) }}</loc>
-			<changefreq>hourly</changefreq>
-        </url>
+  {% for provincie in provincies %}
+  {% if provincie.stations()|count > 0 %}
+  <url>
+   <loc>{{ url_root }}{{ url_for('provincie_redirect', provincie=provincie.id) }}</loc>
+   <changefreq>hourly</changefreq>
+ </url>
 
-        {% for regio in provincie.regios %}
-     	   <url>
-				<loc>{{ url_root }}{{ url_for('regio_redirect', regio=regio.id) }}</loc>
-				<changefreq>hourly</changefreq>
-			</url>
-        {% endfor %}
-    {% endfor %}
+ <url>
+   <loc>{{ url_root }}{{ url_for('provincie', provincie=provincie.id, datum_str='eergisteren') }}</loc>
+   <changefreq>daily</changefreq>
+ </url>
+ <url>
+   <loc>{{ url_root }}{{ url_for('provincie', provincie=provincie.id, datum_str='gisteren') }}</loc>
+   <changefreq>daily</changefreq>
+ </url>
+ <url>
+   <loc>{{ url_root }}{{ url_for('provincie', provincie=provincie.id, datum_str='vandaag') }}</loc>
+   <changefreq>hourly</changefreq>
+ </url>
+ <url>
+   <loc>{{ url_root }}{{ url_for('provincie', provincie=provincie.id, datum_str='morgen') }}</loc>
+   <changefreq>hourly</changefreq>
+ </url>
+ <url>
+   <loc>{{ url_root }}{{ url_for('provincie', provincie=provincie.id, datum_str='overmorgen') }}</loc>
+   <changefreq>hourly</changefreq>
+ </url>
+
+ {% for regio in provincie.regios %}
+ {% if regio.stations|count > 0 %}
+ <url>
+  <loc>{{ url_root }}{{ url_for('regio_redirect', regio=regio.id) }}</loc>
+  <changefreq>hourly</changefreq>
+</url>
+
+<url>
+ <loc>{{ url_root }}{{ url_for('regio', regio=regio.id, datum_str='eergisteren') }}</loc>
+ <changefreq>daily</changefreq>
+</url>
+<url>
+ <loc>{{ url_root }}{{ url_for('regio', regio=regio.id, datum_str='gisteren') }}</loc>
+ <changefreq>daily</changefreq>
+</url>
+<url>
+ <loc>{{ url_root }}{{ url_for('regio', regio=regio.id, datum_str='vandaag') }}</loc>
+ <changefreq>hourly</changefreq>
+</url>
+<url>
+ <loc>{{ url_root }}{{ url_for('regio', regio=regio.id, datum_str='morgen') }}</loc>
+ <changefreq>hourly</changefreq>
+</url>
+<url>
+ <loc>{{ url_root }}{{ url_for('regio', regio=regio.id, datum_str='overmorgen') }}</loc>
+ <changefreq>hourly</changefreq>
+</url>
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endfor %}
 </urlset>
