@@ -27,7 +27,7 @@ def before_request():
 def page_not_found(e):
     return flask.render_template('404.jinja'), 404
 
-@app.cache.memoize(timeout=60*5) # 5 minutes
+@app.cache.memoize(timeout=60*60*24) # 24 uur
 @app.route('/')
 def index():
     provincies = weather.Provincie.all()
@@ -41,7 +41,7 @@ def regio_redirect(regio):
     else:
         return flask.redirect('/regio/%(regio)s/morgen' % {'regio': regio}, 302)
 
-@app.cache.memoize(timeout=60*5) # 5 minutes
+@app.cache.memoize(timeout=60*30) # 30 minutes
 @app.route('/regio/<regio>/<datum_str>')
 def regio(regio, datum_str = 'vandaag'):
     # Does the regio exist?
@@ -63,7 +63,7 @@ def provincie_redirect(provincie):
     else:
         return flask.redirect('/provincie/%(provincie)s/morgen' % {'provincie': provincie}, 302)
 
-@app.cache.memoize(timeout=60*5) # 5 minutes
+@app.cache.memoize(timeout=60*30) # 30 minutes
 @app.route('/provincie/<provincie>/<datum_str>')
 def provincie(provincie, datum_str = 'vandaag'):
     # Does the provincie exist?
@@ -175,7 +175,7 @@ def test_cijfers():
 def stations():
     return str(weather.Region.by_id('zeeland'))
 
-@app.cache.memoize(timeout=60*30) # 30 minutes
+@app.cache.memoize(timeout=60*60*24) # 24 uur
 @app.route('/sitemap.xml')
 def sitemap():
     url_root = flask.request.url_root[:-1]
