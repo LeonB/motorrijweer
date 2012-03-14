@@ -20,7 +20,7 @@ class datetime(object):
 
     @classmethod
     def from_utc(cls, dt):
-        # utc = UtcTzinfo()
+        utc = UtcTzinfo()
         # return dt.replace(tzinfo=pytz.timezone('UTC')).astimezone(app.timezone)
         return dt.replace(tzinfo=utc).astimezone(app.timezone)
 
