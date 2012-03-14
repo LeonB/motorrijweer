@@ -11,11 +11,23 @@
 	<!-- CSS spul -->
 	<link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/static/stylesheets/template.css">
+</head>
 
-	<!-- Javascripts -->
+<body>
+	<div class="container">
+		<div class="content">
+
+
+			{% for message in get_flashed_messages() %}
+				<p class=flash>{{ message }}</p>
+			{% endfor %}
+
+			{% block body %}{% endblock %}
+		</div>
+	</div>
+
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" defer="defer"></script>
 	<script src="/static/bootstrap/js/bootstrap.min.js" defer="defer"></script>
-
 	<script src="/static/javascripts/highcharts/highcharts.js" type="text/javascript" defer="defer"></script>
 	<script src="/static/javascripts/highcharts/themes/skies.js" type="text/javascript" defer="defer"></script>
 	<script src="/static/javascripts/site.js" type="text/javascript" defer="defer"></script>
@@ -31,21 +43,6 @@
 		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	})();
 	</script>
-
-</head>
-
-<body>
-	<div class="container">
-		<div class="content">
-
-
-			{% for message in get_flashed_messages() %}
-				<p class=flash>{{ message }}</p>
-			{% endfor %}
-
-			{% block body %}{% endblock %}
-		</div>
-	</div>
 
 </body>
 </html>
