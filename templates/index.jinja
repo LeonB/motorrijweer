@@ -15,10 +15,17 @@
 				<div class="module-body">
 					<p>Bekijk hier per provincie, regio of locatie of het een beetje weer is om te motorrijden.</p>
 					<p>Op dit moment zijn de datapunten beperkt. Mocht je een extra station, regio of provincie willen toevoegen of heb je een ander goed idee:<br />
-					stuur mij dan een <a href="mailto:leon@motorrijweer.nl">mailtje</a>.</p>
+						stuur mij dan een <a href="mailto:leon@motorrijweer.nl">mailtje</a>.
+					</p>
 				</div>
 			</div>
+		</div>
+	</div>
+</div>
 
+<div class="row">
+	<div class="span6">
+		<div class="component-small">
 			<div class="module">
 				<div class="module-body">
 					{% for provincie in provincies %}
@@ -29,9 +36,9 @@
 						{% if regio.stations|count > 0 %}
 
 						{% if regio.stations|count == 1 %}
-							{% set aantal_stations = '1 weerstation' %}
+						{% set aantal_stations = '1 weerstation' %}
 						{% else %}
-							{% set aantal_stations = regio.stations|count|string + 'weerstations' %}
+						{% set aantal_stations = regio.stations|count|string + 'weerstations' %}
 						{% endif %}
 
 						<li>
@@ -45,9 +52,19 @@
 					{% endfor %}
 				</div>
 			</div>
-
 		</div>
+	</div>
 
+	<div class="span6">
+		<div class="component-small">
+			<div class="module">
+				<div class="module-body">
+					<div id="twitter_stream">
+						<p>Sorry, uw browser ondersteunt geen javascript &ograve;f er ging iets mis...</p>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 

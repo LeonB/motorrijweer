@@ -91,6 +91,17 @@ jQuery(document).ready(function() {
 });
 
 jQuery(document).ready(function() {
+	if (jQuery('#twitter_stream').length > 0) {
+		$("#twitter_stream").tweet({
+			avatar_size: 32,
+			count: 6,
+			query: 'motorrijweer OR motorweer OR "weer om te motorrijden" OR "weer om op de motor"',
+			loading_text: "twitterberichten zoeken..."
+		});
+	}
+});
+
+jQuery(document).ready(function() {
 	var chart;
 	var test = jQuery('.grafiek table thead th').map(function(i, el) {
 		return jQuery(el).html();
