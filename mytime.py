@@ -1,6 +1,11 @@
 import datetime as orig_datetime
-import pytz
 from motorrijweer import app
+
+class UtcTzinfo(orig_datetime.tzinfo):
+  def utcoffset(self, dt): return orig_datetime.timedelta(0)
+  def dst(self, dt): return orig_datetime.timedelta(0)
+  def tzname(self, dt): return 'UTC'
+  def olsen_name(self): return 'UTC'
 
 class timedelta(orig_datetime.timedelta):
     pass
@@ -15,7 +20,9 @@ class datetime(object):
 
     @classmethod
     def from_utc(cls, dt):
-        return dt.replace(tzinfo=pytz.timezone('UTC')).astimezone(app.timezone)
+        # utc = UtcTzinfo()
+        # return dt.replace(tzinfo=pytz.timezone('UTC')).astimezone(app.timezone)
+        return dt.replace(tzinfo=utc).astimezone(app.timezone)
 
     @classmethod
     def fromtimestamp(cls, timestamp, tz = None):
