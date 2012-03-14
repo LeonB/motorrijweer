@@ -282,3 +282,14 @@ a.disabled{
 		box-shadow:none;
 		text-decoration: none;
 }
+
+
+/*jQuery twitter ding*/
+.tweet_list {
+	background-color: #F9F9F9 !important;
+}
+
+.tweet_list .tweet_even {
+	background-color: whiteSmoke !important;
+}
+}
