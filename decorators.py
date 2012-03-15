@@ -17,7 +17,7 @@ def add_expires_header(minutes=60):
 			tme = (mytime.datetime.today()+mytime.timedelta(minutes=minutes)).strftime('%a, %d %b %Y %H:%M:%S') + ' ' + mytime.datetime.today().tzname()
 
 			data = f(*args, **kwargs)
-			if isinstance(data, flask.Response):
+			if isinstance(data, flask.wrappers.Response):
 			    response = data
 			else:
 			    response = flask.make_response(data)
@@ -28,3 +28,19 @@ def add_expires_header(minutes=60):
 		return decorated_function
 	return decorator
 app.add_expires_header = add_expires_header
+
+def add_content_type_header(content_type):
+	def decorator(f):
+		@wraps(f)
+		def decorated_function(*args, **kwargs):
+			data = f(*args, **kwargs)
+			if isinstance(data, flask.wrappers.Response):
+			    response = data
+			else:
+			    response = flask.make_response(data)
+
+			response.headers['Content-Type'] = content_type
+			return response
+		return decorated_function
+	return decorator
+app.add_content_type_header = add_content_type_header

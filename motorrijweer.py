@@ -179,13 +179,10 @@ def test_cijfers():
 def stations():
     return str(weather.Region.by_id('zeeland'))
 
-@app.cache.memoize(timeout=60*60*24) # 24 uur
 @app.route('/sitemap.xml')
+@app.cache.memoize(timeout=60*60*24) # 24 uur
+@app.add_content_type_header('text/xml')
 def sitemap():
     url_root = flask.request.url_root[:-1]
     provincies = weather.Provincie.all()
-    xml = flask.render_template('sitemap.jinja', url_root=url_root, provincies=provincies)
-
-    response = flask.make_response(xml)
-    response.headers['Content-Type'] = 'text/xml'
-    return response
+    return flask.render_template('sitemap.jinja', url_root=url_root, provincies=provincies)
