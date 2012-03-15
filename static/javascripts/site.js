@@ -148,7 +148,7 @@ jQuery(document).ready(function () {
 				plotLines : [{
 					value : (function () {
 						var d = new Date();
-						if (d.getHours() < 6 || d.getHours() > 23) {
+						if (d.getHours() < 6 || d.getHours() > 22) {
 							return null;
 						}
 						return (d.getHours() - 6) + ((d.getMinutes() * (100 / 60)) / 100);
