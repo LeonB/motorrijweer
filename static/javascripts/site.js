@@ -1,5 +1,6 @@
 //@TODO: assen van de grafieken vastzetten
-jQuery(document).ready(function() {
+jQuery(document).ready(function () {
+	"use strict";
 
 	jQuery('.cijfer .waarde').tooltip({
 		placement: 'bottom',
@@ -76,23 +77,24 @@ jQuery(document).ready(function() {
 
 });
 
-jQuery(document).ready(function() {
+jQuery(document).ready(function () {
+	"use strict";
 	jQuery(".alert-message").alert();
 });
 
-jQuery(document).ready(function() {
-	//
-	// Disable certain links in docs
-	// =============================
-	// Please do not carry these styles over to your projects, it's merely here to prevent button clicks form taking you away from your spot on page
-	jQuery('a.disabled').click(function(e) {
-		e.preventDefault()
+jQuery(document).ready(function () {
+	"use strict";
+
+	jQuery('a.disabled').click(function (e) {
+		e.preventDefault();
 	});
 });
 
-jQuery(document).ready(function() {
+jQuery(document).ready(function () {
+	"use strict";
+
 	if (jQuery('#twitter_stream').length > 0) {
-		$("#twitter_stream").tweet({
+		jQuery("#twitter_stream").tweet({
 			avatar_size: 32,
 			count: 6,
 			query: 'motorrijweer OR motorweer OR "weer om te motorrijden" OR "weer om op de motor" OR motoweer',
@@ -101,9 +103,10 @@ jQuery(document).ready(function() {
 	}
 });
 
-jQuery(document).ready(function() {
-	var chart;
-	var test = jQuery('.grafiek table thead th').map(function(i, el) {
+jQuery(document).ready(function () {
+	"use strict";
+	var chart = null;
+	var test = jQuery('.grafiek table thead th').map(function (i, el) {
 		return jQuery(el).html();
 	}).toArray();
 
@@ -113,27 +116,27 @@ jQuery(document).ready(function() {
 				renderTo: 'chart',
 				zoomType: null,
 				events: {
-					load: function() {
+					load: function () {
 
-						pl = this.plotLeft;
-						pt = this.plotTop + this.plotHeight;
+						var pl = this.plotLeft;
+						var pt = this.plotTop + this.plotHeight;
 
-						x = pl + this.xAxis[0].translate(4);
-						y = pt - this.yAxis[1].translate(1);
+						var x = pl + this.xAxis[0].translate(4);
+						var y = pt - this.yAxis[1].translate(1);
 						y = this.plotHeight + 100;
 						this.renderer.circle(x, y, 9).attr({
 							fill: 'red',
 							zIndex: 9
 						}).add();
 					},
-					redraw: function() {}
+					redraw: function () {}
 				}
 			},
 			title: {
 				text: null
 			},
 			xAxis: {
-				categories: jQuery('.grafiek table thead th').map(function(i, el) {
+				categories: jQuery('.grafiek table thead th').map(function (i, el) {
 					return jQuery(el).html();
 				}).toArray(),
 				plotBands: [{ // Light air
@@ -141,27 +144,27 @@ jQuery(document).ready(function() {
 					to: 6,
 					color: 'rgba(68, 170, 213, 0.3)',
 					label: {
-						text: 'Ochtend',
-					},
+						text: 'Ochtend'
+					}
 				}, { // Light breeze
 					from: 6,
 					to: 11,
 					color: 'rgba(0, 0, 0, 0)',
 					label: {
-						text: 'Middag',
+						text: 'Middag'
 					}
 				}, { // Light breeze
 					from: 12,
 					to: 17,
 					color: 'rgba(68, 170, 213, 0.3)',
 					label: {
-						text: 'Avond',
+						text: 'Avond'
 					}
-				}],
+				}]
 			},
 			yAxis: [{ // Primary yAxis
 				labels: {
-					formatter: function() {
+					formatter: function () {
 						return this.value + ' ' + jQuery('<div />').html('&#8451;').text();
 					},
 					style: {
@@ -185,7 +188,7 @@ jQuery(document).ready(function() {
 					}
 				},
 				labels: {
-					formatter: function() {
+					formatter: function () {
 						return this.value + ' mm';
 					},
 					style: {
@@ -198,7 +201,7 @@ jQuery(document).ready(function() {
 				max: 5
 			}, { // Tertiary yAxis (weertype)
 				title: {
-					text: null,
+					text: null
 				},
 				labels: {
 					enabled: false
@@ -213,7 +216,7 @@ jQuery(document).ready(function() {
 				alternateGridColor: null
 			}, { // 4e axis (windkracht)
 				title: {
-					text: null,
+					text: null
 				},
 				labels: {
 					enabled: false
@@ -225,7 +228,7 @@ jQuery(document).ready(function() {
 				alternateGridColor: null
 			}],
 			tooltip: {
-				formatter: function() {
+				formatter: function () {
 					var tooltip = '';
 					tooltip += this.x + ': ';
 
@@ -263,45 +266,45 @@ jQuery(document).ready(function() {
 				type: 'column',
 				yAxis: 1,
 				// dit betekent aan de rechterkant!
-				data: jQuery('.grafiek table tr.neerslag td span.waarde').map(function(i, el) {
+				data: jQuery('.grafiek table tr.neerslag td span.waarde').map(function (i, el) {
 					return parseFloat(jQuery(el).html());
 				}).toArray()
 			}, {
 				name: 'Temperatuur',
 				color: '#89A54E',
 				type: 'spline',
-				data: jQuery('.grafiek table tr.temperatuur td span.waarde').map(function(i, el) {
-					return parseFloat(jQuery(el).html())
+				data: jQuery('.grafiek table tr.temperatuur td span.waarde').map(function (i, el) {
+					return parseFloat(jQuery(el).html());
 				}).toArray()
 			}, {
 				name: 'Weertypes',
 				color: '#89A54E',
 				type: 'scatter',
 				yAxis: 2,
-				data: jQuery('.grafiek table tr.weertype td img').map(function(i, el) {
+				data: jQuery('.grafiek table tr.weertype td img').map(function (i, el) {
 					var icon = jQuery(el).attr('src');
 					return {
 						y: 2.8,
 						marker: {
 							symbol: 'url(' + icon + ')'
 						}
-					}
+					};
 				}).toArray()
 			}, {
 				name: 'Windkracht',
 				color: '#ff0000',
 				type: 'spline',
 				yAxis: 3,
-				data: jQuery('.grafiek table tr.windkracht td span.waarde').map(function(i, el) {
-					return parseFloat(jQuery(el).html())
+				data: jQuery('.grafiek table tr.windkracht td span.waarde').map(function (i, el) {
+					return parseFloat(jQuery(el).html());
 				}).toArray()
 			}]
-		}, function(chart) {
+		}, function (chart) {
 			var renderer = chart.renderer;
 
 
 		});
-}
+	}
 
-jQuery('.grafiek table').hide();
+	jQuery('.grafiek table').hide();
 });
