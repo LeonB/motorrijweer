@@ -46,7 +46,6 @@ def regio_redirect(regio):
 @app.cache.memoize(timeout=60*30) # 30 minutes
 @app.add_expires_header(minutes=60)
 def regio(regio, datum_str = 'vandaag'):
-    return str(mytime.datetime.now())
     # Does the regio exist?
     regio = weather.Regio.by_id(regio.lower())
     if not regio:
