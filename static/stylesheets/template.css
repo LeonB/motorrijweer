@@ -256,6 +256,11 @@ box-shadow: inset 0 1px 0 #ffffff;
 	line-height: 1;
 }
 
+.grafiek .span12 {
+	width: 910px;
+	overflow-x: auto;
+}
+
 .grafiek #chart {
 	width: 910px;
 }

@@ -114,23 +114,7 @@ jQuery(document).ready(function () {
 		chart = new Highcharts.Chart({
 			chart: {
 				renderTo: 'chart',
-				zoomType: null,
-				events: {
-					load: function () {
-
-						var pl = this.plotLeft;
-						var pt = this.plotTop + this.plotHeight;
-
-						var x = pl + this.xAxis[0].translate(4);
-						var y = pt - this.yAxis[1].translate(1);
-						y = this.plotHeight + 100;
-						this.renderer.circle(x, y, 9).attr({
-							fill: 'red',
-							zIndex: 9
-						}).add();
-					},
-					redraw: function () {}
-				}
+				zoomType: null
 			},
 			title: {
 				text: null
@@ -160,6 +144,19 @@ jQuery(document).ready(function () {
 					label: {
 						text: 'Avond'
 					}
+				}],
+				plotLines : [{
+					value : (function () {
+						var d = new Date();
+						if (d.getHours() < 6 || d.getHours() > 23) {
+							return null;
+						}
+						return (d.getHours() - 6) + ((d.getMinutes() * (100 / 60)) / 100);
+					}()),
+					color : '#538BCC',
+					dashStyle : 'shortdash',
+					width : 1,
+					zIndex : 0
 				}]
 			},
 			yAxis: [{ // Primary yAxis
@@ -172,7 +169,7 @@ jQuery(document).ready(function () {
 					}
 				},
 				title: {
-					text: 'Temperatuur',
+					text: null,
 					style: {
 						color: '#89A54E'
 					}
@@ -182,7 +179,7 @@ jQuery(document).ready(function () {
 				max: 35
 			}, { // Secondary yAxis (Neerslag)
 				title: {
-					text: 'Neerslag in mm',
+					text: null,
 					style: {
 						color: '#4572A7'
 					}
