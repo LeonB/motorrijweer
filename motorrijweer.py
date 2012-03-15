@@ -27,8 +27,9 @@ def before_request():
 def page_not_found(e):
     return flask.render_template('404.jinja'), 404
 
-@app.cache.memoize(timeout=60*60*24) # 24 uur
 @app.route('/')
+@app.cache.memoize(timeout=60*60*24) # 24 uur
+@app.add_expires_header(minutes=60*24) # 24 uur
 def index():
     provincies = weather.Provincie.all()
     return flask.render_template('index.jinja', provincies=provincies)
@@ -41,9 +42,11 @@ def regio_redirect(regio):
     else:
         return flask.redirect('/regio/%(regio)s/morgen' % {'regio': regio}, 302)
 
-@app.cache.memoize(timeout=60*30) # 30 minutes
 @app.route('/regio/<regio>/<datum_str>')
+@app.cache.memoize(timeout=60*30) # 30 minutes
+@app.add_expires_header(minutes=60)
 def regio(regio, datum_str = 'vandaag'):
+    return str(mytime.datetime.now())
     # Does the regio exist?
     regio = weather.Regio.by_id(regio.lower())
     if not regio:
@@ -63,8 +66,9 @@ def provincie_redirect(provincie):
     else:
         return flask.redirect('/provincie/%(provincie)s/morgen' % {'provincie': provincie}, 302)
 
-@app.cache.memoize(timeout=60*30) # 30 minutes
 @app.route('/provincie/<provincie>/<datum_str>')
+@app.cache.memoize(timeout=60*30) # 30 minutes
+@app.add_expires_header(minutes=60)
 def provincie(provincie, datum_str = 'vandaag'):
     # Does the provincie exist?
     provincie = weather.Provincie.by_id(provincie.lower())
