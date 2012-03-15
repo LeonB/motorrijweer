@@ -95,7 +95,7 @@ jQuery(document).ready(function() {
 		$("#twitter_stream").tweet({
 			avatar_size: 32,
 			count: 6,
-			query: 'motorrijweer OR motorweer OR "weer om te motorrijden" OR "weer om op de motor"',
+			query: 'motorrijweer OR motorweer OR "weer om te motorrijden" OR "weer om op de motor" OR motoweer',
 			loading_text: "twitterberichten zoeken..."
 		});
 	}
