@@ -16,10 +16,15 @@ handlers:
 #   static_files: index.html
 #   upload: index\.html
 
-- url: /(.*\.(gif|png|jpg|ico|js|css|html|txt))
-  static_files: \1
-  upload: (.*\.(gif|png|jpg|ico|js|css|html|txt))
+- url: /static/(.*\.(gif|png|jpg|ico|js|css|html|txt))
+  static_files: static/\1
+  upload: static/(.*\.(gif|png|jpg|ico|js|css|html|txt))
   expiration: "28d"
+
+- url: /favicon.ico
+  static_files: static/favicon.ico
+  expiration: "28d"
+  upload: static/favicon.ico
 
 - url: /.*
   script: wsgi.app
@@ -27,3 +32,15 @@ handlers:
 - url: /tasks/.*
   script: wsgi.app
   login: admin
+
+skip_files:
+- ^(.*/)?app\.yaml
+- ^(.*/)?app\.yml
+- ^(.*/)?index\.yaml
+- ^(.*/)?index\.yml
+- ^(.*/)?#.*#
+- ^(.*/)?.*~
+- ^(.*/)?.*\.py[co]
+- ^(.*/)?.*/RCS/.*
+- ^(.*/)?\..*
+- ^static/images/icons
