@@ -374,9 +374,6 @@ StationOverlay = function (options) {
 		// Kijken of de boel erop past
 		if (left < 0) {
 			left = position.x;
-			if (left < 0) {
-				left = 0;
-			}
 		}
 
 		// echt toekennen
