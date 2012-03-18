@@ -56,7 +56,7 @@
 								{% if forecast.temperatuur is none %}
 								<span class="waarde">N/B</span>
 								{% else %}
-								<span class="waarde">{{ forecast.temperatuur }}</span>
+								<span class="waarde">{{ forecast.temperatuur|round|int }}</span>
 								<span class="eenheid celcius">&#8451;</span>
 								{% endif %}
 						</td>
