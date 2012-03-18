@@ -420,6 +420,7 @@ Weerkaart = function (div_id, center_point) {
 	this.center_point = center_point;
 	this.div_id = div_id;
 	this.stations = new Array();
+	this.latlngbounds = new google.maps.LatLngBounds();
 
 	this.add_station = function (station) {
 		if (!this.map) {
@@ -432,7 +433,7 @@ Weerkaart = function (div_id, center_point) {
 		var longitude = jQuery(station.longitude).text();
 		var latlng = new google.maps.LatLng(latitude, longitude);
 
-		//&deg;
+		this.latlngbounds.extend(latlng);
 
 		var minimumtemperatuur = jQuery.trim(jQuery(station.minimumtemperatuur)[0].innerHTML);
 		var maximumtemperatuur = jQuery.trim(jQuery(station.maximumtemperatuur)[0].innerHTML);
@@ -524,7 +525,7 @@ Weerkaart = function (div_id, center_point) {
 				mapTypeIds: ['sober']
 			},
 			center: new google.maps.LatLng(30, 0),
-			zoom: 8,
+			zoom: 10,
 			mapTypeId: 'sober',
 			disableDoubleClickZoom: true,
 			zoomControl: false,
@@ -535,17 +536,39 @@ Weerkaart = function (div_id, center_point) {
 			draggable: false
 		});
 
+		var self = this;
+		self.set_center = false; // om recursion te voorkomen
+		self.set_bounds = false;
+
 		// Style aanpassen
 		map.mapTypes.set('sober', new google.maps.StyledMapType(this.style(), { name: 'sober' }));
+
+		google.maps.event.addListener(map, 'center_changed', function() {
+			// alert('center_changed');
+		});
+
+		google.maps.event.addListener(map, 'maptypeid_changed', function() {
+			// alert('maptypeid_changed!');
+		});
+		
+		google.maps.event.addListener(map, 'bounds_changed', function() {
+			if (self.set_bounds == false && self.center) {
+				map.fitBounds(self.latlngbounds);
+				map.setCenter(self.center);
+				self.set_bounds = true;
+			}
+		});
 
 		//Middenpunt van de kaart neerzetten
 		var geocoder = new google.maps.Geocoder();
 		geocoder.geocode({ 'address': this.center_point}, function (results, status) {
 			if (status == google.maps.GeocoderStatus.OK) {
-				map.setCenter(results[0].geometry.location);
+				self.center = results[0].geometry.location;
+				google.maps.event.trigger(map, 'bounds_changed');
 			}
 		});
 
+		this.map = map;
 		return map;
 	};
 
@@ -557,8 +580,6 @@ jQuery(document).ready(function () {
 	if (jQuery('#weerkaart').length > 0) {
 		var div = jQuery('#weerkaart');
 		var center_point = div.find('h2').text();
-		var weerkaart = new Weerkaart('weerkaart', center_point);
-
 		var stations = new Array();
 
 		// namen vinden
@@ -580,6 +601,9 @@ jQuery(document).ready(function () {
 				stations[index][attribute] = attribute_value; //obj.asd == obj['asd']
 			});
 		});
+
+		var weerkaart = new Weerkaart('weerkaart', center_point);
+		weerkaart.draw();
 
 		jQuery.each(stations, function (index, station) {
 			weerkaart.add_station(station);
