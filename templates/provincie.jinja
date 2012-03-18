@@ -1,6 +1,7 @@
 {% extends "layout.jinja" %}
 {% block title %}Provincie {{ provincie.name }}{% endblock %}
 {% block description %}Hoe goed is het motorrijweer in de provincie {{ provincie.name }}?{% endblock %}
+{% block container_class %}{{ datum|datestr }}{% endblock %}
 {% block body %}
 
 {% set weer = weer.overdag %}

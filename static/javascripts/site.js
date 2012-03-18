@@ -144,6 +144,10 @@ jQuery(document).ready(function () {
 				}],
 				plotLines : [{
 					value : (function () {
+						if (!jQuery('.container').hasClass('vandaag')) {
+							return;
+						}
+
 						var d = new Date();
 						if (d.getHours() < 6 || d.getHours() > 22) {
 							return null;
