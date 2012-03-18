@@ -265,6 +265,21 @@ box-shadow: inset 0 1px 0 #ffffff;
 	width: 910px;
 }
 
+.span6.weerkaart {
+	width: 430px;
+}
+
+#weerkaart {
+	width: 420px;
+	height: 380px;
+	overflow-x: auto;
+}
+
+#weerkaart .station_overlay {
+	color: black;
+	font-size: 11px;
+}
+
 .back {
 	float: left;
 }

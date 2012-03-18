@@ -106,9 +106,6 @@ jQuery(document).ready(function () {
 jQuery(document).ready(function () {
 	"use strict";
 	var chart = null;
-	var test = jQuery('.grafiek table thead th').map(function (i, el) {
-		return jQuery(el).html();
-	}).toArray();
 
 	if (jQuery('#chart').length > 0) {
 		chart = new Highcharts.Chart({
@@ -304,4 +301,288 @@ jQuery(document).ready(function () {
 	}
 
 	jQuery('.grafiek table').hide();
+});
+
+StationOverlay = function (options) {
+	"use strict";
+	google.maps.OverlayView.call(this);
+
+	// Now initialize all properties.
+	this.map = options.map;
+	this.txt = options.txt;
+	this.cls = options.cls;
+	this.latlng = options.latlng;
+
+	// We define a property to hold the image's
+	// div. We'll actually create this div
+	// upon receipt of the add() method so we'll
+	// leave it null for now.
+	this.div = null;
+
+	// Explicitly call setMap() on this overlay
+	this.setMap(this.map);
+
+	this.onAdd = function () {
+		// Note: an overlay's receipt of onAdd() indicates that
+		// the map's panes are now available for attaching
+		// the overlay to the map via the DOM.
+
+		// Create the DIV and set some basic attributes.
+		var div = document.createElement('DIV');
+		div.className = this.cls;
+		div.innerHTML = this.txt;
+
+		// Set the overlay's div property to this DIV
+		this.div = div;
+
+		// We add an overlay to a map via one of the map's panes.
+		var panes = this.getPanes();
+		panes.floatPane.appendChild(div);
+	};
+
+
+	this.draw = function () {
+		var overlayProjection = this.getProjection();
+
+		// Retrieve the southwest and northeast coordinates of this overlay
+		// in latlngs and convert them to pixels coordinates.
+		// We'll use these coordinates to resize the DIV.
+		var position = overlayProjection.fromLatLngToDivPixel(this.latlng);
+
+
+		var div = this.div;
+		div.style.position = 'absolute';
+
+		// Get the width and height of the div
+		// Have to be inserted in the dom to do that
+		jQuery('#fixture').remove();
+		var fixture = jQuery(document.createElement('div'));
+		fixture.attr('id', 'fixture');
+		fixture.append(jQuery(div).clone());
+		jQuery('body').append(fixture);
+		var width = fixture.find('div').width();
+		var height = fixture.find('div').height();
+		jQuery('#fixture').remove();
+
+		this.div.style.width = width + 'px';
+		this.div.style.height = height + 'px';
+
+		// Coordinate = bottom, right of div
+		var left = (position.x - (width / 2));
+		var top = (position.y - (width / 2));
+
+		// Kijken of de boel erop past
+		if (left < 0) {
+			left = position.x;
+			if (left < 0) {
+				left = 0;
+			}
+		}
+
+		// echt toekennen
+		div.style.left = left + 'px';
+		div.style.top = top + 'px';
+
+		// div.style.left = position.x + 'px';
+		// div.style.top = position.y + 'px';
+	};
+
+	this.onRemove = function () {
+		this.div.parentNode.removeChild(this.div);
+		this.div = null;
+	};
+
+	this.hide = function () {
+		if (this.div) {
+			this.div.style.visibility = "hidden";
+		}
+	};
+
+	this.show = function () {
+		if (this.div) {
+			this.div.style.visibility = "visible";
+		}
+	};
+
+	this.toggleDOM = function () {
+		if (this.getMap()) {
+			this.setMap(null);
+		} else {
+			this.setMap(this.map);
+		}
+	};
+};
+StationOverlay.prototype = google.maps.OverlayView.prototype;
+
+Weerkaart = function (div_id, center_point) {
+	"use strict";
+
+	this.center_point = center_point;
+	this.div_id = div_id;
+	this.stations = new Array();
+
+	this.add_station = function (station) {
+		if (!this.map) {
+			this.map = this.draw();
+		}
+
+		this.stations.push(station);
+
+		var latitude = jQuery(station.latitude).text();
+		var longitude = jQuery(station.longitude).text();
+		var latlng = new google.maps.LatLng(latitude, longitude);
+
+		//&deg;
+
+		var minimumtemperatuur = jQuery.trim(jQuery(station.minimumtemperatuur)[0].innerHTML);
+		var maximumtemperatuur = jQuery.trim(jQuery(station.maximumtemperatuur)[0].innerHTML);
+		var customTxt = station.weertype + '<br />' + minimumtemperatuur + '&deg;' + '/' + maximumtemperatuur + '&deg;';
+
+		new StationOverlay(
+			{
+				map: this.map,
+				cls: "station_overlay",
+				latlng: latlng,
+				txt: customTxt
+			}
+		);
+	};
+
+	this.style = function () {
+		return [
+			{
+				featureType: "administrative",
+				elementType: "all",
+				stylers: [
+					{ visibility: "off" }
+				]
+			}, {
+				featureType: "administrative.country",
+				elementType: "all",
+				stylers: [
+					{ visibility: "on" }
+				]
+			}, {
+				featureType: "administrative.province",
+				elementType: "all",
+				stylers: [
+					{ visibility: "on" }
+				]
+			}, {
+				featureType: "landscape",
+				elementType: "all",
+				stylers: [
+					{ visibility: "off" }
+				]
+			}, {
+				featureType: "landscape.man_made",
+				elementType: "all",
+				stylers: [
+					{ visibility: "off" }
+				]
+			}, {
+				featureType: "landscape.natural",
+				elementType: "all",
+				stylers: [
+					{ visibility: "off" },
+					{ hue: "#1aff00" },
+					{ lightness: -17 },
+					{ gamme: 0 }
+				]
+			}, {
+				featureType: "transit",
+				elementType: "all",
+				stylers: [
+					{ visibility: "off" }
+				]
+			}, {
+				featureType: "poi",
+				elementType: "all",
+				stylers: [
+					{ visibility: "off" }
+				]
+			}, {
+				featureType: "water",
+				elementType: "labels",
+				stylers: [
+					{ visibility: "off" }
+				]
+			}, {
+				featureType: "road",
+				elementType: "all",
+				stylers: [
+					{ visibility: "off" }
+				]
+			}
+		];
+	};
+
+	this.draw = function () {
+		// Google maps aanroepen
+		var map = new google.maps.Map(document.getElementById(this.div_id), {
+			mapTypeControlOptions: {
+				mapTypeIds: ['sober']
+			},
+			center: new google.maps.LatLng(30, 0),
+			zoom: 8,
+			mapTypeId: 'sober',
+			disableDoubleClickZoom: true,
+			zoomControl: false,
+			streetViewControl: false,
+			mapTypeControl: false,
+			panControl: false,
+			scrollwheel: false,
+			draggable: false
+		});
+
+		// Style aanpassen
+		map.mapTypes.set('sober', new google.maps.StyledMapType(this.style(), { name: 'sober' }));
+
+		//Middenpunt van de kaart neerzetten
+		var geocoder = new google.maps.Geocoder();
+		geocoder.geocode({ 'address': this.center_point}, function (results, status) {
+			if (status == google.maps.GeocoderStatus.OK) {
+				map.setCenter(results[0].geometry.location);
+			}
+		});
+
+		return map;
+	};
+
+};
+
+jQuery(document).ready(function () {
+	"use strict";
+
+	if (jQuery('#weerkaart').length > 0) {
+		var div = jQuery('#weerkaart');
+		var center_point = div.find('h2').text();
+		var weerkaart = new Weerkaart('weerkaart', center_point);
+
+		var stations = new Array();
+
+		// namen vinden
+		jQuery.each(div.find('thead th'), function (index, value) {
+			var station = {};
+			var element = jQuery(value);
+			station.name = jQuery.trim(element.text());
+			stations[index] = station;
+		});
+
+		// Over alle rijen loopen en alle values vinden
+		jQuery.each(div.find('tr th[scope=row]'), function (index, value) {
+			var th = jQuery(value);
+			var attribute = jQuery.trim(th.parent('tr').attr('class'));
+			
+			jQuery.each(th.siblings('td'), function (index, value) {
+				var element = jQuery(value);
+				var attribute_value = jQuery.trim(element[0].innerHTML);
+				stations[index][attribute] = attribute_value; //obj.asd == obj['asd']
+			});
+		});
+
+		jQuery.each(stations, function (index, station) {
+			weerkaart.add_station(station);
+		});
+	};
 });

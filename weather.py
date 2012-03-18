@@ -6,6 +6,7 @@ from motorrijweer import app
 from collections import OrderedDict
 import models
 import xml.etree.ElementTree
+import werkzeug
 
 class Underground(object):
     def get_station(self, station, days=3):
@@ -119,6 +120,18 @@ class ForecastCollection(object):
             fc.forecasts.append(forecast)
 
         return fc
+
+    @property
+    def stations(self):
+        stations = {}
+
+        for forecast in self.forecasts:
+            station_id = forecast.station_id
+            if not station_id in stations:
+                stations[station_id] = Station.by_id(station_id)
+            stations[station_id].forecasts.append(forecast)
+
+        return stations.values()
 
     @property
     def ochtend(self):
@@ -405,7 +418,7 @@ class Weather(object):
     def from_gae(cls, station = None, regio = None, provincie = None, datum = None):
         stations = []
         if station:
-            stations = [station]
+            stations = [station.id]
         elif regio:
             stations = map(lambda x: x.id, regio.stations)
         elif provincie:
@@ -413,6 +426,10 @@ class Weather(object):
                 stations = stations + map(lambda x: x.id, regio.stations)
 
         collection = ForecastCollection()
+
+        if len(stations) == 0:
+            return collection
+
         dbForecasts = models.Forecast.gql("WHERE station_id IN :stations AND datapunt_van >= :datum \
                                           AND datapunt_van < :plus_dag \
                                           ORDER BY datapunt_van ASC",
@@ -691,38 +708,45 @@ class Beaufort(object):
                 return (kmh_1, kmh_2)
 
 class Provincie(object):
+    provincies_cache = None
 
     def __init__(self):
         self.regios = []
 
     @classmethod
     def all(cls):
-        et = xml.etree.ElementTree.parse('stations.xml')
-        provincies = []
+        if not cls.provincies_cache:
+            et = xml.etree.ElementTree.parse('stations.xml')
+            provincies = []
 
-        for xmlProvincie in et.findall('provincie'):
-            provincie = Provincie()
-            provincie.id = xmlProvincie.find('id').text
-            provincie.name = xmlProvincie.find('name').text
-            provincies.append(provincie)
+            for xmlProvincie in et.findall('provincie'):
+                provincie = Provincie()
+                provincie.id = xmlProvincie.find('id').text
+                provincie.name = xmlProvincie.find('name').text
+                provincies.append(provincie)
 
-            for xmlRegio in xmlProvincie.find('regios').findall('regio'):
-                regio = Regio()
-                regio.id = xmlRegio.find('id').text
-                regio.name = xmlRegio.find('name').text
-                regio.provincie = provincie
-                provincie.regios.append(regio)
+                for xmlRegio in xmlProvincie.find('regios').findall('regio'):
+                    regio = Regio()
+                    regio.id = xmlRegio.find('id').text
+                    regio.name = xmlRegio.find('name').text
+                    regio.provincie = provincie
+                    provincie.regios.append(regio)
 
-                for xmlStation in xmlRegio.find('stations').findall('station'):
-                    station = Station()
-                    station.id = xmlStation.find('id').text
-                    station.code = xmlStation.find('code').text
-                    station.name = xmlStation.find('name').text
-                    station.provincie = provincie
-                    station.regio = regio
-                    regio.stations.append(station)
+                    for xmlStation in xmlRegio.find('stations').findall('station'):
+                        station = Station()
+                        station.id = xmlStation.find('id').text
+                        station.code = xmlStation.find('code').text
+                        station.name = xmlStation.find('name').text
+                        station.coordinates = {}
+                        station.coordinates['latitude'] = xmlStation.find('coordinates').find('latitude').text
+                        station.coordinates['longitude'] = xmlStation.find('coordinates').find('longitude').text
+                        station.provincie = provincie
+                        station.regio = regio
+                        regio.stations.append(station)
 
-        return provincies
+            cls.provincies_cache = provincies
+
+        return cls.provincies_cache
 
     @classmethod
     def by_id(cls, provincie_id):
@@ -768,9 +792,10 @@ class Regio(object):
         return regios[0]
 
 
-class Station(object):
+class Station(ForecastCollection):
 
     def __init__(self):
+        ForecastCollection.__init__(self)
         self.provincie = None
         self.regio = None
 

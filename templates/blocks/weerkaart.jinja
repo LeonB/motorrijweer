@@ -1,19 +1,82 @@
 <!-- @TODO: kijken waar ik de weerkaart(en) & -berichten per regio vandaan kan halen -->
-<div class="component component-big">
-	<div class="module">
-		<div class="module-body">
-			<div class="row">
-				<div class="span5">
-					<img src="http://www.zeelandnet.nl/weer/assets/img/zeeland.jpg" alt="zeeland" />
-				</div>
-				<div class="span10">
-					<p class="praatje">Vanmiddag trekken vanuit het noordwesten enkele buien het land over. De meeste neerslag valt in het noorden van het land. Het uiterste zuidwesten houdt het mogelijk helemaal droog. Ook kan van tijd tot tijd de zon even gezien worden. Het wordt circa 8 graden en er staat een stevige westenwind. Aan zee waait het hard tot stormachtig en zijn zware windstoten mogelijk tot ongeveer 80 km/uur.</p>
-					<p class="praatje">
-					Kans op regen: 30 % <br />
-					Kans op zon: 65 % <br />
-					</p>
-				</div>
-			</div>
+
+<div class="row">
+	<div class="span6 weerkaart">
+		<div class="thumbnail">
+			<div id="weerkaart">
+				<h2>{{provincie.name}}</h2>
+				<table class="table table-bordered">
+						<thead>
+							<tr>
+								<td></td>
+								{% for station in weer.stations %}
+								<th scope="col">{{ station.name }}</th>
+								{% endfor %}
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="code">
+								<th scope="row">Code</th>
+								{% for station in weer.stations %}
+								<td>
+									<span class="latitude">{{ station.code }}</span>
+								</td>
+								{% endfor %}
+							</tr>
+
+							<tr class="latitude">
+								<th scope="row">Breedtegraad</th>
+								{% for station in weer.stations %}
+								<td>
+									<span class="latitude">{{ station.coordinates.latitude }}</span>
+								</td>
+								{% endfor %}
+							</tr>
+
+							<tr class="longitude">
+								<th scope="row">Lengtegraad</th>
+								{% for station in weer.stations %}
+								<td>
+									<span class="longitude">{{ station.coordinates.longitude }}</span>
+								</td>
+								{% endfor %}
+							</tr>
+
+							<tr class="weertype">
+								<th scope="row">Weertype</th>
+								{% for station in weer.stations %}
+								<td>
+									{% if station.weertype is none %}
+									<span class="waarde">N/B</span>
+									{% else %}
+									<img src="http://icons.wxug.com/i/c/i/{{ station.weertype }}.gif" alt="Weersoort" title="{{ station.omschrijving }}" />
+									{% endif %}
+								</td>
+								{% endfor %}
+							</tr>
+
+							<tr class="minimumtemperatuur">
+								<th scope="row">Minimumtemperatuur</th>
+								{% for station in weer.stations %}
+								<td>
+									<span class="waarde">{{ weer.minimumtemperatuur }}</span>
+									<span class="eenheid celcius">&#8451;</span>
+								</td>
+								{% endfor %}
+							</tr>
+
+							<tr class="maximumtemperatuur">
+								<th scope="row">Maxiumumtemperatuur</th>
+								{% for station in weer.stations %}
+								<td>
+									<span class="waarde">{{ weer.maximumtemperatuur }}</span>
+									<span class="eenheid celcius">&#8451;</span>
+								</td>
+								{% endfor %}
+							</tr>
+					</tbody>
+				</table>
+			</div> 
 		</div>
 	</div>
 </div>
