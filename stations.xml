@@ -39,12 +39,41 @@
 				<name>West-Brabant</name>
 				<stations>
 					<station>
+						<id>EHWO</id>
+						<code>EHWO</code>
+						<name>Woensdrecht</name>
+						<coordinates>
+							<latitude>51.44889069</latitude>
+							<longitude>4.34194422</longitude>
+						</coordinates>
+					</station>
+					<station>
 						<id>EHGR</id>
 						<code>EHGR</code>
 						<name>Gilze-Rijen</name>
+						<coordinates>
+							<latitude>51.56999969</latitude>
+							<longitude>4.92999983</longitude>
+						</coordinates>
 					</station>
 				</stations>
 			</regio>
+			<!--
+			<regio>
+				<id>zuidoostbrabant</id>
+				<name>Zuidoost-Brabant</name>
+				<stations>
+					<station>
+						<id>EHEH</id>
+						<code>EHEH</code>
+						<name>Veldhoven</name>
+						<coordinates>
+							<latitude>51.437794</latitude>
+							<longitude>5.477415</longitude>
+						</coordinates>
+					</station>
+			</regio>
+			-->
 			<!--
 			<regio>
 				<id>middenbrabant</id>
@@ -86,6 +115,19 @@
 						<id>MD7661</id>
 						<code>pws:MD7661</code>
 						<name>Kloosterzande</name>
+						<coordinates>
+							<latitude>51.365730</latitude>
+							<longitude>4.010793</longitude>
+						</coordinates>
+					</station>
+					<station>
+						<id>IVLAAMSG13</id>
+						<code>pws:IVLAAMSG13</code>
+						<name>Heist aan zee</name>
+						<coordinates>
+							<latitude>51.334793</latitude>
+							<longitude>3.248692</longitude>
+						</coordinates>
 					</station>
 				</stations>
 			</regio>
@@ -97,14 +139,46 @@
 						<id>IZEELAND16</id>
 						<code>pws:IZEELAND16</code>
 						<name>Sint Laurens</name>
+						<coordinates>
+							<latitude>51.520061</latitude>
+							<longitude>3.610026</longitude>
+						</coordinates>
 					</station>
 				</stations>
 			</regio>
+			
 			<regio>
-				<id>zeelandnoord</id>
-				<name>Zeeland-Noord</name>
-				<stations />
+				<id>schouwenduiveland</id>
+				<name>Schouwen-Duiveland</name>
+				<stations>
+					<station>
+						<id>IZEELAND8</id>
+						<code>pws:IZEELAND8</code>
+						<name>Nieuwekerk</name>
+						<coordinates>
+							<latitude>51.648357</latitude>
+							<longitude>3.994045</longitude>
+						</coordinates>
+					</station>
+				</stations>
 			</regio>
+			<!--
+			<regio>
+				<id>goereeoverflakkee</id>
+				<name>Goerree-Overflakkee</name>
+				<stations>
+					<station>
+						<id>IZUIDHOL103</id>
+						<code>pws:IZUIDHOL103</code>
+						<name>Dirksland</name>
+						<coordinates>
+							<latitude>51.748447</latitude>
+							<longitude>4.101793</longitude>
+						</coordinates>
+					</station>
+				</stations>
+			</regio>
+			-->
 		</regios>
 	</provincie>
 	<provincie>
