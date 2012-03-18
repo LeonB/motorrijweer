@@ -1,0 +1,14 @@
+#!/bin/bash
+
+> static/javascripts/combine.min.js
+> static/stylesheets/combine.min.css
+
+cat static/bootstrap/js/bootstrap.min.js >> static/javascripts/combine.min.js
+yui-compressor static/tweet/jquery.tweet.js >> static/javascripts/combine.min.js
+cat static/javascripts/highcharts/highcharts.js >> static/javascripts/combine.min.js
+yui-compressor static/javascripts/highcharts/themes/skies.js >> static/javascripts/combine.min.js
+yui-compressor static/javascripts/site.js >> static/javascripts/combine.min.js
+
+cat static/bootstrap/css/bootstrap.min.css >> static/stylesheets/combine.min.css
+yui-compressor static/stylesheets/template.css >> static/stylesheets/combine.min.css
+yui-compressor static/tweet/jquery.tweet.css >> static/stylesheets/combine.min.css
