@@ -16,4 +16,10 @@ for filename in os.listdir(package_dir_path):
         sys.path.insert(0, "%s/%s" % (package_dir_path, filename))
 
 from motorrijweer import app
+
+# Check for Google appengine signature
+if os.environ['SERVER_SOFTWARE'].startswith('Development'):
+    from werkzeug_debugger_appengine import get_debugged_app
+    app = get_debugged_app(app)
+
 app = recording.appstats_wsgi_middleware(app)

@@ -6,7 +6,12 @@ from flaskext.babel import Babel
 # First set up app + cache (it may be used by other modules)
 app = flask.Flask(__name__)
 app.config.from_pyfile('motorrijweer.nl.cfg')
-app.debug = True
+
+# Check for Google appengine signature
+if os.environ['SERVER_SOFTWARE'].startswith('Development'):
+    app.debug = True
+    app.config['CACHE_TYPE'] = 'null'
+
 app.cache = Cache(app)
 app.babel = Babel(app)
 
