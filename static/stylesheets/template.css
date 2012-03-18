@@ -1,5 +1,5 @@
 html, body {
-	height: 100%;
+
 }
 
 body {
@@ -14,6 +14,7 @@ body {
     background-size: cover;
     filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/static/images/fast_road.jpg', sizingMethod='scale');
 	-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/static/images/fast_road.jpg', sizingMethod='scale')";
+	position: relative;
 }
 
 h3, h4, h5, h6 {
@@ -312,4 +313,7 @@ a.disabled{
 .tweet_list .tweet_even {
 	background-color: whiteSmoke !important;
 }
+
+.tweet_list .tweet_avatar img {
+	max-width: 32px; /* IE8 issue */
 }
