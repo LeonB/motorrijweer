@@ -58,7 +58,6 @@
 					</station>
 				</stations>
 			</regio>
-			<!--
 			<regio>
 				<id>zuidoostbrabant</id>
 				<name>Zuidoost-Brabant</name>
@@ -72,8 +71,8 @@
 							<longitude>5.477415</longitude>
 						</coordinates>
 					</station>
+				</stations>
 			</regio>
-			-->
 			<!--
 			<regio>
 				<id>middenbrabant</id>
