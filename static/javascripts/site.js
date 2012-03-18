@@ -416,7 +416,7 @@ Weerkaart = function (div_id, center_point) {
 
 	this.center_point = center_point;
 	this.div_id = div_id;
-	this.stations = new Array();
+	this.stations = [];
 	this.latlngbounds = new google.maps.LatLngBounds();
 
 	this.add_station = function (station) {
@@ -547,8 +547,8 @@ Weerkaart = function (div_id, center_point) {
 		google.maps.event.addListener(map, 'maptypeid_changed', function() {
 			// alert('maptypeid_changed!');
 		});
-		
-		google.maps.event.addListener(map, 'bounds_changed', function() {
+
+		google.maps.event.addListener(map, 'bounds_changed', function () {
 			if (self.set_bounds == false && self.center) {
 				map.fitBounds(self.latlngbounds);
 				map.setCenter(self.center);
@@ -577,7 +577,7 @@ jQuery(document).ready(function () {
 	if (jQuery('#weerkaart').length > 0) {
 		var div = jQuery('#weerkaart');
 		var center_point = div.find('h2').text();
-		var stations = new Array();
+		var stations = [];
 
 		// namen vinden
 		jQuery.each(div.find('thead th'), function (index, value) {
@@ -591,7 +591,7 @@ jQuery(document).ready(function () {
 		jQuery.each(div.find('tr th[scope=row]'), function (index, value) {
 			var th = jQuery(value);
 			var attribute = jQuery.trim(th.parent('tr').attr('class'));
-			
+
 			jQuery.each(th.siblings('td'), function (index, value) {
 				var element = jQuery(value);
 				var attribute_value = jQuery.trim(element[0].innerHTML);
@@ -605,5 +605,5 @@ jQuery(document).ready(function () {
 		jQuery.each(stations, function (index, station) {
 			weerkaart.add_station(station);
 		});
-	};
+	}
 });
