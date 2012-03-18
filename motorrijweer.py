@@ -1,3 +1,4 @@
+import os
 import flask
 import flaskext
 from flaskext.cache import Cache
