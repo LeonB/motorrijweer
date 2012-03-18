@@ -12,11 +12,5 @@ indexes:
 
 - kind: Forecast
   properties:
-  - name: provider
-  - name: station_id
-  - name: tijdstip_datapunt
-
-- kind: Forecast
-  properties:
   - name: station_id
   - name: datapunt_van
