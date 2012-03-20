@@ -11,7 +11,6 @@ app.config.from_pyfile('motorrijweer.nl.cfg')
 # Check for Google appengine signature
 if os.environ['SERVER_SOFTWARE'].startswith('Development'):
     app.debug = True
-    app.config['CACHE_TYPE'] = 'null'
 
 app.cache = Cache(app)
 app.babel = Babel(app)
@@ -23,6 +22,7 @@ import controllers
 import decorators
 import jinja_filters
 import jinja_tests
+import helpers
 
 @app.before_request
 def before_request():
@@ -49,7 +49,7 @@ def regio_redirect(regio):
         return flask.redirect('/regio/%(regio)s/morgen' % {'regio': regio}, 302)
 
 @app.route('/regio/<regio>/<datum_str>')
-@app.cache.memoize(timeout=60*30) # 30 minutes
+@app.cache.memoize(timeout=60*60*2) # 2 uur
 @app.add_expires_header(minutes=60)
 def regio(regio, datum_str = 'vandaag'):
     # Does the regio exist?
@@ -58,7 +58,7 @@ def regio(regio, datum_str = 'vandaag'):
         return flask.abort(404)
 
     # Change input to real date object
-    datum = _datums(datum_str)
+    datum = helpers.datums(datum_str)
 
     weer = weather.Weather().from_gae(regio=regio, datum=datum)
     return flask.render_template('regio.jinja', weer=weer, regio=regio, datum=datum)
@@ -72,7 +72,7 @@ def provincie_redirect(provincie):
         return flask.redirect('/provincie/%(provincie)s/morgen' % {'provincie': provincie}, 302)
 
 @app.route('/provincie/<provincie>/<datum_str>')
-@app.cache.memoize(timeout=60*30) # 30 minutes
+@app.cache.memoize(timeout=60*60*2) # 2 uur
 @app.add_expires_header(minutes=60)
 def provincie(provincie, datum_str = 'vandaag'):
     # Does the provincie exist?
@@ -81,45 +81,24 @@ def provincie(provincie, datum_str = 'vandaag'):
         return flask.abort(404)
 
     # Change input to real date object
-    datum = _datums(datum_str)
+    datum = helpers.datums(datum_str)
 
     weer = weather.Weather().from_gae(provincie=provincie, datum=datum)
     return flask.render_template('provincie.jinja', weer=weer, provincie=provincie, datum=datum)
 
-def _datums(datum_str):
-    # Change input to real date object
-    if datum_str == 'vandaag':
-        datum = mytime.date.today()
-    elif datum_str == 'morgen':
-        datum = mytime.date.tomorrow()
-    elif datum_str == 'overmorgen':
-        datum = mytime.date.day_after_tomorrow()
-    elif datum_str == 'gisteren':
-        datum = mytime.date.yesterday()
-    elif datum_str == 'eergisteren':
-        datum = mytime.date.day_before_yesterday()
-    else:
-        datum = mytime.datetime.strptime(datum_str, '%d%m%Y').date()
-
-    return datum
-
-def _link_back(datum):
-    datum = datum - mytime.timedelta(days=1)
-    datum_str = jinja_filters.datestr(datum)
-    return (datum_str if datum_str else datum)
-
-def _link_forward(datum):
-    datum = datum + mytime.timedelta(days=1)
-    datum_str = jinja_filters.datestr(datum)
-    return (datum_str if datum_str else datum)
+##### TASKS #####
 
 @app.route('/tasks/wunderground/forecasts/hourly')
 def tasks_wunderground_forecasts_hourly():
-    return str(controllers.tasks.wunderground.forecasts.hourly())
+    result = str(controllers.tasks.wunderground.forecasts.hourly())
+    empty_cache()
+    return result
 
 @app.route('/tasks/wunderground/forecasts/daily')
 def tasks_wunderground_forecasts_daily():
-    return str(controllers.tasks.wunderground.forecasts.daily())
+    result = str(controllers.tasks.wunderground.forecasts.daily())
+    empty_cache()
+    return result
 
 @app.route('/tasks/delete_old_forecasts')
 def tasks_delete_old_forecasts():
@@ -137,6 +116,12 @@ def tasks_regeneratecijfers():
         dbForecast.cijfer = forecast.generate_cijfer()
         dbForecast.put()
 
+    return 'OK'
+
+@app.route('/tasks/empty_cache')
+def empty_cache():
+    app.cache.cache.clear()
+    app.cache._memoized = []
     return 'OK'
 
 @app.route('/test_cijfers')
@@ -174,11 +159,6 @@ def test_cijfers():
                 gegevens[temp][neerslag_in_mm][windkracht].append(obj)
 
     return flask.render_template('test_cijfers.jinja', gegevens=gegevens)
-
-# @app.route('/tasks/update_datastore')
-# def update_datastore():
-#     for forecast in models.Forecast.gql('ORDER BY datapunt_van DESC'):
-#         forecast.put()
 
 @app.route('/stations')
 def stations():
