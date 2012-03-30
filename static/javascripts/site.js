@@ -526,7 +526,7 @@ Weerkaart = function (div_id, center_point) {
 				mapTypeIds: ['sober']
 			},
 			center: new google.maps.LatLng(30, 0),
-			zoom: 10,
+			zoom: 8, // mocht het maar 1 station zijn ofzo, dan staat het alsnog goed
 			mapTypeId: 'sober',
 			disableDoubleClickZoom: true,
 			zoomControl: false,
@@ -555,7 +555,12 @@ Weerkaart = function (div_id, center_point) {
 		google.maps.event.addListener(map, 'bounds_changed', function () {
 			if (self.set_bounds == false && self.center) {
 				map.fitBounds(self.latlngbounds);
-				map.setCenter(self.center);
+
+				// Alleen centreren als het een provincie betreft
+				if (self.center_point.toLowerCase().indexOf('provincie') == 0) {
+					map.setCenter(self.center);
+				}
+
 				self.set_bounds = true;
 			}
 		});

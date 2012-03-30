@@ -758,6 +758,7 @@ class Provincie(object):
 
         return provincies[0]
 
+    @property
     def stations(self):
         stations = []
         for regio in self.regios:

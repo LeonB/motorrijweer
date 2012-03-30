@@ -5,6 +5,7 @@
 {% block body %}
 
 {% set weer = weer.overdag %}
+{% set name = 'Provincie ' + provincie.name %}
 
 	<div class="row">
 		<div class="span12">
@@ -21,7 +22,7 @@
 					<div class="module-body">
 						<div class="row">
 							<div class="span6">
-								{% include 'blocks/summary_provincie.jinja' %}
+								{% include 'blocks/summary.jinja' %}
 							</div>
 							<div class="span5">
 								{% include 'blocks/weerkaart.jinja' %}

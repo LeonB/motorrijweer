@@ -29,7 +29,7 @@
 			<div class="module">
 				<div class="module-body">
 					{% for provincie in provincies %}
-					{% if provincie.stations()|count > 0 %}
+					{% if provincie.stations|count > 0 %}
 					<h2><a href="{{ url_for('provincie_redirect', provincie=provincie.id) }}" title="Provincie {{provincie.name}}">{{provincie.name}}</a></h2>
 					<ul>
 						{% for regio in provincie.regios %}

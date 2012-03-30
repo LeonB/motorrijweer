@@ -4,6 +4,8 @@
 {% block body %}
 
 {% set weer = weer.overdag %}
+{% set provincie = regio.provincie %}
+{% set name = regio.name + ', provincie ' + regio.provincie.name %}
 
 	<div class="row">
 		<div class="span12">
@@ -14,15 +16,22 @@
 				<div class="module">
 					<div class="module-header">
 						<h3>Weergegevens voor {{ datum|dateformat('EEEE d MMMM yyyy') }} in de regio {{ regio.name }} (provincie {{ regio.provincie.name }})</h3>
-						<p>Laatst geupdate: {{ weer.last_update|datetimeformat('d MMMM yyyy') }} om {{ weer.last_update|datetimeformat('HH:mm') }}</p>
+						<p>Laats	t geupdate: {{ weer.last_update|datetimeformat('d MMMM yyyy') }} om {{ weer.last_update|datetimeformat('HH:mm') }}</p>
 					</div>
 
 					<div class="module-body">
-						{% include 'blocks/summary_regio.jinja' %}
+						<div class="row">
+							<div class="span6">
+								{% include 'blocks/summary.jinja' %}
+							</div>
+							<div class="span5">
+								{% include 'blocks/weerkaart.jinja' %}
+							</div>
+						</div>
 					</div>
 
 					<div class="module-footer">
-						{% include 'blocks/pijltjes_regio.jinja' %}
+						{% include 'blocks/pijltjes_provincie.jinja' %}
 					</div>
 				</div>
 			</div>
