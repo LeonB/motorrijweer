@@ -59,7 +59,7 @@
 								<th scope="row">Minimumtemperatuur</th>
 								{% for station in weer.stations %}
 								<td>
-									<span class="waarde">{{ weer.minimumtemperatuur }}</span>
+									<span class="waarde">{{ station.minimumtemperatuur }}</span>
 									<span class="eenheid celcius">&#8451;</span>
 								</td>
 								{% endfor %}
@@ -69,7 +69,7 @@
 								<th scope="row">Maxiumumtemperatuur</th>
 								{% for station in weer.stations %}
 								<td>
-									<span class="waarde">{{ weer.maximumtemperatuur }}</span>
+									<span class="waarde">{{ station.maximumtemperatuur }}</span>
 									<span class="eenheid celcius">&#8451;</span>
 								</td>
 								{% endfor %}
