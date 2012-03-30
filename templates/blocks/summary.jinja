@@ -2,7 +2,7 @@
 <div class="row row_1">
 	<div class="span2 cijfer">
 		<h6>Cijfer</h6>
-		<span class="waarde"
+		<span class="waarde cijfer-{{ weer.cijfer|int }}"
 			title="Cijferopbouw<br />Neerslag: 1.21<br/>Temperatuur: 12">
 			{% if weer.cijfer is not none %}
 			{{ weer.cijfer|round(1) }}
