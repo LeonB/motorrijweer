@@ -16,15 +16,15 @@
 				<div class="module">
 					<div class="module-header">
 						<h3>Weergegevens voor {{ datum|dateformat('EEEE d MMMM yyyy') }} in de regio {{ regio.name }} (provincie {{ regio.provincie.name }})</h3>
-						<p>Laats	t geupdate: {{ weer.last_update|datetimeformat('d MMMM yyyy') }} om {{ weer.last_update|datetimeformat('HH:mm') }}</p>
+						<p>Laatst geupdate: {{ weer.last_update|datetimeformat('d MMMM yyyy') }} om {{ weer.last_update|datetimeformat('HH:mm') }}</p>
 					</div>
 
 					<div class="module-body">
 						<div class="row">
-							<div class="span6">
+							<div class="span6 summary">
 								{% include 'blocks/summary.jinja' %}
 							</div>
-							<div class="span5">
+							<div class="span5 weerkaart">
 								{% include 'blocks/weerkaart.jinja' %}
 							</div>
 						</div>
@@ -78,40 +78,6 @@
 			</div>
 		</div>
 	</div>
-
-	{#}
-	<div class="row">
-		<div class="span8">
-			<div class="component-small component-small-1">
-				<div class="module">
-					<div class="module-header">
-						<h3>Woensdag 13 april 2011</h3>
-					</div>
-					<div class="module-body">
-						<p>IETS VEEL SIMPELERS?!?</p>
-						<p>Iets met een kaartje!?</p>
-					</div>
-					<div class="module-footer"></div>
-				</div>
-			</div>
-		</div>
-
-		<div class="span8">
-			<div class="component-small">
-				<div class="module">
-					<div class="module-header">
-						<h3>Donderdag 14 april 2011</h3>
-						<h3>Op dit moment!!</h3>
-					</div>
-					<div class="module-body">
-						<p>IETS VEEL SIMPELERS!?!?</p>
-					</div>
-					<div class="module-footer"></div>
-				</div>
-			</div>
-		</div>
-	</div>
-	#}
 
 	{% include 'blocks/footer.jinja' %}
 

@@ -235,10 +235,10 @@ td.cijfer {
 	position: relative;
 }
 
-.wind .waarde {
+.summary .wind .waarde {
 	position: absolute;
-	top: 98px;
-	left: 45px;
+	top: 85px;
+	left: 22px;
 }
 
 .module-body + .module-body {
