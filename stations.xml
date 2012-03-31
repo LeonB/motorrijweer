@@ -90,7 +90,47 @@
 	<provincie>
 		<id>noordholland</id>
 		<name>Noord-Holland</name>
-		<regios />
+		<regios>
+			<regio>
+				<id>amsterdam</id>
+				<name>Amsterdam</name>
+				<stations>
+					<station>
+						<id>EHAM</id>
+						<code>EHAM</code>
+						<name>Amsterdam</name>
+						<coordinates>
+							<latitude>52.29999924</latitude>
+							<longitude>4.76999998</longitude>
+						</coordinates>
+					</station>
+				</stations>
+			</regio>
+			<regio>
+				<id>noordhollandnoord</id>
+				<name>Noord-Holland Noord</name>
+				<stations>
+					<station>
+						<id>INOORDHO25</id>
+						<code>pws:INOORDHO25</code>
+						<name>Heerhugowaard</name>
+						<coordinates>
+							<latitude>52.669540</latitude>
+							<longitude>4.847190</longitude>
+						</coordinates>
+					</station>
+					<station>
+						<id>EHKD</id>
+						<code>EHKD</code>
+						<name>De Kooy</name>
+						<coordinates>
+							<latitude>52.91999817</latitude>
+							<longitude>4.78000021</longitude>
+						</coordinates>
+					</station>
+				</stations>
+			</regio>
+		</regios>
 	</provincie>
 	<provincie>
 		<id>overijssel</id>
@@ -145,7 +185,7 @@
 					</station>
 				</stations>
 			</regio>
-			
+
 			<regio>
 				<id>schouwenduiveland</id>
 				<name>Schouwen-Duiveland</name>
@@ -183,6 +223,52 @@
 	<provincie>
 		<id>zuidholland</id>
 		<name>Zuid-Holland</name>
-		<regios />
+		<regios>
+			<regio>
+				<id>rijnmond</id>
+				<name>Rijnmond</name>
+				<stations>
+					<station>
+						<id>EHRD</id>
+						<code>EHRD</code>
+						<name>Rotterdam</name>
+						<coordinates>
+							<latitude>51.95694351</latitude>
+							<longitude>4.43722200</longitude>
+						</coordinates>
+					</station>
+				</stations>
+			</regio>
+			<regio>
+				<id>hollandsmidden</id>
+				<name>Hollands midden</name>
+				<stations>
+					<station>
+						<id>IZUIDHOL102</id>
+						<code>pws:IZUIDHOL102</code>
+						<name>Katwijk aan Zee</name>
+						<coordinates>
+							<latitude>52.201923</latitude>
+							<longitude>4.400669</longitude>
+						</coordinates>
+					</station>
+				</stations>
+			</regio>
+			<regio>
+				<id>zuidhollandzuid</id>
+				<name>Zuid-Holland Zuid</name>
+				<stations>
+					<station>
+						<id>MAS998</id>
+						<code>pws:MAS998</code>
+						<name>Gorinchem</name>
+						<coordinates>
+							<latitude>51.841000</latitude>
+							<longitude>4.951500</longitude>
+						</coordinates>
+					</station>
+				</stations>
+			</regio>
+		</regios>
 	</provincie>
 </provincies>
