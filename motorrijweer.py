@@ -49,7 +49,7 @@ def regio_redirect(regio):
         return flask.redirect('/regio/%(regio)s/morgen' % {'regio': regio}, 302)
 
 @app.route('/regio/<regio>/<datum_str>')
-@app.cache.memoize(timeout=60*60*2) # 2 uur
+@app.cache.memoize(timeout=60*60*6) # 6 uur
 @app.add_expires_header(minutes=60)
 def regio(regio, datum_str = 'vandaag'):
     # Does the regio exist?
@@ -72,7 +72,7 @@ def provincie_redirect(provincie):
         return flask.redirect('/provincie/%(provincie)s/morgen' % {'provincie': provincie}, 302)
 
 @app.route('/provincie/<provincie>/<datum_str>')
-@app.cache.memoize(timeout=60*60*2) # 2 uur
+@app.cache.memoize(timeout=60*60*6) # 6 uur
 @app.add_expires_header(minutes=60)
 def provincie(provincie, datum_str = 'vandaag'):
     # Does the provincie exist?
@@ -105,7 +105,7 @@ def tasks_delete_old_forecasts():
     dagen = 21
     datum = (mytime.datetime.today() + mytime.timedelta(days=-21)).date()
     for forecast in models.Forecast.gql('WHERE datapunt_van < :datum', datum=datum):
-        return str(forecast)
+        forecast.delete()
 
     return 'OK'
 
