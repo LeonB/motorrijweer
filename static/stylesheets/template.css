@@ -188,8 +188,16 @@ td.cijfer {
 
 .summary .wind .waarde {
 	position: absolute;
-	top: 85px;
-	left: 22px;
+	top: 83px;
+	left: 30px;
+	z-index: 2;
+}
+
+.summary .windrichting {
+	width: 113px;
+	height: 113px;
+	position: relative;
+	left: -18px;
 }
 
 .module-body + .module-body {
@@ -273,4 +281,173 @@ li.provincie {
 	margin-top: 4px;
 	margin-bottom: 8px;
 	list-style: none;
+}
+
+.windrichting-noord {
+	-webkit-transform: rotate(180deg); 
+	-moz-transform: rotate(180deg); 
+	-ms-transform: rotate(180deg); 
+	-o-transform: rotate(180deg); 
+	transform: rotate(180deg);
+	filter: progid:DXImageTransform.Microsoft.Matrix(/* IE6–IE9 */
+		M11=-1, M12=-1.2246063538223773e-16, M21=1.2246063538223773e-16, M22=-1, sizingMethod='auto expand');
+	zoom: 1;
+}
+
+.windrichting-nno {
+	-webkit-transform: rotate(202.5deg); 
+	-moz-transform: rotate(202.5deg); 
+	-ms-transform: rotate(202.5deg); 
+	-o-transform: rotate(202.5deg); 
+	transform: rotate(202.5deg);
+	filter: progid:DXImageTransform.Microsoft.Matrix(/* IE6–IE9 */
+		M11=-0.923879532511287, M12=0.3826834323650892, M21=-0.3826834323650892, M22=-0.923879532511287, sizingMethod='auto expand');
+	zoom: 1;
+}
+
+.windrichting-no {
+	-webkit-transform: rotate(225deg); 
+	-moz-transform: rotate(225deg); 
+	-ms-transform: rotate(225deg); 
+	-o-transform: rotate(225deg); 
+	transform: rotate(225deg);
+	filter: progid:DXImageTransform.Microsoft.Matrix(/* IE6–IE9 */
+		M11=-0.7071067811865477, M12=0.7071067811865475, M21=-0.7071067811865475, M22=-0.7071067811865477, sizingMethod='auto expand');
+	zoom: 1;
+}
+
+.windrichting-ono {
+	-webkit-transform: rotate(247.5deg); 
+	-moz-transform: rotate(247.5deg); 
+	-ms-transform: rotate(247.5deg); 
+	-o-transform: rotate(247.5deg); 
+	transform: rotate(247.5deg);
+	filter: progid:DXImageTransform.Microsoft.Matrix(/* IE6–IE9 */
+		M11=-0.3826834323650895, M12=0.9238795325112868, M21=-0.9238795325112868, M22=-0.3826834323650895, sizingMethod='auto expand');
+	zoom: 1;
+}
+
+.windrichting-oost {
+	-webkit-transform: rotate(270deg); 
+	-moz-transform: rotate(270deg); 
+	-ms-transform: rotate(270deg); 
+	-o-transform: rotate(270deg); 
+	transform: rotate(270deg);
+	filter: progid:DXImageTransform.Microsoft.Matrix(/* IE6–IE9 */
+			M11=-1.836909530733566e-16, M12=1, M21=-1, M22=-1.836909530733566e-16, sizingMethod='auto expand');
+}
+
+.windrichting-ozo {
+	-webkit-transform: rotate(292.5deg); 
+	-moz-transform: rotate(292.5deg); 
+	-ms-transform: rotate(292.5deg); 
+	-o-transform: rotate(292.5deg); 
+	transform: rotate(292.5deg);
+	filter: progid:DXImageTransform.Microsoft.Matrix(/* IE6–IE9 */
+		M11=0.38268343236509, M12=0.9238795325112866, M21=-0.9238795325112866, M22=0.38268343236509, sizingMethod='auto expand');
+	zoom: 1;
+}
+
+.windrichting-zo {
+	-webkit-transform: rotate(315deg); 
+	-moz-transform: rotate(315deg); 
+	-ms-transform: rotate(315deg); 
+	-o-transform: rotate(315deg); 
+	transform: rotate(315deg);
+	filter: progid:DXImageTransform.Microsoft.Matrix(/* IE6–IE9 */
+		M11=0.7071067811865474, M12=0.7071067811865477, M21=-0.7071067811865477, M22=0.7071067811865474, sizingMethod='auto expand');
+	zoom: 1;
+}
+
+.windrichting-zzo {
+	-webkit-transform: rotate(337.5deg); 
+	-moz-transform: rotate(337.5deg); 
+	-ms-transform: rotate(337.5deg); 
+	-o-transform: rotate(337.5deg); 
+	transform: rotate(337.5deg);
+	filter: progid:DXImageTransform.Microsoft.Matrix(/* IE6–IE9 */
+		M11=0.9238795325112868, M12=0.38268343236508956, M21=-0.38268343236508956, M22=0.9238795325112868, sizingMethod='auto expand');
+	zoom: 1;
+}
+
+.windrichting-zuid {
+	zoom: 1;
+}
+
+.windrichting-zzw {
+	-webkit-transform: rotate(22.5deg); 
+	-moz-transform: rotate(22.5deg); 
+	-ms-transform: rotate(22.5deg); 
+	-o-transform: rotate(22.5deg); 
+	transform: rotate(22.5deg);
+	filter: progid:DXImageTransform.Microsoft.Matrix(/* IE6–IE9 */
+		M11=0.9238795325112867, M12=-0.3826834323650898, M21=0.3826834323650898, M22=0.9238795325112867, sizingMethod='auto expand');
+	zoom: 1;
+}
+
+.windrichting-zw {
+	-webkit-transform: rotate(45deg); 
+	-moz-transform: rotate(45deg); 
+	-ms-transform: rotate(45deg); 
+	-o-transform: rotate(45deg); 
+	transform: rotate(45deg);
+	filter: progid:DXImageTransform.Microsoft.Matrix(/* IE6–IE9 */
+		M11=0.7071067811865476, M12=-0.7071067811865475, M21=0.7071067811865475, M22=0.7071067811865476, sizingMethod='auto expand');
+	zoom: 1;
+}
+
+.windrichting-wzw {
+	-webkit-transform: rotate(67.5deg); 
+	-moz-transform: rotate(67.5deg); 
+	-ms-transform: rotate(67.5deg); 
+	-o-transform: rotate(67.5deg); 
+	transform: rotate(67.5deg);
+	filter: progid:DXImageTransform.Microsoft.Matrix(/* IE6–IE9 */
+		M11=0.38268343236508984, M12=-0.9238795325112867, M21=0.9238795325112867, M22=0.38268343236508984, sizingMethod='auto expand');
+	zoom: 1;
+}
+
+.windrichting-west {
+	zoom: 1;
+	-webkit-transform: rotate(90deg); 
+	-moz-transform: rotate(90deg); 
+	-ms-transform: rotate(90deg); 
+	-o-transform: rotate(90deg); 
+	transform: rotate(90deg);
+	filter: progid:DXImageTransform.Microsoft.Matrix(/* IE6–IE9 */
+		M11=6.123233995736766e-17, M12=-1, M21=1, M22=6.123233995736766e-17, sizingMethod='auto expand');
+	zoom: 1;
+}
+
+.windrichting-wnw {
+	-webkit-transform: rotate(112.5deg); 
+	-moz-transform: rotate(112.5deg); 
+	-ms-transform: rotate(112.5deg); 
+	-o-transform: rotate(112.5deg); 
+	transform: rotate(112.5deg);
+	filter: progid:DXImageTransform.Microsoft.Matrix(/* IE6–IE9 */
+		M11=-0.3826834323650897, M12=-0.9238795325112867, M21=0.9238795325112867, M22=-0.3826834323650897, sizingMethod='auto expand');
+	zoom: 1;
+}
+
+.windrichting-nw {
+	-webkit-transform: rotate(135deg); 
+	-moz-transform: rotate(135deg); 
+	-ms-transform: rotate(135deg); 
+	-o-transform: rotate(135deg); 
+	transform: rotate(135deg);
+	filter: progid:DXImageTransform.Microsoft.Matrix(/* IE6–IE9 */
+		M11=-0.7071067811865475, M12=-0.7071067811865476, M21=0.7071067811865476, M22=-0.7071067811865475, sizingMethod='auto expand');
+	zoom: 1;
+}
+
+.windrichting-nnw {
+	-webkit-transform: rotate(157.5deg); 
+	-moz-transform: rotate(157.5deg); 
+	-ms-transform: rotate(157.5deg); 
+	-o-transform: rotate(157.5deg); 
+	transform: rotate(157.5deg);
+	filter: progid:DXImageTransform.Microsoft.Matrix(/* IE6–IE9 */
+		M11=-0.9238795325112867, M12=-0.3826834323650899, M21=0.3826834323650899, M22=-0.9238795325112867, sizingMethod='auto expand');
+	zoom: 1;
 }

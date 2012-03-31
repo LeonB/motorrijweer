@@ -17,13 +17,15 @@
 		<h6>Windkracht</h6>
 		<div class="windkracht">
 			{% if weer.windkracht is none %}
-			<span class="waarde">N/B</span>	
+			<span class="waarde">N/B</span>
 			{% else %}
 			<span class="waarde">{{ weer.windkracht|kmh_to_beaufort }}</span>
 			<span class="beaufort"></span>
 			{% endif %}
 		</div>
-		<img src="/static/images/windroos.png" alt="Wind directie">
+		<div class="windrichting windrichting-{{ weer.windrichting|lower }}">
+			<img src="/static/images/windroos.png" alt="Windrichting">
+		</div>
 	</div>
 </div>
 <div class="row row_2">
