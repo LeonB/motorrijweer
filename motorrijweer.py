@@ -3,6 +3,7 @@ import flask
 import flaskext
 from flaskext.cache import Cache
 from flaskext.babel import Babel
+from google.appengine.api import taskqueue
 
 # First set up app + cache (it may be used by other modules)
 app = flask.Flask(__name__)
@@ -90,15 +91,36 @@ def provincie(provincie, datum_str = 'vandaag'):
 
 @app.route('/tasks/wunderground/forecasts/hourly')
 def tasks_wunderground_forecasts_hourly():
-    result = str(controllers.tasks.wunderground.forecasts.hourly())
-    empty_cache()
-    return result
+    station_id = flask.request.args.get('station_id')
+    result = {}
+    
+    if station_id: # Execute imediately
+        station = weather.Station.by_id(station_id)
+        result[station_id] = controllers.tasks.wunderground.forecasts._import_forecasts(station=station, days=3)
+        empty_cache()
+    else: # Add stations to the wunderground task queue
+        stations = controllers.tasks.wunderground.forecasts.hourly()
+        for station in stations:
+            taskqueue.add(url='/tasks/wunderground/forecasts/hourly?station_id=%s' % station.id, method='GET', queue_name='wunderground')
+            result[station.id] = 'Added to task queue wunderground'
+
+    return str(result)
 
 @app.route('/tasks/wunderground/forecasts/daily')
 def tasks_wunderground_forecasts_daily():
-    result = str(controllers.tasks.wunderground.forecasts.daily())
-    empty_cache()
-    return result
+    station_id = flask.request.args.get('station_id')
+    result = {}
+    
+    if station_id: # Execute imediately
+        station = weather.Station.by_id(station_id)
+        result[station_id] = controllers.tasks.wunderground.forecasts._import_forecasts(station=station, days=7)
+        empty_cache()
+    else: # Add stations to the wunderground task queue
+        for station in weather.Station.all():
+            taskqueue.add(url='/tasks/wunderground/forecasts/daily?station_id=%s' % station.id, method='GET', queue_name='wunderground')
+            result[station.id] = 'Added to task queue wunderground'
+
+    return str(result)
 
 @app.route('/tasks/delete_old_forecasts')
 def tasks_delete_old_forecasts():

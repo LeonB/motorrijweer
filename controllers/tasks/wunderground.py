@@ -6,7 +6,7 @@ class forecasts(object):
 
     @classmethod
     def hourly(cls):
-        retvals = {}
+        retvals = []
 
         for station in weather.Station.all():
             now = mytime.datetime.now()
@@ -17,21 +17,12 @@ class forecasts(object):
                                 tijdstip_datapunt > :kwartier AND provider = 'wunderground'",
                                 station_id=station.id, kwartier=kwartier).get()
 
+            # There's already a forecast < 15 minutes: skip
             if last_forecast:
-                last_forecast = weather.Forecast.from_gae(last_forecast)
-                retvals[station.id] = str(last_forecast.tijdstip_datapunt)
                 continue
 
-            retvals[station.id] = cls._import_forecasts(days=3, station=station)
-        return retvals
-
-    @classmethod
-    def daily(cls):
-        retvals = {}
-
-        for station in weather.Station.all():
-            retvals[station.id] = cls._import_forecasts(station=station, days=7)
-
+            # return it
+            retvals.append(station)
         return retvals
 
     @classmethod
@@ -44,7 +35,7 @@ class forecasts(object):
             # evt: if van > 3 uur (ofzo): skippen
 
             if forecast.winterse_neerslag_in_mm:
-                winterse_neerslag = 24
+                winterse_neerslag = 48
             elif forecast.winterse_neerslag_in_mm and winterse_neerslag:
                 winterse_neerslag = winterse_neerslag - 1
 
