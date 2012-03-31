@@ -268,3 +268,9 @@ a.disabled{
 .tweet_list .tweet_avatar img {
 	max-width: 32px; /* IE8 issue */
 }
+
+li.provincie {
+	margin-top: 4px;
+	margin-bottom: 8px;
+	list-style: none;
+}

@@ -544,20 +544,23 @@ Weerkaart = function (div_id, center_point) {
 		// Style aanpassen
 		map.mapTypes.set('sober', new google.maps.StyledMapType(this.style(), { name: 'sober' }));
 
-		google.maps.event.addListener(map, 'center_changed', function() {
+		google.maps.event.addListener(map, 'center_changed', function () {
 			// alert('center_changed');
 		});
 
-		google.maps.event.addListener(map, 'maptypeid_changed', function() {
+		google.maps.event.addListener(map, 'maptypeid_changed', function () {
 			// alert('maptypeid_changed!');
 		});
 
 		google.maps.event.addListener(map, 'bounds_changed', function () {
 			if (self.set_bounds == false && self.center) {
-				map.fitBounds(self.latlngbounds);
+
+				if (self.stations.length > 1) {
+					map.fitBounds(self.latlngbounds);
+				}
 
 				// Alleen centreren als het een provincie betreft
-				if (self.center_point.toLowerCase().indexOf('provincie') == 0) {
+				if (self.center_point.toLowerCase().indexOf('provincie') == 0 || self.stations.length <= 1) {
 					map.setCenter(self.center);
 				}
 
