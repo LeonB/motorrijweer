@@ -1,6 +1,67 @@
 {% extends "layout.jinja" %}
 {% block body %}
-	<div class="row">
+
+<style type="text/css">
+.cijfer-0,
+.cijfer-1,
+.cijfer-2,
+.cijfer-3,
+.cijfer-4 {
+	color: white;
+	background-color: #c43c35;
+	background-repeat: repeat-x;
+	background-image: -khtml-gradient(linear, left top, left bottom, from(#ee5f5b), to(#c43c35));
+	background-image: -moz-linear-gradient(top, #ee5f5b, #c43c35);
+	background-image: -ms-linear-gradient(top, #ee5f5b, #c43c35);
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ee5f5b), color-stop(100%, #c43c35));
+	background-image: -webkit-linear-gradient(top, #ee5f5b, #c43c35);
+	background-image: -o-linear-gradient(top, #ee5f5b, #c43c35);
+	background-image: linear-gradient(top, #ee5f5b, #c43c35);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ee5f5b', endColorstr='#c43c35', GradientType=0);
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	border-color: #c43c35 #c43c35 #882a25;
+	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+}
+
+.cijfer-5,
+.cijfer-6 {
+	color: #404040;
+	background-color: #eedc94;
+	background-repeat: repeat-x;
+	background-image: -khtml-gradient(linear, left top, left bottom, from(#fceec1), to(#eedc94));
+	background-image: -moz-linear-gradient(top, #fceec1, #eedc94);
+	background-image: -ms-linear-gradient(top, #fceec1, #eedc94);
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fceec1), color-stop(100%, #eedc94));
+	background-image: -webkit-linear-gradient(top, #fceec1, #eedc94);
+	background-image: -o-linear-gradient(top, #fceec1, #eedc94);
+	background-image: linear-gradient(top, #fceec1, #eedc94);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fceec1', endColorstr='#eedc94', GradientType=0);
+	border-color: #eedc94 #eedc94 #e4c652;
+	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+}
+
+.cijfer-7,
+.cijfer-8,
+.cijfer-9,
+.cijfer-10 {
+	color: white;
+	background-color: #57a957;
+	background-repeat: repeat-x;
+	background-image: -khtml-gradient(linear, left top, left bottom, from(#62c462), to(#57a957));
+	background-image: -moz-linear-gradient(top, #62c462, #57a957);
+	background-image: -ms-linear-gradient(top, #62c462, #57a957);
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #62c462), color-stop(100%, #57a957));
+	background-image: -webkit-linear-gradient(top, #62c462, #57a957);
+	background-image: -o-linear-gradient(top, #62c462, #57a957);
+	background-image: linear-gradient(top, #62c462, #57a957);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#62c462', endColorstr='#57a957', GradientType=0);
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	border-color: #57a957 #57a957 #3d773d;
+	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+}
+</style>
+
+	<div class="row test_cijfers">
 		<div class="span16">
 			<div class="component component-big">
 				<div class="module">
@@ -10,15 +71,17 @@
 					<div class="module-body">
 						{% for temp_i, temp in gegevens|dictsort %}
 							<h2>{{temp_i}} graden &#8451;</h2>
-							<table>
+							<table class="table table-bordered"
 							{% for neerslagkans_i, neerslagkans in temp|dictsort %}
 
+								<tr>
 								{% if loop.index == 1 %}
 									<th>windkracht&rarr;<br />neerslag per uur&darr;</th>
 									{% for windkracht_i, windkracht in neerslagkans|dictsort %}
 										<th>{{ loop.index0 }} <sub>({{windkracht_i }})</sub></th>
 									{% endfor %}
 								{% endif %}
+								</tr>
 
 								<tr>
 									<th>{{ neerslagkans_i }}</th>
@@ -35,7 +98,7 @@
 					</div>
 
 					<div class="module-body grafiek">
-						<table>
+						<table class="table table-bordered"
 								{% for temp_i, temp in gegevens|dictsort %}
 								{% if temp_i == 9 %}
 								{% for neerslagkans_i, neerslagkans in temp|dictsort %}
@@ -69,7 +132,7 @@
 								{% endfor %}
 						</table>
 
-						<table>
+						<table class="table table-bordered"
 								{% for temp_i, temp in gegevens|dictsort %}
 								{% if temp_i == 24 %}
 								{% for neerslagkans_i, neerslagkans in temp|dictsort %}

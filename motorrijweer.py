@@ -148,16 +148,6 @@ def empty_cache():
 
 @app.route('/test_cijfers')
 def test_cijfers():
-    obj = weather.Forecast()
-    obj.temperatuur = 0
-    obj.neerslagkans = 1.0
-    obj.windkracht = 1 #in km/h
-    obj.neerslag_in_mm = 0.0
-    #return str(obj.cijfer_windkracht(weather.Beaufort.from_kmh(obj.windkracht)))
-    obj.cijfer = obj.generate_cijfer()
-
-    #return str(obj.cijfer)
-
     gegevens = {}
     for temp in range(-6, 36, 3):
         for neerslag_in_mm in range(0, 11, 1):
@@ -177,6 +167,8 @@ def test_cijfers():
                 obj.neerslagkans = 1.0
                 obj.windkracht = windkracht
                 obj.neerslag_in_mm = neerslag_in_mm
+                obj.bewolking = 0
+                obj.zonkans = 1.0 - obj.bewolking
                 obj.cijfer = obj.generate_cijfer()
                 gegevens[temp][neerslag_in_mm][windkracht].append(obj)
 
