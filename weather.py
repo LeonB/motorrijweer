@@ -558,16 +558,13 @@ class Forecast(object):
         #return self.generate_cijfer()
 
     def generate_cijfer(self):
-        #self.temperatuur = 12
-        #self.neerslagkans = 0.2
-        #self.windkracht = 4
-
         cijfer = 0.0
         cijfer += self.cijfer_temperatuur(self.temperatuur)
         cijfer += self.cijfer_neerslagkans(self.neerslagkans)
         cijfer += self.cijfer_neerslag_in_mm(self.neerslag_in_mm)
         cijfer += self.cijfer_windkracht(Beaufort.from_kmh(self.windkracht))
         cijfer += self.cijfer_winterse_neerslag_in_mm(self.winterse_neerslag_in_mm)
+        cijfer += self.cijfer_bewolking(self.bewolking)
 
         if cijfer < 0:
             return 0.0
@@ -610,33 +607,6 @@ class Forecast(object):
         mod = max_punten/baseline
         return self.normpdf(i, best, afwijking)*mod
 
-    #def cijfer_windkracht(self, i):
-        #"""boven de 20 graden gaat wind positief meetellen. Daaronder negatief.
-        #>= windkracht 7 zijn minpunten (altijd). """
-        #i = int(i)
-        #if i < 7:
-            #if self.temperatuur < 23:
-                #best = 0
-                #afwijking = 4
-                #baseline = self.normpdf(best, best, afwijking)
-                #max_punten = 3
-                #mod = max_punten/baseline
-                #return self.normpdf(i, best, afwijking)*mod
-            #else:
-                #best = 3
-                #afwijking = 2.5
-                #baseline = self.normpdf(best, best, afwijking)
-                #max_punten = 3
-                #mod = max_punten/baseline
-                #return self.normpdf(i, best, afwijking)*mod
-        #else:
-            #worst = 12
-            #afwijking = 1.5
-            #baseline = self.normpdf(worst, worst, afwijking)
-            #max_punten = -3
-            #mod = max_punten/baseline
-            #return self.normpdf(i, worst, afwijking)*mod
-
     def cijfer_windkracht(self, i):
         """boven de 20 graden gaat wind positief meetellen. Daaronder negatief.
         >= windkracht 7 zijn minpunten (altijd). """
@@ -678,6 +648,15 @@ class Forecast(object):
             return -2
 
         return 0
+
+    def cijfer_bewolking(self, i):
+        worst = 1 #hele dag bewolking
+        afwijking = 0.425
+        baseline = self.normpdf(worst, worst, afwijking)
+        max_punten = -0.5 #max 0.5 punten aftrek (i=1)
+        mod = max_punten/baseline
+        return self.normpdf(i, worst, afwijking)*mod
+
 
 class Beaufort(object):
     omschrijvingen = {
