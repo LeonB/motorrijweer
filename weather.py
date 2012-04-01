@@ -7,6 +7,7 @@ from collections import OrderedDict
 import models
 import xml.etree.ElementTree
 import werkzeug
+import copy
 
 class Underground(object):
     def get_station(self, station, days=3):
@@ -421,10 +422,13 @@ class Weather(object):
             for regio in provincie.regios:
                 stations = stations + map(lambda x: x.id, regio.stations)
 
+        datum_van = mytime.datetime(datum.year, datum.month, datum.day, 6)
+        datum_tot = mytime.datetime(datum.year, datum.month, datum.day, 23)
+
         query = models.Forecast.all()
         query.filter('station_id IN', stations)
-        query.filter('datapunt_van >=', datum)
-        query.filter('datapunt_van <', datum + mytime.timedelta(days=1))
+        query.filter('datapunt_van >=', datum_van)
+        query.filter('datapunt_van <', datum_tot)
         #query.order('datapunt_van')
         return query.count(limit=17)
 
@@ -436,8 +440,7 @@ class Weather(object):
         elif regio:
             stations = map(lambda x: x.id, regio.stations)
         elif provincie:
-            for regio in provincie.regios:
-                stations = stations + map(lambda x: x.id, regio.stations)
+            stations = stations + map(lambda x: x.id, provincie.stations)
 
         collection = ForecastCollection()
 
@@ -711,6 +714,7 @@ class Provincie(object):
 
     @classmethod
     def all(cls):
+        # cls.provincies_cache = None
         if not cls.provincies_cache:
             et = xml.etree.ElementTree.parse('stations.xml')
             provincies = []
@@ -742,7 +746,9 @@ class Provincie(object):
 
             cls.provincies_cache = provincies
 
-        return cls.provincies_cache
+        # return a copy of this object because it is going to be modified
+        # and then it wil be stored in this class: so return a copy
+        return copy.deepcopy(cls.provincies_cache)
 
     @classmethod
     def by_id(cls, provincie_id):
