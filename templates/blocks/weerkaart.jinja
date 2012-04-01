@@ -6,74 +6,74 @@
 			<div id="weerkaart">
 				<h2>{{name}}</h2>
 				<table class="table table-bordered">
-						<thead>
-							<tr>
-								<td></td>
-								{% for station in weer.stations %}
-								<th scope="col">{{ station.name }}</th>
-								{% endfor %}
-							</tr>
-						</thead>
-						<tbody>
-							<tr class="code">
-								<th scope="row">Code</th>
-								{% for station in weer.stations %}
-								<td>
-									<span class="latitude">{{ station.code }}</span>
-								</td>
-								{% endfor %}
-							</tr>
+					<thead>
+						<tr>
+							<td></td>
+							{% for station in weer.overdag.stations %}
+							<th scope="col">{{ station.name }}</th>
+							{% endfor %}
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="code">
+							<th scope="row">Code</th>
+							{% for station in weer.overdag.stations %}
+							<td>
+								<span class="latitude">{{ station.code }}</span>
+							</td>
+							{% endfor %}
+						</tr>
 
-							<tr class="latitude">
-								<th scope="row">Breedtegraad</th>
-								{% for station in weer.stations %}
-								<td>
-									<span class="latitude">{{ station.coordinates.latitude }}</span>
-								</td>
-								{% endfor %}
-							</tr>
+						<tr class="latitude">
+							<th scope="row">Breedtegraad</th>
+							{% for station in weer.overdag.stations %}
+							<td>
+								<span class="latitude">{{ station.coordinates.latitude }}</span>
+							</td>
+							{% endfor %}
+						</tr>
 
-							<tr class="longitude">
-								<th scope="row">Lengtegraad</th>
-								{% for station in weer.stations %}
-								<td>
-									<span class="longitude">{{ station.coordinates.longitude }}</span>
-								</td>
-								{% endfor %}
-							</tr>
+						<tr class="longitude">
+							<th scope="row">Lengtegraad</th>
+							{% for station in weer.overdag.stations %}
+							<td>
+								<span class="longitude">{{ station.coordinates.longitude }}</span>
+							</td>
+							{% endfor %}
+						</tr>
 
-							<tr class="weertype">
-								<th scope="row">Weertype</th>
-								{% for station in weer.stations %}
-								<td>
-									{% if station.weertype is none %}
-									<span class="waarde">N/B</span>
-									{% else %}
-									<img src="http://icons.wxug.com/i/c/i/{{ station.weertype }}.gif" alt="Weersoort" title="{{ station.omschrijving }}" />
-									{% endif %}
-								</td>
-								{% endfor %}
-							</tr>
+						<tr class="weertype">
+							<th scope="row">Weertype</th>
+							{% for station in weer.overdag.stations %}
+							<td>
+								{% if station.weertype is none %}
+								<span class="waarde">N/B</span>
+								{% else %}
+								<img src="http://icons.wxug.com/i/c/i/{{ station.weertype }}.gif" alt="Weersoort" title="{{ station.omschrijving }}" />
+								{% endif %}
+							</td>
+							{% endfor %}
+						</tr>
 
-							<tr class="minimumtemperatuur">
-								<th scope="row">Minimumtemperatuur</th>
-								{% for station in weer.stations %}
-								<td>
-									<span class="waarde">{{ station.minimumtemperatuur }}</span>
-									<span class="eenheid celcius">&#8451;</span>
-								</td>
-								{% endfor %}
-							</tr>
+						<tr class="minimumtemperatuur">
+							<th scope="row">Minimumtemperatuur</th>
+							{% for station in weer.overdag.stations %}
+							<td>
+								<span class="waarde">{{ station.minimumtemperatuur }}</span>
+								<span class="eenheid celcius">&#8451;</span>
+							</td>
+							{% endfor %}
+						</tr>
 
-							<tr class="maximumtemperatuur">
-								<th scope="row">Maxiumumtemperatuur</th>
-								{% for station in weer.stations %}
-								<td>
-									<span class="waarde">{{ station.maximumtemperatuur }}</span>
-									<span class="eenheid celcius">&#8451;</span>
-								</td>
-								{% endfor %}
-							</tr>
+						<tr class="maximumtemperatuur">
+							<th scope="row">Maxiumumtemperatuur</th>
+							{% for station in weer.overdag.stations %}
+							<td>
+								<span class="waarde">{{ station.maximumtemperatuur }}</span>
+								<span class="eenheid celcius">&#8451;</span>
+							</td>
+							{% endfor %}
+						</tr>
 					</tbody>
 				</table>
 			</div> 

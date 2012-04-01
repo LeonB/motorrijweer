@@ -16,5 +16,4 @@ def in_future(obj):
 
 @app.template_test()
 def in_database(date, *args, **kwargs):
-    #raise Exception(weather.Weather.has_datapunten(datum=date, *args, **kwargs))
     return weather.Weather.has_datapunten(datum=date, *args, **kwargs)
