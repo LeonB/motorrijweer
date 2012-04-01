@@ -34,6 +34,22 @@ class ForecastCollection(object):
         self.forecasts = []
         self.now =  mytime.datetime.today()
 
+    def to_forecast(self):
+        forecast = Forecast()
+        forecast.weertype = self.weertype
+        forecast.omschrijving = self.omschrijving
+        forecast.temperatuur = self.temperatuur
+        forecast.gevoelstemperatuur = self.gevoelstemperatuur
+        forecast.neerslagkans = self.neerslagkans
+        forecast.neerslag_in_mm = self.neerslag_in_mm
+        forecast.winterse_neerslag_in_mm = self.winterse_neerslag_in_mm
+        forecast.bewolking = self.bewolking
+        forecast.zonkans = self.zonkans
+        forecast.windkracht = self.windkracht
+        forecast.windrichting = self.windrichting
+        forecast.cijfer = self.cijfer
+        return forecast
+
     @property
     def today(self):
         today = mytime.datetime.today().date()
@@ -87,39 +103,7 @@ class ForecastCollection(object):
                 uren[dt.hour] = ForecastCollection()
             uren[dt.hour].forecasts.append(forecast)
 
-        fc = ForecastCollection()
-        for uur in uren:
-            collection = uren[uur]
-            # droog_tot
-            # droog_om
-            # weertype
-            # omschrijving
-            # minimumtemperatuur
-            # maximumtemperatuur
-            # temperatuur
-            # gevoelstemperatuur
-            # neerslag_in_mm
-            # bewolking
-            # zonkans
-            # windkracht
-            # windrichting
-            # cijfer
-            forecast = Forecast()
-            forecast.weertype = collection.weertype
-            forecast.omschrijving = collection.omschrijving
-            forecast.minimumtemperatuur = collection.minimumtemperatuur
-            forecast.maximumtemperatuur = collection.maximumtemperatuur
-            forecast.temperatuur = collection.temperatuur
-            forecast.gevoelstemperatuur = collection.gevoelstemperatuur
-            forecast.neerslag_in_mm = collection.neerslag_in_mm
-            forecast.bewolking = collection.bewolking
-            forecast.zonkans = collection.zonkans
-            forecast.windkracht = collection.windkracht
-            forecast.windrichting = collection.windrichting
-            forecast.cijfer = collection.cijfer
-            fc.forecasts.append(forecast)
-
-        return fc
+        return uren.values()
 
     @property
     def stations(self):
@@ -308,7 +292,7 @@ class ForecastCollection(object):
         neerslagkans = 0.0
         for forecast in self.forecasts:
             neerslagkans += forecast.neerslagkans
-        #neerslagkans = neerslagkans/len(self.forecasts)
+        neerslagkans = neerslagkans/len(self.forecasts)
 
         if neerslagkans > 1.0:
             return 1.0
@@ -322,9 +306,22 @@ class ForecastCollection(object):
 
         neerslag_in_mm = 0.0
         for forecast in self.forecasts:
-            #neerslag_in_mm += (forecast.neerslag_in_mm*forecast.neerslagkans)
             neerslag_in_mm += forecast.neerslag_in_mm
+
+        neerslag_in_mm = neerslag_in_mm/len(self.forecasts)
         return neerslag_in_mm
+
+    @property
+    def winterse_neerslag_in_mm(self):
+        if len(self.forecasts) == 0:
+            return None
+
+        winterse_neerslag_in_mm = 0.0
+        for forecast in self.forecasts:
+            winterse_neerslag_in_mm += forecast.winterse_neerslag_in_mm
+
+        winterse_neerslag_in_mm = winterse_neerslag_in_mm/len(self.forecasts)
+        return winterse_neerslag_in_mm
 
     @property
     def bewolking(self):
@@ -383,13 +380,6 @@ class ForecastCollection(object):
 
     @property
     def cijfer(self):
-        #forecast = Forecast()
-        #forecast.temperatuur = self.temperatuur
-        #forecast.windkracht = self.windkracht
-        #forecast.neerslagkans = self.neerslagkans
-        #forecast.neerslag_in_mm = self.neerslag_in_mm
-        #return forecast.generate_cijfer()
-
         if len(self.forecasts) == 0:
             return None
 
@@ -399,6 +389,9 @@ class ForecastCollection(object):
 
         cijfer = cijfer/len(self.forecasts)
         return cijfer
+
+    def deelcijfers(self):
+        return self.to_forecast().deelcijfers()
 
 class Weather(object):
 
@@ -554,17 +547,20 @@ class Forecast(object):
         return y
 
     #@property
-    #def cijfer(self):
-        #return self.generate_cijfer()
+    def deelcijfers(self):
+        return {
+            'temperatuur': self.cijfer_temperatuur(self.temperatuur),
+            'neerslagkans': self.cijfer_neerslagkans(self.neerslagkans),
+            'neerslag_in_mm': self.cijfer_neerslag_in_mm(self.neerslag_in_mm),
+            'windkracht': self.cijfer_windkracht(Beaufort.from_kmh(self.windkracht)),
+            'winterse_neerslag_in_mm': self.cijfer_winterse_neerslag_in_mm(self.winterse_neerslag_in_mm),
+            'bewolking': self.cijfer_bewolking(self.bewolking),
+        }
 
     def generate_cijfer(self):
         cijfer = 0.0
-        cijfer += self.cijfer_temperatuur(self.temperatuur)
-        cijfer += self.cijfer_neerslagkans(self.neerslagkans)
-        cijfer += self.cijfer_neerslag_in_mm(self.neerslag_in_mm)
-        cijfer += self.cijfer_windkracht(Beaufort.from_kmh(self.windkracht))
-        cijfer += self.cijfer_winterse_neerslag_in_mm(self.winterse_neerslag_in_mm)
-        cijfer += self.cijfer_bewolking(self.bewolking)
+        for deelcijfer in self.deelcijfers().values():
+            cijfer += deelcijfer
 
         if cijfer < 0:
             return 0.0
