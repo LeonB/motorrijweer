@@ -61,17 +61,6 @@
 						</div>
 					</div>
 
-					<div class="module-footer">
-						<!--{{ weer.droog_tot }}-->
-						<!--{{ weer.droog_om }}-->
-						{% if not weer.droog_tot and not weer.droog_om %}
-							<span>Het blijft de hele dag regenen :(</span>
-						{% elif not weer.droog_tot %}
-							<span>Het is weer droog om: {{ weer.droog_om.strftime('%H:%M') }}</span>
-						{% else %}
-							<span>Het is droog tot: {{ weer.droog_tot }}
-						{% endif %}
-					</div>
 				</div>
 			</div>
 		</div>

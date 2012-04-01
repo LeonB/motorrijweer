@@ -201,8 +201,29 @@ class ForecastCollection(object):
 
         return droog_om
 
+    @property
     def droge_periodes(self):
-        pass
+        droge_periodes = []
+        droge_periode = None
+        
+        for forecast in self.forecasts:
+            if forecast.neerslag_in_mm > 0.0:
+                if droge_periode:
+                    droge_periodes.append(droge_periode)
+                    droge_periode = None
+                else:
+                    continue
+            else: #dry period
+                if not droge_periode:
+                    droge_periode = ForecastCollection()
+                    droge_periode.forecasts.append(forecast)
+                else:
+                    droge_periode.forecasts.append(forecast)
+
+        if droge_periode:
+            droge_periodes.append(droge_periode)
+
+        return droge_periodes
 
     @property
     def weertype(self):
