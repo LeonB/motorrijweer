@@ -32,22 +32,29 @@ class forecasts(object):
         winterse_neerslag = 0
         for forecast in weather.Weather.from_wunderground(station, days=days).forecasts:
 
-            # evt: if van > 3 uur (ofzo): skippen
-
+            # checken op winterse neerslag in ALLE uren (ook de geskipte)
             if forecast.winterse_neerslag_in_mm:
                 winterse_neerslag = 48
             elif forecast.winterse_neerslag_in_mm and winterse_neerslag:
                 winterse_neerslag = winterse_neerslag - 1
 
-            old_result = models.Forecast.gql("WHERE station_id = :station_id AND provider = 'wunderground' AND datapunt_van = :datapunt_van AND datapunt_tot = :datapunt_tot",
-                                              station_id=station.id,
-                                              datapunt_van=forecast.datapunt_van,
-                                              datapunt_tot=forecast.datapunt_tot).get()
-
             if winterse_neerslag:
                 minpunten = 2.0
             else:
                 minpunten = 0
+
+            # optimalisatie om op datastore te besparen
+            if forecast.datapunt_van.hour < 6:
+                continue
+
+            # optimalisatie om op datastore te besparen
+            if forecast.datapunt_van.hour >= 23:
+                continue
+
+            old_result = models.Forecast.gql("WHERE station_id = :station_id AND provider = 'wunderground' AND datapunt_van = :datapunt_van AND datapunt_tot = :datapunt_tot",
+                                              station_id=station.id,
+                                              datapunt_van=forecast.datapunt_van,
+                                              datapunt_tot=forecast.datapunt_tot).get()
 
             if old_result:
                 if old_result.weertype == forecast.weertype and \
