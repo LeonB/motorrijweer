@@ -110,6 +110,7 @@
 				<id>noordhollandnoord</id>
 				<name>Noord-Holland Noord</name>
 				<stations>
+					<!--
 					<station>
 						<id>INOORDHO25</id>
 						<code>pws:INOORDHO25</code>
@@ -117,6 +118,25 @@
 						<coordinates>
 							<latitude>52.669540</latitude>
 							<longitude>4.847190</longitude>
+						</coordinates>
+					</station>
+					-->
+					<station>
+						<id>INOORDHO53</id>
+						<code>pws:INOORDHO53</code>
+						<name>Limmen</name>
+						<coordinates>
+							<latitude>52.568508</latitude>
+							<longitude>4.699681</longitude>
+						</coordinates>
+					</station>
+					<station>
+						<id>INORTHHO8</id>
+						<code>pws:INORTHHO8</code>
+						<name>Hoorn</name>
+						<coordinates>
+							<latitude>52.674484</latitude>
+							<longitude>5.088592</longitude>
 						</coordinates>
 					</station>
 					<station>
@@ -140,7 +160,41 @@
 	<provincie>
 		<id>utrecht</id>
 		<name>Utrecht</name>
-		<regios />
+		<regios>
+			<regio>
+				<id>utrecht</id>
+				<name>Utrecht</name>
+				<stations>
+					<station>
+						<id>IUTRECHT47</id>
+						<code>pws:IUTRECHT47</code>
+						<name>Woerden</name>
+						<coordinates>
+							<latitude>52.077412</latitude>
+							<longitude>4.830536</longitude>
+						</coordinates>
+					</station>
+					<station>
+						<id>INEDERLA2</id>
+						<code>pws:INEDERLA2</code>
+						<name>Veenendaal</name>
+						<coordinates>
+							<latitude>52.005161</latitude>
+							<longitude>5.547295</longitude>
+						</coordinates>
+					</station>
+					<station>
+						<id>MD4883</id>
+						<code>pws:MD4883</code>
+						<name>De Bilt</name>
+						<coordinates>
+							<latitude>52.109501</latitude>
+							<longitude>5.172500</longitude>
+						</coordinates>
+					</station>
+				</stations>
+			</regio>
+		</regios>
 	</provincie>
 	<provincie>
 		<id>zeeland</id>
