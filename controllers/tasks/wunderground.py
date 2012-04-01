@@ -11,11 +11,11 @@ class forecasts(object):
         for station in weather.Station.all():
             now = mytime.datetime.now()
 
-            # Make sure it is never request more than once every 15 minutes
-            kwartier = now - mytime.timedelta(seconds=60*15)
+            # Make sure it is never request more than once every 30 minutes
+            timediff = now - mytime.timedelta(seconds=60*30)
             last_forecast = models.Forecast.gql("WHERE station_id = :station_id AND \
-                                tijdstip_datapunt > :kwartier AND provider = 'wunderground'",
-                                station_id=station.id, kwartier=kwartier).get()
+                                tijdstip_datapunt > :timediff AND provider = 'wunderground'",
+                                station_id=station.id, timediff=timediff).get()
 
             # There's already a forecast < 15 minutes: skip
             if last_forecast:
