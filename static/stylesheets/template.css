@@ -459,3 +459,7 @@ li.provincie {
 		M11=-0.9238795325112867, M12=-0.3826834323650899, M21=0.3826834323650899, M22=-0.9238795325112867, sizingMethod='auto expand');
 	zoom: 1;
 }
+
+.summary .droge_periodes {
+	margin-top: 25px;
+}
