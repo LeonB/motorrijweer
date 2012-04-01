@@ -130,6 +130,7 @@
 							<longitude>4.699681</longitude>
 						</coordinates>
 					</station>
+					<!--
 					<station>
 						<id>INORTHHO8</id>
 						<code>pws:INORTHHO8</code>
@@ -137,6 +138,25 @@
 						<coordinates>
 							<latitude>52.674484</latitude>
 							<longitude>5.088592</longitude>
+						</coordinates>
+					</station>
+					-->
+					<station>
+						<id>INORTHHO3</id>
+						<code>pws:INORTHHO3</code>
+						<name>Venhuizen</name>
+						<coordinates>
+							<latitude>52.666309</latitude>
+							<longitude>5.202327</longitude>
+						</coordinates>
+					</station>
+					<station>
+						<id>ITUITJEN1</id>
+						<code>pws:ITUITJEN1</code>
+						<name>Harenkarspel</name>
+						<coordinates>
+							<latitude>52.737831</latitude>
+							<longitude>4.752123</longitude>
 						</coordinates>
 					</station>
 					<station>
