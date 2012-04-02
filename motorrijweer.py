@@ -50,7 +50,7 @@ def regio_redirect(regio):
         return flask.redirect('/regio/%(regio)s/morgen' % {'regio': regio}, 302)
 
 @app.route('/regio/<regio>/<datum_str>')
-@app.cache.memoize(timeout=60*60*6) # 6 uur
+@app.cache.memoize(timeout=60*60*1) # 1 uur
 @app.add_expires_header(minutes=60)
 def regio(regio, datum_str = 'vandaag'):
     # Does the regio exist?
@@ -73,7 +73,7 @@ def provincie_redirect(provincie):
         return flask.redirect('/provincie/%(provincie)s/morgen' % {'provincie': provincie}, 302)
 
 @app.route('/provincie/<provincie>/<datum_str>')
-@app.cache.memoize(timeout=60*60*6) # 6 uur
+@app.cache.memoize(timeout=60*60*1) # 1 uur
 @app.add_expires_header(minutes=60)
 def provincie(provincie, datum_str = 'vandaag'):
     # Does the provincie exist?
@@ -97,7 +97,6 @@ def tasks_wunderground_forecasts_hourly():
     if station_id: # Execute imediately
         station = weather.Station.by_id(station_id)
         result[station_id] = controllers.tasks.wunderground.forecasts._import_forecasts(station=station, days=3)
-        empty_cache()
     else: # Add stations to the wunderground task queue
         stations = controllers.tasks.wunderground.forecasts.hourly()
         for station in stations:
@@ -114,7 +113,6 @@ def tasks_wunderground_forecasts_daily():
     if station_id: # Execute imediately
         station = weather.Station.by_id(station_id)
         result[station_id] = controllers.tasks.wunderground.forecasts._import_forecasts(station=station, days=7)
-        empty_cache()
     else: # Add stations to the wunderground task queue
         for station in weather.Station.all():
             taskqueue.add(url='/tasks/wunderground/forecasts/daily?station_id=%s' % station.id, method='GET', queue_name='wunderground')
