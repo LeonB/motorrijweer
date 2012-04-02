@@ -65,7 +65,6 @@ class forecasts(object):
                 old_result.neerslag_in_mm == forecast.neerslag_in_mm and \
                 old_result.winterse_neerslag_in_mm == forecast.winterse_neerslag_in_mm and \
                 old_result.bewolking == forecast.bewolking and \
-                old_result.zonkans == forecast.zonkans and \
                 old_result.windkracht == forecast.windkracht and \
                 old_result.cijfer == (forecast.generate_cijfer() - minpunten):
                     # alles is hetzelfde gebleven
@@ -82,7 +81,6 @@ class forecasts(object):
                 old_result.neerslag_in_mm = forecast.neerslag_in_mm
                 old_result.winterse_neerslag_in_mm = forecast.winterse_neerslag_in_mm
                 old_result.bewolking = forecast.bewolking
-                old_result.zonkans = forecast.zonkans
                 old_result.windkracht = forecast.windkracht
                 old_result.cijfer = (forecast.generate_cijfer() - minpunten)
                 old_result.put()
@@ -101,7 +99,6 @@ class forecasts(object):
                     neerslag_in_mm = forecast.neerslag_in_mm,
                     winterse_neerslag_in_mm = forecast.winterse_neerslag_in_mm,
                     bewolking = forecast.bewolking,
-                    zonkans = forecast.zonkans,
                     windkracht = forecast.windkracht,
                     windrichting = forecast.windrichting,
                     cijfer = (forecast.generate_cijfer() - minpunten),
