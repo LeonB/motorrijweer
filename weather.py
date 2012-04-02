@@ -506,7 +506,7 @@ class Forecast(object):
         forecast.neerslag_in_mm = gae_obj.neerslag_in_mm
         forecast.winterse_neerslag_in_mm = gae_obj.winterse_neerslag_in_mm
         forecast.bewolking = gae_obj.bewolking
-        forecast.zonkans = gae_obj.zonkans
+        forecast.zonkans = 1 - forecast.bewolking
         forecast.windkracht = gae_obj.windkracht
         forecast.windrichting = gae_obj.windrichting
         forecast.cijfer = gae_obj.cijfer
@@ -521,8 +521,6 @@ class Forecast(object):
         self.weertype = gegevens['icon']
         self.omschrijving = gegevens['condition']
         self.temperatuur = float(gegevens['temp']['metric'])
-        # minimumtemperatuur (samenvoegen uit verschillende weerstations?)
-        # maximumtemperatuur (idem)
         self.gevoelstemperatuur = float(gegevens['feelslike']['metric'])
         self.neerslagkans = float(gegevens['pop'])/100
         try:
