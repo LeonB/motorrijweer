@@ -68,7 +68,7 @@ class forecasts(object):
                 old_result.windkracht == forecast.windkracht and \
                 old_result.cijfer == (forecast.generate_cijfer() - minpunten):
                     # alles is hetzelfde gebleven
-                    # Moet ik de timestamp updaten?!?
+                    # Moet ik de timestamp updaten?!?: nee, kost alleen maar writes
                     continue
 
                 # Stond al in de db, maar geupdate resultaten
@@ -102,7 +102,6 @@ class forecasts(object):
                     windkracht = forecast.windkracht,
                     windrichting = forecast.windrichting,
                     cijfer = (forecast.generate_cijfer() - minpunten),
-                    probability_order = 0,
                 )
                 dp.put()
                 continue
