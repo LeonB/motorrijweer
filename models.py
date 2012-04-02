@@ -19,4 +19,3 @@ class Forecast(db.Model):
     windkracht = db.FloatProperty(required=True, indexed=False)
     windrichting = db.StringProperty(required=True, indexed=False)
     cijfer = db.FloatProperty(required=True, indexed=False)
-    provider = db.StringProperty(required=True)

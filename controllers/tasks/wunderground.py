@@ -14,7 +14,7 @@ class forecasts(object):
             # Make sure it is never request more than once every 30 minutes
             timediff = now - mytime.timedelta(seconds=60*30)
             last_forecast = models.Forecast.gql("WHERE station_id = :station_id AND \
-                                tijdstip_datapunt > :timediff AND provider = 'wunderground'",
+                                tijdstip_datapunt > :timediff",
                                 station_id=station.id, timediff=timediff).get()
 
             # There's already a forecast < 15 minutes: skip
@@ -51,7 +51,7 @@ class forecasts(object):
             if forecast.datapunt_van.hour >= 23:
                 continue
 
-            old_result = models.Forecast.gql("WHERE station_id = :station_id AND provider = 'wunderground' AND datapunt_van = :datapunt_van AND datapunt_tot = :datapunt_tot",
+            old_result = models.Forecast.gql("WHERE station_id = :station_id AND datapunt_van = :datapunt_van AND datapunt_tot = :datapunt_tot",
                                               station_id=station.id,
                                               datapunt_van=forecast.datapunt_van,
                                               datapunt_tot=forecast.datapunt_tot).get()
@@ -105,7 +105,6 @@ class forecasts(object):
                     windkracht = forecast.windkracht,
                     windrichting = forecast.windrichting,
                     cijfer = (forecast.generate_cijfer() - minpunten),
-                    provider = 'wunderground',
                     probability_order = 0,
                 )
                 dp.put()
