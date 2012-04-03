@@ -392,7 +392,10 @@ class ForecastCollection(object):
         return cijfer
 
     def deelcijfers(self):
-        return self.to_forecast().deelcijfers()
+        if len(self.forecasts) > 0:
+            return self.to_forecast().deelcijfers()
+        else:
+            return {}
 
 class Weather(object):
 
@@ -549,27 +552,14 @@ class Forecast(object):
 
     #@property
     def deelcijfers(self):
-        deelcijfers = {}
-
-        if self.temperatuur:
-            deelcijfers['temperatuur'] = self.cijfer_temperatuur(self.temperatuur)
-
-        if self.neerslagkans:
-            deelcijfers['neerslagkans'] = self.cijfer_neerslagkans(self.neerslagkans)
-        
-        if self.neerslag_in_mm:
-            deelcijfers['neerslag_in_mm'] = self.cijfer_neerslag_in_mm(self.neerslag_in_mm)
-        
-        if self.windkracht:
-            deelcijfers['windkracht'] = self.cijfer_windkracht(Beaufort.from_kmh(self.windkracht))
-        
-        if self.winterse_neerslag_in_mm:
-            deelcijfers['winterse_neerslag_in_mm'] = self.cijfer_winterse_neerslag_in_mm(self.winterse_neerslag_in_mm)
-        
-        if self.bewolking:
-            deelcijfers['bewolking'] = self.cijfer_bewolking(self.bewolking)
-        
-        return deelcijfers
+        return {
+            'temperatuur': self.cijfer_temperatuur(self.temperatuur),
+            'neerslagkans': self.cijfer_neerslagkans(self.neerslagkans),
+            'neerslag_in_mm': self.cijfer_neerslag_in_mm(self.neerslag_in_mm),
+            'windkracht': self.cijfer_windkracht(Beaufort.from_kmh(self.windkracht)),
+            'winterse_neerslag_in_mm': self.cijfer_winterse_neerslag_in_mm(self.winterse_neerslag_in_mm),
+            'bewolking': self.cijfer_bewolking(self.bewolking),
+        }
 
     def generate_cijfer(self):
         cijfer = 0.0
