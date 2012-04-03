@@ -550,11 +550,12 @@ class Forecast(object):
     #@property
     def deelcijfers(self):
         deelcijfers = {}
+
         if self.temperatuur:
             deelcijfers['temperatuur'] = self.cijfer_temperatuur(self.temperatuur)
 
         if self.neerslagkans:
-            deelcijfers['neerslagkans'] = self.cijfer_neerslagkans(self.neerslagkans),
+            deelcijfers['neerslagkans'] = self.cijfer_neerslagkans(self.neerslagkans)
         
         if self.neerslag_in_mm:
             deelcijfers['neerslag_in_mm'] = self.cijfer_neerslag_in_mm(self.neerslag_in_mm)
