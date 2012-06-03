@@ -554,7 +554,7 @@ class Forecast(object):
     def deelcijfers(self):
         return {
             'temperatuur': self.cijfer_temperatuur(self.temperatuur),
-            'neerslagkans': self.cijfer_neerslagkans(self.neerslagkans),
+            #'neerslagkans': self.cijfer_neerslagkans(self.neerslagkans),
             'neerslag_in_mm': self.cijfer_neerslag_in_mm(self.neerslag_in_mm),
             'windkracht': self.cijfer_windkracht(Beaufort.from_kmh(self.windkracht)),
             'winterse_neerslag_in_mm': self.cijfer_winterse_neerslag_in_mm(self.winterse_neerslag_in_mm),
@@ -601,7 +601,7 @@ class Forecast(object):
 
     def cijfer_neerslag_in_mm(self, i):
         best = 0
-        afwijking = 0.5 #neerslag in 1 uur
+        afwijking = 0.15 #neerslag in 1 uur
         baseline = self.normpdf(best, best, afwijking)
         max_punten = 4
         mod = max_punten/baseline
@@ -733,17 +733,19 @@ class Provincie(object):
                     regio.provincie = provincie
                     provincie.regios.append(regio)
 
-                    for xmlStation in xmlRegio.find('stations').findall('station'):
-                        station = Station()
-                        station.id = xmlStation.find('id').text
-                        station.code = xmlStation.find('code').text
-                        station.name = xmlStation.find('name').text
-                        station.coordinates = {}
-                        station.coordinates['latitude'] = xmlStation.find('coordinates').find('latitude').text
-                        station.coordinates['longitude'] = xmlStation.find('coordinates').find('longitude').text
-                        station.provincie = provincie
-                        station.regio = regio
-                        regio.stations.append(station)
+                    stations = xmlRegio.find('stations')
+                    if stations:
+                        for xmlStation in stations.findall('station'):
+                            station = Station()
+                            station.id = xmlStation.find('id').text
+                            station.code = xmlStation.find('code').text
+                            station.name = xmlStation.find('name').text
+                            station.coordinates = {}
+                            station.coordinates['latitude'] = xmlStation.find('coordinates').find('latitude').text
+                            station.coordinates['longitude'] = xmlStation.find('coordinates').find('longitude').text
+                            station.provincie = provincie
+                            station.regio = regio
+                            regio.stations.append(station)
 
             cls.provincies_cache = provincies
 
