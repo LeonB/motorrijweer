@@ -1,0 +1,27 @@
+<div class="navbar navbar-fixed-top">
+	<div class="navbar-inner">
+		<div class="container">
+			<a class="brand" href="/">Motorrijweer</a>
+			<div class="nav-collapse">
+				<ul class="nav">
+					<li class="dropdown {{ request|is_active(['provincie', 'regio']) }}">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Provincies<b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							{% for provincie in provincies %}
+								{% if provincie.stations|count > 0 %}
+								<li>
+									<a href="{{ url_for('provincie_redirect', provincie=provincie.id) }}" title="Provincie {{provincie.name}}">{{provincie.name}}</a>
+								</li>
+								{% endif %}
+							{% endfor %}
+						</ul>
+					</li>
+					<li class="{{ request|is_active('faq') }}"><a href="/faq.html">FAQ</a></li>
+					<li class="{{ request|is_active('tips') }}"><a href="/tips.html">Tips</a></li>
+					<li class="{{ request|is_active('contact') }}"><a href="/contact.html">Contact</a></li>
+				</ul>
+			</div><!--/.nav-collapse -->
+		</div>
+	</div>
+</div>
+

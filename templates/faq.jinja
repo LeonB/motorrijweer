@@ -1,0 +1,73 @@
+{% extends "layout.jinja" %}
+{% block title %}FAQ{% endblock %}
+{% block description %}Veelgestelde vragen over motorrijweer.nl{% endblock %}
+
+{% block body %}
+
+<div class="row">
+	<div class="span12">
+
+		<div class="component component-big">
+			<div class="module">
+				<div class="module-header">
+					<h1>Veelgestelde vragen over motorrijweer.nl</h1>
+				</div>
+				<div class="module-body">
+
+						<h3>Waarom heet het eigenlijk motorrijweer.nl?</h3>
+						<p>Omdat motorweer.nl al bezet was :)</p>
+						<hr />
+
+						<h3>Waarom zou ik motorrijweer.nl moeten bezoeken terwijl ik het weer ook op xyz.nl kan zien?</h3>
+						<p>Dat klopt. Er zijn tal van weersites. Maar geen enkele toegespitst op het <strong>motorweer</strong> bij <em>jou</em> in de omgeving. Daarnaast
+						probeert motorrijweer.nl zo helder en duidelijk mogelijk te zijn. Dus geen overbodige data en zo geranschikt dat je in &eacute;&eacute;n oogopslag
+						kunt zien of het goed motorrijweer is of wordt. Daarom zul je bij ons niet kunnen zijn wat de luchtvochtigheid is. Dat is niet van toepassing om te
+						bepalen of het goed motoweer wordt. Daarom ook het weercijfer: dit zal niet voor iedereen precies kloppen. Het geeft wel een snelle indicatie of je
+						met de motor op pad kan.</p>
+						<p>Het doel van motorrijweer.nl is dat je &prime;s ochtends binnen 10 seconden kunt zien of je op de motor naar je werk kunt vertrekken.</p>
+
+						<h3>Mijn provincie staat er niet bij!</h3>
+						<p>Omdat motorrijweer.nl onderhouden wordt door 1 persoon en gehost wordt op een gratis account van Google Appe Engine zit er een limiet aan tijd <em>en</em> bandbreedte.</p>
+						<p>Als je een provincie, regio of weerstation mist: neem dan <a href="/contact" title="motorrijweer contactformulier">contact</a> met mij op.</p>
+						<hr />
+
+						<h3>Het weercijfer slaat nergens op!</h3>
+						<p>Het weer is een erg subjectief onderwerp. Het is daarom lastig om met &eacute;&eacute;n cijfer iedereen tevreden te stellen. Ik heb geprobeerd om het voor de <em>gemiddelde</em> motorrijder te laten kloppen. Als je als motorrijder met duur Goretex doorrijpak er totaal niets om geeft dat het kan gaan regenen, dan zal het cijfer een stuk minder van toepassing zijn op jou.</p>
+						<p>Als je vindt dat het cijfer totaal niet van toepassing is op jou, dan kun je op dit moment altijd nog de individuele weergegevens bekijken en beslissen of het voor <em>jou</em> goed motorweer is.</p>
+						<p>Daarnaast is er een functie in ontwikkeling die iedereen de mogelijkheid geeft om zijn eigen motorweer-cijfer samen te stellen. Als je niks geeft om de neerslagkans, dan versleep je het schuifje voor &quot;neerslagkans&quot; naar nul.</p>
+						<hr />
+
+						<h3>Die functionaliteit om je eigen cijfer samen te stellen klinkt goed. Wanneer komt die er?</h3>
+						<p>Daar is nog niks zinnigs over te zeggen. Als je deze functionaliteit erg graag wilt of je vindt het veel te lang duren: <a href="/contact" title="Stalk/contactformulier">stalk me/neem contact met me op</a> en misschien dat het helpt :)</p>
+						<hr />
+
+						<h3>Hoe wordt het weercijfer bepaald?</h3>
+						<p>Het cijfer bestaat uit 6 deelcijfers:</p>
+						<ul>
+								<li>Temperatuur (-3 tot 3 punten)</li>
+								<li>Neerslag in mm (0 tot 4 punten)</li>
+								<li>Windkracht (-3 tot 3 punten)</li>
+								<li>Winterse neerslag in mm (-2 tot 0 punten)</li>
+								<li>Bewolking (-0.5 tot 0 punten)</li>
+						</ul>
+						<p>Om temperatuur als voorbeeld te nemen: de optimale temperatuur om te motorrijden volgens motorrijweer.nl is 23 graden. Dus als het de hele dag gemiddel 23 graden is dan worden er 3 punten bij het cijfer opgeteld.</p>
+						<p>Alle temperaturen daarboven of daaronder worden op basis van een <a target="_blank" href="http://nl.wikipedia.org/wiki/Normale_verdeling" title="Normale verdeling op wikipedia">normale verdeling</a> verrekend. Dus het verschil in punten tussen 23 graden en 15 graden is groter dan het verschil tussen 15 graden en 7 graden.</p>
+						<p>Het deelcijfer voor windkracht werkt hetzelfde. Windkracht 0 wordt als optimaal gezien. Alle windkracht daarboven zorgt ervoor dat het deelcijfer lager wordt dan vier. Hier is echter wel een uitzondering op: als de temperatuur hoger is dan 23 graden, dan wordt windkracht 3 als optimaal gezien.</p>
+						<p>Winterse neerslag is heel simpel: zodra er enige vorm is van winterse neerslag (of in de 48 uur daarvoor) dan worden er 2 punten van het weercijfer afgetrokken.</p>
+						<p>Voor de ge&iuml;nteresseerden: <a target="_blank" href="/overzicht_cijfers.html" title="Overzicht weercijfers">een overzicht van cijfers</a> zoals ze gegenereerd worden op basis van temperatuur/neerslag in mm en windkracht.</p>
+						<hr />
+
+						<h3>Waarom loopt de tijd maar van 06.00 tot 22.00?</h3>
+						<p>De weergegevens voor &prime;s nachts bijhouden kost te veel data voor het aantal mensen dat wil weten of het midden in nacht nog goed motorrijweer is.
+						Daarnaast zou het in de overzichten teveel afleiden. Motorrijweer.nl is er op gespitst om de data snel en overzichtelijk weer te geven. Data toevoegen die
+						voor 99% van de bezoekers niet van toepassing is hoort daar niet bij.</p>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% include 'blocks/footer.jinja' %}
+
+{% endblock %}

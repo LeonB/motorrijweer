@@ -1,0 +1,11 @@
+<div class="droge_periodes well">
+	{% if weer.droge_periodes|count == 0 %}
+		<h3>Het blijft de hele dag regenen :(</h3>
+	{% elif weer.droge_periodes[0].per_uur|count == 17 %}
+		<h3>Het is de hele dag droog :)</h3>
+	{% elif not weer.droog_tot %}
+		<h3>Het is weer droog om {{ weer.droog_om.strftime('%H:%Mu') }}</h3>
+	{% else %}
+		<h3>Het is droog tot {{ weer.droog_tot.strftime('%H:%Mu') }}</h3>
+	{% endif %}
+</div>
