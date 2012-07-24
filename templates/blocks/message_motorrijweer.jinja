@@ -16,20 +16,20 @@
 	{% set datum_str = datum|dateformat('EEEE d MMMM yyyy') %}
 {% endif %}
 
-{% if weer.cijfer < 5 %}
+{% if weer.cijfer < 5.5 %}
 <div class="alert alert-error">
 	<a class="close" data-dismiss="alert" href="#">×</a>
 	Het {{ werkwoord }} {{ datum_str }} <strong>slecht</strong> motorrijweer :(
 </div> 
 
-{% elif weer.cijfer > 5 and weer.cijfer < 7 %}
+{% elif weer.cijfer >= 5.5 and weer.cijfer < 7 %}
 
 <div class="alert alert-warning">
 	<a class="close" data-dismiss="alert" href="#">×</a>
 	Het {{ werkwoord }} {{ datum_str }} <strong>redelijk</strong> motorrijweer!
 </div> 
 
-{% elif weer.cijfer > 6 %}
+{% elif weer.cijfer >= 7 %}
 
 <div class="alert alert-success">
 	<a class="close" data-dismiss="alert" href="#">×</a>

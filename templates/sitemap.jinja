@@ -6,8 +6,23 @@
     <changefreq>monthly</changefreq>
   </url>
 
+  <url>
+	<loc>{{ url_root}}{{ url_for('faq') }}</loc>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>{{ url_root}}{{ url_for('tips') }}</loc>
+	<changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+	<loc>{{ url_root}}{{ url_for('contact') }}</loc>
+    <changefreq>monthly</changefreq>
+  </url>
+
   {% for provincie in provincies %}
-  {% if provincie.stations()|count > 0 %}
+  {% if provincie.stations|count > 0 %}
   <url>
    <loc>{{ url_root }}{{ url_for('provincie_redirect', provincie=provincie.id) }}</loc>
    <changefreq>hourly</changefreq>
