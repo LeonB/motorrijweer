@@ -3,7 +3,7 @@
 	<div class="span2 cijfer">
 		<h6>Cijfer</h6>
 		<span class="waarde cijfer-{{ weer.cijfer|int }}"
-			title="Cijferopbouw<br />{% for key, value in weer.deelcijfers().items() %}{{ key }}: {{ value|round(1) }}<br />{% endfor %}">
+			title="Cijferopbouw<br />{% for key, value in weer.deelcijfers().items() %}{{ key }}: {{ value|round(1) }}<br />{% endfor %}gemiddeld_cijfer: {{ weer.gemiddeld_cijfer|round(1) }}">
 			{% if weer.cijfer is not none %}
 			{{ weer.cijfer|round(1) }}
 			{% endif %}
