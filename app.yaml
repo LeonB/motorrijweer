@@ -4,12 +4,13 @@ runtime: python27
 api_version: 1
 threadsafe: true
 
-libraries:                                                                      
+libraries:
 - name: jinja2
   version: 2.6
 
 builtins:
 - appstats: on
+# - deferred: on
 
 handlers:
 # - url: /
@@ -25,6 +26,11 @@ handlers:
   static_files: static/favicon.ico
   expiration: "28d"
   upload: static/favicon.ico
+
+- url: /robots.txt
+  static_files: static/robots.txt
+  expiration: "28d"
+  upload: static/robots.txt
 
 - url: /.*
   script: wsgi.app
@@ -44,3 +50,4 @@ skip_files:
 - ^(.*/)?.*/RCS/.*
 - ^(.*/)?\..*
 - ^static/images/icons
+- ^temp/
