@@ -1,3 +1,4 @@
+import flask
 from motorrijweer import app
 from weather import Beaufort
 import mytime
@@ -25,3 +26,16 @@ def datestr(date):
         return 'eergisteren'
     else:
         return None
+
+@app.template_filter()
+def is_active(request, pages):
+    if isinstance(pages, str):
+        pages = [pages]
+
+    endpoint = request.endpoint
+
+    for p in pages:
+        if p == endpoint:
+            return 'active'
+
+    return ''
