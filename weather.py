@@ -48,7 +48,7 @@ class ForecastCollection(object):
         forecast.zonkans = self.zonkans
         forecast.windkracht = self.windkracht
         forecast.windrichting = self.windrichting
-        forecast.cijfer = self.cijfer
+        forecast.cijfer = forecast.generate_cijfer()
         return forecast
 
     @property
@@ -190,7 +190,7 @@ class ForecastCollection(object):
     def droge_periodes(self):
         droge_periodes = []
         droge_periode = None
-        
+
         for forecast in self.forecasts:
             if forecast.neerslag_in_mm > 0.0:
                 if droge_periode:
@@ -380,7 +380,7 @@ class ForecastCollection(object):
         return windrichtingen[0]
 
     @property
-    def cijfer(self):
+    def gemiddeld_cijfer(self):
         if len(self.forecasts) == 0:
             return None
 
@@ -390,6 +390,13 @@ class ForecastCollection(object):
 
         cijfer = cijfer/len(self.forecasts)
         return cijfer
+
+    @property
+    def cijfer(self):
+        if len(self.forecasts) == 0:
+            return None
+
+        return self.to_forecast().generate_cijfer()
 
     def deelcijfers(self):
         if len(self.forecasts) > 0:
@@ -734,7 +741,7 @@ class Provincie(object):
                     provincie.regios.append(regio)
 
                     stations = xmlRegio.find('stations')
-                    if stations:
+                    if stations is not None:
                         for xmlStation in stations.findall('station'):
                             station = Station()
                             station.id = xmlStation.find('id').text
