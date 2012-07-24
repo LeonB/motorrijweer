@@ -3,36 +3,283 @@
 	<provincie>
 		<id>drenthe</id>
 		<name>Drenthe</name>
-		<regios />
+		<gae>dr</gae>
+		<regios>
+			<regio>
+				<id>drenthe</id>
+				<name>Drenthe</name>
+				<stations>
+					<station>
+						<id>IDRENTHE29</id>
+						<code>pws:IDRENTHE29</code>
+						<name>Assen</name>
+						<coordinates>
+							<latitude>53.013233</latitude>
+							<longitude>6.591754</longitude>
+						</coordinates>
+					</station>
+					<station>
+						<id>IDRENTHE14</id>
+						<code>pws:IDRENTHE14</code>
+						<name>Emmen</name>
+						<coordinates>
+							<latitude>52.747658</latitude>
+							<longitude>6.877283</longitude>
+						</coordinates>
+					</station>
+					<station>
+						<id>IDRENTHE44</id>
+						<code>pws:IDRENTHE44</code>
+						<name>Hoogeveen</name>
+						<coordinates>
+							<latitude>52.724350</latitude>
+							<longitude>6.515856</longitude>
+						</coordinates>
+					</station>
+				</stations>
+			</regio>
+		</regios>
 	</provincie>
 	<provincie>
 		<id>flevoland</id>
 		<name>Flevoland</name>
-		<regios />
+		<gae>fl</gae>
+		<regios>
+			<regio>
+				<id>flevoland</id>
+				<name>Flevoland</name>
+				<stations>
+					<station>
+						<id>IFLEVOLA18</id>
+						<code>pws:IFLEVOLA18</code>
+						<name>Emmeloord</name>
+						<coordinates>
+							<latitude>52.717140</latitude>
+							<longitude>5.728740</longitude>
+						</coordinates>
+					</station>
+					<station>
+						<id>IFLEVOLA20</id>
+						<code>pws:IFLEVOLA20</code>
+						<name>Almere</name>
+						<coordinates>
+							<latitude>52.407551</latitude>
+							<longitude>5.278029</longitude>
+						</coordinates>
+					</station>
+					<station>
+						<id>IFLEVOLA33</id>
+						<code>pws:IFLEVOLA33</code>
+						<name>Lelystad</name>
+						<coordinates>
+							<latitude>52.519886</latitude>
+							<longitude>5.439744</longitude>
+						</coordinates>
+					</station>
+					<station>
+						<id>IFLEVOLA26</id>
+						<code>pws:IFLEVOLA26</code>
+						<name>Biddinghuizen</name>
+						<coordinates>
+							<latitude>52.450478</latitude>
+							<longitude>5.688440</longitude>
+						</coordinates>
+					</station>
+				</stations>
+			</regio>
+		</regios>
 	</provincie>
 	<provincie>
-		<id>Friesland</id>
+		<id>friesland</id>
 		<name>Fryslân</name>
-		<regios />
+		<gae>fr</gae>
+		<regios>
+			<regio>
+				<id>friesland</id>
+				<name>Friesland</name>
+				<stations>
+					<station>
+						<id>IFRIESLA49</id>
+						<code>pws:IFRIESLA49</code>
+						<name>Lemmer</name>
+						<coordinates>
+							<latitude>52.838173</latitude>
+							<longitude>5.722943</longitude>
+						</coordinates>
+					</station>
+					<station>
+						<id>EHLW</id>
+						<code>EHLW</code>
+						<name>Leeuwarden</name>
+						<coordinates>
+							<latitude>53.22000122</latitude>
+							<longitude>5.75000000</longitude>
+						</coordinates>
+					</station>
+					<!--<station>-->
+						<!--<id>IFRIESLA51</id>-->
+						<!--<code>pws:IFRIESLA51</code>-->
+						<!--<name>Appelscha</name>-->
+						<!--<coordinates>-->
+							<!--<latitude>52.952393</latitude>-->
+							<!--<longitude>6.356289</longitude>-->
+						<!--</coordinates>-->
+					<!--</station>-->
+					<station>
+						<id>IMETEOOO2</id>
+						<code>pws:IMETEOOO2</code>
+						<name>Oosterwolde</name>
+						<coordinates>
+							<latitude>52.992733</latitude>
+							<longitude>6.276356</longitude>
+						</coordinates>
+					</station>
+					<station>
+						<id>MD3177</id>
+						<code>pws:MD3177</code>
+						<name>Drachten</name>
+						<coordinates>
+							<latitude>53.116669</latitude>
+							<longitude>6.083330</longitude>
+						</coordinates>
+					</station>
+				</stations>
+			</regio>
+		</regios>
 	</provincie>
 	<provincie>
 		<id>gelderland</id>
 		<name>Gelderland</name>
-		<regios />
+		<gae>ge</gae>
+		<regios>
+			<regio>
+				<id>achterhoek</id>
+				<name>Achterhoek</name>
+			</regio>
+			<regio>
+				<id>arnhemnijmegen</id>
+				<name>Arnhem/Nijmegen</name>
+			</regio>
+			<regio>
+				<id>noordveluwe</id>
+				<name>Noord-Veluwe</name>
+			</regio>
+			<regio>
+				<id>rivierenland</id>
+				<name>Rivierenland</name>
+			</regio>
+			<regio>
+				<id>stedendriehoek</id>
+				<name>Stedendriehoek</name>
+			</regio>
+			<regio>
+				<id>devallei</id>
+				<name>De Vallei</name>
+			</regio>
+		</regios>
 	</provincie>
 	<provincie>
 		<id>groningen</id>
 		<name>Groningen</name>
-		<regios />
+		<gae>gr</gae>
+		<regios>
+			<regio>
+				<id>groningen</id>
+				<name>Groningen</name>
+				<stations>
+					<station>
+						<id>IGRONING31</id>
+						<code>pws:IGRONING31</code>
+						<name>Groningen</name>
+						<coordinates>
+							<latitude>53.211094</latitude>
+							<longitude>6.571823</longitude>
+						</coordinates>
+					</station>
+					<station>
+						<id>IGRONING34</id>
+						<code>pws:IGRONING34</code>
+						<name>Delfzijl</name>
+						<coordinates>
+							<latitude>53.315418</latitude>
+							<longitude>6.903452</longitude>
+						</coordinates>
+					</station>
+					<station>
+						<id>IGRONING33</id>
+						<code>pws:IGRONING33</code>
+						<name>Lauwersoog</name>
+						<coordinates>
+							<latitude>53.263626</latitude>
+							<longitude>6.308341</longitude>
+						</coordinates>
+					</station>
+					<station>
+						<id>IGRONING39</id>
+						<code>pws:IGRONING39</code>
+						<name>Stadskanaal</name>
+						<coordinates>
+							<latitude>53.417725</latitude>
+							<longitude>6.725564</longitude>
+						</coordinates>
+					</station>
+				</stations>
+			</regio>
+		</regios>
 	</provincie>
 	<provincie>
 		<id>limburg</id>
-		<name>limburg</name>
-		<regios />
+		<name>Limburg</name>
+		<gae>li</gae>
+		<regios>
+			<regio>
+				<id>zuidlimburg</id>
+				<name>Zuid-Limburg</name>
+				<stations>
+					<station>
+						<id>EHBK</id>
+						<code>EHBK</code>
+						<name>Maastricht</name>
+						<coordinates>
+							<latitude>50.91999817</latitude>
+							<longitude>5.78000021</longitude>
+						</coordinates>
+					</station>
+					<station>
+						<id>ILIMBURG56</id>
+						<code>pws:ILIMBURG56</code>
+						<name>Roermond</name>
+						<coordinates>
+							<latitude>51.192909</latitude>
+							<longitude>5.948112</longitude>
+						</coordinates>
+					</station>
+					<station>
+						<id>INORDRHE53</id>
+						<code>pws:INORDRHE53</code>
+						<name>Venlo</name>
+						<coordinates>
+							<latitude>51.318062</latitude>
+							<longitude>6.201997</longitude>
+						</coordinates>
+					</station>
+					<station>
+						<id>ILIMBURG22</id>
+						<code>pws:ILIMBURG22</code>
+						<name>Meerlo</name>
+						<coordinates>
+							<latitude>51.549999</latitude>
+							<longitude>6.066600</longitude>
+						</coordinates>
+					</station>
+				</stations>
+			</regio>
+		</regios>
 	</provincie>
 	<provincie>
 		<id>noordbrabant</id>
 		<name>Noord-Brabant</name>
+		<gae>br</gae>
 		<regios>
 			<regio>
 				<id>westbrabant</id>
@@ -90,6 +337,7 @@
 	<provincie>
 		<id>noordholland</id>
 		<name>Noord-Holland</name>
+		<gae>nh</gae>
 		<regios>
 			<regio>
 				<id>amsterdam</id>
@@ -175,11 +423,13 @@
 	<provincie>
 		<id>overijssel</id>
 		<name>Overijssel</name>
+		<gae>ov</gae>
 		<regios />
 	</provincie>
 	<provincie>
 		<id>utrecht</id>
 		<name>Utrecht</name>
+		<gae>ut</gae>
 		<regios>
 			<regio>
 				<id>utrecht</id>
@@ -219,6 +469,7 @@
 	<provincie>
 		<id>zeeland</id>
 		<name>Zeeland</name>
+		<gae>ze</gae>
 		<regios>
 			<regio>
 				<id>zeeuwsvlaanderen</id>
@@ -297,6 +548,7 @@
 	<provincie>
 		<id>zuidholland</id>
 		<name>Zuid-Holland</name>
+		<gae>zh</gae>
 		<regios>
 			<regio>
 				<id>rijnmond</id>
