@@ -424,7 +424,63 @@
 		<id>overijssel</id>
 		<name>Overijssel</name>
 		<gae>ov</gae>
-		<regios />
+		<regios>
+			<regio>
+				<id>twenthe</id>
+				<name>Twenthe</name>
+				<stations>
+					<station>
+						<id>IOVERIJS36</id>
+						<code>pws:IOVERIJS36</code>
+						<name>Zwolle</name>
+						<coordinates>
+							<latitude>52.518829</latitude>
+							<longitude>6.043813</longitude>
+						</coordinates>
+					</station>
+					<station>
+						<id>IOVERIJS40</id>
+						<code>pws:IOVERIJS40</code>
+						<name>Hengelo</name>
+						<coordinates>
+							<latitude>52.281219</latitude>
+							<longitude>6.839859</longitude>
+						</coordinates>
+					</station>
+				</stations>
+			</regio>
+			<regio>
+				<id>salland</id>
+				<name>Salland</name>
+				<stations>
+					<station>
+						<id>IOVERIJS28</id>
+						<code>pws:IOVERIJS28</code>
+						<name>Hellendoorn</name>
+						<coordinates>
+							<latitude>52.26666641</latitude>
+							<longitude>6.90000010</longitude>
+						</coordinates>
+					</station>
+				</stations>
+			</regio>
+			<!--
+			<regio>
+				<id>Noordwest Overijssel</id>
+				<name>noordwest-overijssel</name>
+					<station>
+						<id>IOVERIJS28</id>
+						<code>pws:IOVERIJS28</code>
+						<name>Hellendoorn</name>
+						<coordinates>
+							<latitude>52.26666641</latitude>
+							<longitude>6.90000010</longitude>
+						</coordinates>
+					</station>
+				</stations>
+			</regio>
+			-->
+		</regios>
 	</provincie>
 	<provincie>
 		<id>utrecht</id>
